@@ -1,5 +1,5 @@
 ---
-"@emdash-cms/core": minor
+"emdash": minor
 "@emdash-cms/admin": minor
 ---
 
