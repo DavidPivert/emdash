@@ -543,6 +543,16 @@ import Base from "../layouts/Base.astro";
 
 `LiveSearch` provides debounced instant search with prefix matching, Porter stemming, and highlighted result snippets. Search must be enabled per-collection in the admin UI (Content Types > Edit > Features > Search).
 
+On a multilingual site, pass `locale` so results stay in the visitor's language. Without it every entry comes back once per locale, so a translated site shows each result twice:
+
+```astro title="src/pages/search.astro"
+<LiveSearch
+  placeholder="Search posts and pages..."
+  collections={["posts", "pages"]}
+  locale={Astro.locals.locale}
+/>
+```
+
 ## Testing Your Theme
 
 1. Create a test project from your theme:

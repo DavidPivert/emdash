@@ -9,6 +9,13 @@
  * <LiveSearch placeholder="Search articles..." collections={["posts", "pages"]} />
  * ```
  *
+ * On a multilingual site, pass `locale` to keep results in the visitor's
+ * language:
+ *
+ * ```astro
+ * <LiveSearch collections={["posts", "pages"]} locale={Astro.locals.locale} />
+ * ```
+ *
  * Customize the result rendering with slots:
  *
  * ```astro
@@ -26,6 +33,12 @@ export interface Props {
 	placeholder?: string;
 	/** Collections to search (defaults to all searchable collections) */
 	collections?: string[];
+	/**
+	 * Restrict results to one locale, e.g. `Astro.locals.locale`. Left unset,
+	 * the search returns every locale, so a bilingual site shows each entry
+	 * once per language.
+	 */
+	locale?: string;
 	/** Minimum characters before searching (defaults to 2) */
 	minChars?: number;
 	/** Debounce delay in milliseconds (defaults to 300) */
@@ -59,6 +72,7 @@ export interface Props {
 const {
 	placeholder = "Search...",
 	collections,
+	locale = "",
 	minChars = 2,
 	debounce = 300,
 	limit = 10,
@@ -77,6 +91,7 @@ const {
 
 const config = {
 	collections: collections?.join(",") ?? "",
+	locale,
 	minChars,
 	debounce,
 	limit,
@@ -145,6 +160,7 @@ const config = {
 
 	interface Config {
 		collections: string;
+		locale: string;
 		minChars: number;
 		debounce: number;
 		limit: number;
@@ -164,6 +180,7 @@ const config = {
 		private template: HTMLTemplateElement | null = null;
 		private config: Config = {
 			collections: "",
+			locale: "",
 			minChars: 2,
 			debounce: 300,
 			limit: 10,
@@ -362,6 +379,10 @@ const config = {
 
 				if (this.config.collections) {
 					params.set("collections", this.config.collections);
+				}
+
+				if (this.config.locale) {
+					params.set("locale", this.config.locale);
 				}
 
 				const response = await fetch(`${endpoint}?${params}`, {
