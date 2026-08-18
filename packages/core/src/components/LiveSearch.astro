@@ -9,11 +9,13 @@
  * <LiveSearch placeholder="Search articles..." collections={["posts", "pages"]} />
  * ```
  *
- * On a multilingual site, pass `locale` to keep results in the visitor's
- * language:
+ * Results are scoped to the page's locale, taken from `Astro.currentLocale`,
+ * so a translated site returns each entry once, in the language of the page
+ * the visitor searched from. Pass `locale` to override that, or `null` to
+ * search across every locale:
  *
  * ```astro
- * <LiveSearch collections={["posts", "pages"]} locale={Astro.locals.locale} />
+ * <LiveSearch collections={["posts", "pages"]} locale={null} />
  * ```
  *
  * Customize the result rendering with slots:
@@ -34,11 +36,11 @@ export interface Props {
 	/** Collections to search (defaults to all searchable collections) */
 	collections?: string[];
 	/**
-	 * Restrict results to one locale, e.g. `Astro.locals.locale`. Left unset,
-	 * the search returns every locale, so a bilingual site shows each entry
-	 * once per language.
+	 * Locale to restrict results to. Defaults to `Astro.currentLocale`, which
+	 * Astro derives from the URL, so results match the page the search was
+	 * made from. Pass `null` to search across every locale.
 	 */
-	locale?: string;
+	locale?: string | null;
 	/** Minimum characters before searching (defaults to 2) */
 	minChars?: number;
 	/** Debounce delay in milliseconds (defaults to 300) */
@@ -72,7 +74,7 @@ export interface Props {
 const {
 	placeholder = "Search...",
 	collections,
-	locale = "",
+	locale = Astro.currentLocale ?? null,
 	minChars = 2,
 	debounce = 300,
 	limit = 10,
@@ -91,7 +93,7 @@ const {
 
 const config = {
 	collections: collections?.join(",") ?? "",
-	locale,
+	locale: locale ?? "",
 	minChars,
 	debounce,
 	limit,
