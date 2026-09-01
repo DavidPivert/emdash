@@ -332,6 +332,58 @@ Disabled or missing plugins are omitted. Invalid definitions, collection predica
 
 Content-list columns are display-only. Server-backed sorting and filtering require a separate host data-provider contract; a browser comparator would only sort the currently loaded cursor pages and is therefore not supported by this API.
 
+## Field widgets
+
+A plugin can replace the editor control for a field by exporting a `fields` map. The key is the widget name a collection field selects with `widget: "<plugin-id>:<key>"`.
+
+```typescript title="src/admin.tsx"
+import { NotesWidget } from "./components/NotesWidget";
+
+export const fields = {
+	notes: NotesWidget,
+};
+```
+
+EmDash passes each widget the value it edits, an `onChange` callback, and the identity of the entry being edited:
+
+| Prop       | Type                                                        | Description                                                    |
+| ---------- | ----------------------------------------------------------- | -------------------------------------------------------------- |
+| `value`    | `unknown`                                                    | Current field value.                                            |
+| `onChange` | `(value: unknown) => void`                                   | Reports a new value to the editor.                              |
+| `label`    | `string`                                                     | Field label from the collection schema.                         |
+| `id`       | `string`                                                     | DOM id for the control, so a custom `<label>` can point at it.  |
+| `required` | `boolean \| undefined`                                       | Whether the schema marks the field required.                    |
+| `options`  | `Array<{ value: string; label: string }> \| Record<string, unknown>` | Options declared on the field.                          |
+| `minimal`  | `boolean \| undefined`                                       | Set when the editor renders the field in a compact context.     |
+| `document` | `FieldWidgetDocument \| undefined`                           | Identity of the entry being edited.                             |
+
+`document` lets a widget call its own plugin routes for the entry it is attached to, instead of recovering the entry id from the admin URL:
+
+```tsx title="src/components/NotesWidget.tsx"
+import type { FieldWidgetDocument } from "@emdash-cms/admin";
+import { apiFetch } from "emdash/plugin-utils";
+
+export function NotesWidget({ document }: { document?: FieldWidgetDocument }) {
+	// document.collection is the collection name, e.g. "posts".
+	// document.id is the entry id, or null while the entry has never been saved.
+	if (!document?.id) return <p>Save the entry to add notes.</p>;
+
+	return (
+		<button
+			onClick={() =>
+				apiFetch(`/_emdash/api/plugins/editorial-workflow/notes/${document.id}`)
+			}
+		>
+			Load notes
+		</button>
+	);
+}
+```
+
+<Aside>
+	`document.id` is `null` for an entry that has never been saved. It is deliberately `null` rather than `undefined`, so a widget can tell a new document apart from an older EmDash host that does not supply the prop at all. Treat the prop as optional if your widget must run on both.
+</Aside>
+
 ## Export structure
 
 The admin entry point exports each contribution directly:
@@ -342,6 +394,7 @@ import { ReportsPage } from "./components/ReportsPage";
 import { StatusWidget } from "./components/StatusWidget";
 import { OverviewWidget } from "./components/OverviewWidget";
 import { ReviewStatusCell } from "./components/ReviewStatusCell";
+import { NotesWidget } from "./components/NotesWidget";
 
 export const pages = {
 	"/settings": SettingsPage,
@@ -351,6 +404,10 @@ export const pages = {
 export const widgets = {
 	status: StatusWidget,
 	overview: OverviewWidget,
+};
+
+export const fields = {
+	notes: NotesWidget,
 };
 
 export const contentListColumns = [

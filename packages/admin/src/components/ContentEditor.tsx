@@ -603,6 +603,14 @@ export function ContentEditor({
 		}
 	};
 
+	// Referentially stable so a future memo on FieldRenderer is not defeated by
+	// a fresh object on every keystroke — the same contract ContentSettingsPanel
+	// already relies on (see ContentEditorMemo.test.tsx).
+	const fieldDocument = React.useMemo(
+		() => ({ collection, id: item?.id ?? null }),
+		[collection, item?.id],
+	);
+
 	const handleFieldChange = React.useCallback(
 		(name: string, value: unknown) => {
 			setFormData((prev) => ({ ...prev, [name]: value }));
@@ -864,6 +872,7 @@ export function ContentEditor({
 											field.kind === "portableText" ? handleBlockSidebarClose : undefined
 										}
 										manifest={manifest}
+										document={fieldDocument}
 									/>
 								);
 								return fieldEl;
@@ -1199,6 +1208,24 @@ interface FieldRendererProps {
 	onBlockSidebarClose?: () => void;
 	/** Admin manifest for resolving sandboxed field widget elements */
 	manifest?: import("../lib/api/client.js").AdminManifest | null;
+	/** Identity of the entry being edited, forwarded to plugin field widgets. */
+	document: FieldWidgetDocument;
+}
+
+/**
+ * Identity of the entry a field widget is editing.
+ *
+ * Field widgets receive their own value and nothing else, so a widget that
+ * needs to call its own plugin route previously had to recover the entry from
+ * `location.pathname`. That breaks silently whenever admin routing changes.
+ *
+ * `id` is `null` while the entry has never been saved — deliberately `null`
+ * rather than `undefined`, so a widget can tell "new document" apart from
+ * "running against an older host that does not provide this".
+ */
+export interface FieldWidgetDocument {
+	collection: string;
+	id: string | null;
 }
 
 /**
@@ -1215,6 +1242,7 @@ function FieldRenderer({
 	onBlockSidebarOpen,
 	onBlockSidebarClose,
 	manifest,
+	document: fieldDocument,
 }: FieldRendererProps) {
 	const { t } = useLingui();
 	const pluginAdmins = usePluginAdmins();
@@ -1245,6 +1273,7 @@ function FieldRenderer({
 						required?: boolean;
 						options?: Array<{ value: string; label: string }> | Record<string, unknown>;
 						minimal?: boolean;
+						document?: FieldWidgetDocument;
 				  }>
 				| undefined;
 			if (typeof PluginField === "function") {
@@ -1258,6 +1287,7 @@ function FieldRenderer({
 							required={field.required}
 							options={field.options}
 							minimal={minimal}
+							document={fieldDocument}
 						/>
 					</PluginFieldErrorBoundary>
 				);
