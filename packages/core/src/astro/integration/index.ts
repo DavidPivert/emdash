@@ -11,11 +11,21 @@
  */
 
 import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 
-import type { AstroIntegration, AstroIntegrationLogger } from "astro";
+import type { AstroIntegration, AstroIntegrationLogger, AstroIntegrationMiddleware } from "astro";
 
 import { validateAllowedOrigins, validateOriginShape } from "../../auth/allowed-origins.js";
+import { normalizeMigrationConfig } from "../../database/migrations/policy.js";
+import { normalizeAstroI18n } from "../../i18n/normalize.js";
 import { INTERNAL_MEDIA_PREFIX } from "../../media/normalize.js";
+import { getCoreMigrationIdentity } from "../../migrations/identity.js";
+import {
+	createMigrationIntegrationMetadata,
+	MIGRATION_CONFIG_SYMBOL,
+} from "../../migrations/integration-metadata.js";
+import { buildMigrationManifest } from "../../migrations/manifest-builder.js";
+import { writeMigrationManifest } from "../../migrations/manifest-writer.js";
 import type { ResolvedPlugin } from "../../plugins/types.js";
 import { VERSION } from "../../version.js";
 import { local } from "../storage/adapters.js";
@@ -70,26 +80,21 @@ interface ImageRemotePattern {
 /**
  * Build `image.remotePatterns` entries so Astro will optimize EmDash media.
  *
- * Astro's image services only transform **absolute** URLs whose host is
- * authorized; everything else is passed through unoptimized. We authorize the
- * media sources automatically:
+ * Astro's image services only build a transform URL for sources allowed via
+ * `image.domains` / `image.remotePatterns` (relative URLs are never optimized —
+ * see `isRemoteAllowed`). We authorize the media sources automatically:
  *
- *  1. The storage adapter's public URL host (R2 custom domain, S3/CDN), so
- *     media served directly from a public bucket is optimized.
+ *  1. The storage adapter's public URL host (R2 custom domain, S3/CDN).
  *  2. The site's own origin, scoped to the media proxy route
- *     (`/_emdash/api/media/file/**`), so same-origin proxied media (local
- *     storage, or R2 without a public URL) is optimized too. The pathname
- *     scope keeps Astro's image endpoint from acting as an open proxy for the
- *     whole origin. Only registered when `siteUrl` is known at build time;
- *     `getPublicOrigin` resolves the matching origin at render time.
- *  3. In `astro dev` the dev-server origin (`localhost:<port>`) isn't known at
- *     build time, so we register a host-agnostic pattern scoped to the media
- *     route. This is dev-only — it never ships in a production build — so the
- *     missing host check can't be abused on a deployed site.
+ *     (`/_emdash/api/media/file/**`), so same-origin proxied media is optimized.
+ *     The components absolutize the media URL against this origin; EmDash's
+ *     wrapped image endpoint then serves the bytes from storage (so the absolute
+ *     URL is never fetched). Only registered when `siteUrl` is known at build.
+ *  3. In `astro dev` the dev-server origin isn't known at build time, so we
+ *     register a host-agnostic pattern scoped to the media route. Dev-only.
  *
- * Returns an empty array when no source is statically known (e.g. a production
- * build using local storage with no `siteUrl`), in which case media renders as
- * a plain `<img>`.
+ * Returns an empty array when no source is statically known (production build,
+ * local storage, no `siteUrl`), in which case media renders as a plain `<img>`.
  *
  * @internal Exported for unit testing.
  */
@@ -147,6 +152,87 @@ export function buildImageRemotePatterns(
 	return patterns;
 }
 
+/**
+ * Stock image endpoints EmDash may safely replace with its storage-backed
+ * wrapper. Our wrapper delegates non-EmDash images to the platform's transform
+ * endpoint, so we only override endpoints whose transform we can delegate to.
+ */
+const OVERRIDABLE_IMAGE_ENDPOINTS = new Set([
+	"astro/assets/endpoint/generic",
+	"astro/assets/endpoint/node",
+	"astro/assets/endpoint/dev",
+	"@astrojs/cloudflare/image-transform-endpoint",
+]);
+
+/**
+ * Stock endpoints that deliberately don't transform (the user opted into
+ * passthrough). We leave these untouched -- and without a warning, since it's a
+ * supported choice, not a custom endpoint. Overriding would route non-EmDash
+ * images through a transformer the passthrough setup doesn't provide.
+ */
+const PASSTHROUGH_IMAGE_ENDPOINTS = new Set(["@astrojs/cloudflare/image-passthrough-endpoint"]);
+
+/**
+ * Decide which image endpoint to install (if any). EmDash wraps Astro's image
+ * endpoint so EmDash media bytes load from storage; the wrapper delegates other
+ * images back to the platform's stock endpoint.
+ *
+ * Returns `{ entrypoint }` to install, `{ warn }` to skip with a warning (a
+ * custom endpoint we can't delegate to), or `{}` to skip silently (opted out).
+ *
+ * @internal Exported for unit testing.
+ */
+export function resolveImageEndpoint(opts: {
+	imagesDisabled: boolean;
+	currentEntrypoint: string | undefined;
+	isCloudflare: boolean;
+}): { entrypoint?: string; warn?: string } {
+	if (opts.imagesDisabled) return {};
+	const current = opts.currentEntrypoint;
+	if (current === undefined || OVERRIDABLE_IMAGE_ENDPOINTS.has(current)) {
+		return {
+			entrypoint: opts.isCloudflare
+				? "@emdash-cms/cloudflare/image-endpoint"
+				: "emdash/image-endpoint",
+		};
+	}
+	// A deliberate passthrough setup: leave it alone, no warning.
+	if (PASSTHROUGH_IMAGE_ENDPOINTS.has(current)) return {};
+	return {
+		warn:
+			`A custom image.endpoint (${current}) is configured; EmDash will not wrap ` +
+			`it, so storage-backed media may render unoptimized.`,
+	};
+}
+
+/**
+ * Warn when `@astrojs/react` is not registered in the host's `integrations`.
+ *
+ * The admin SPA is a React app hydrated via `client:only="react"`. Without the
+ * React integration the build succeeds and the admin route returns 200, but the
+ * bundle never hydrates -- the page sits on "Loading EmDash..." forever with no
+ * error anywhere (#962). Checked in `astro:config:done` so integrations added
+ * by other integrations are visible too.
+ *
+ * @internal Exported for unit testing.
+ */
+export function missingReactIntegrationWarning(
+	integrations: readonly { name: string }[],
+): string | undefined {
+	if (integrations.some((integration) => integration.name === "@astrojs/react")) {
+		return undefined;
+	}
+	return (
+		`@astrojs/react is not registered in your Astro config. The EmDash admin UI ` +
+		`will not hydrate without it (the page stays on "Loading EmDash..."). ` +
+		`Add it to your integrations:\n\n` +
+		`  import react from "@astrojs/react";\n` +
+		`  export default defineConfig({\n` +
+		`    integrations: [react(), emdash({ ... })],\n` +
+		`  });`
+	);
+}
+
 // Terminal formatting
 const dim = (s: string) => `\x1b[2m${s}\x1b[22m`;
 const bold = (s: string) => `\x1b[1m${s}\x1b[22m`;
@@ -177,6 +263,58 @@ function printDevServerInfo(baseUrl: string, mcpEnabled: boolean): void {
 	console.log("");
 }
 
+export function buildMiddlewareEntries(
+	config: Pick<EmDashConfig, "middleware" | "playground">,
+	root: URL,
+): AstroIntegrationMiddleware[] {
+	const entries: AstroIntegrationMiddleware[] = [];
+
+	if (config.middleware !== undefined) {
+		const configuredEntrypoint = config.middleware?.outer;
+		if (
+			(typeof configuredEntrypoint !== "string" && !(configuredEntrypoint instanceof URL)) ||
+			(typeof configuredEntrypoint === "string" && configuredEntrypoint.trim() === "")
+		) {
+			throw new Error("middleware.outer must be a non-empty module specifier string or URL.");
+		}
+		const entrypoint =
+			typeof configuredEntrypoint === "string" &&
+			(configuredEntrypoint.startsWith("./") || configuredEntrypoint.startsWith("../"))
+				? new URL(configuredEntrypoint, root)
+				: configuredEntrypoint;
+		entries.push({
+			entrypoint,
+			order: "pre",
+		});
+	}
+
+	if (config.playground) {
+		entries.push({
+			entrypoint: config.playground.middlewareEntrypoint,
+			order: "pre",
+		});
+	}
+
+	entries.push(
+		{ entrypoint: "emdash/middleware", order: "pre" },
+		{ entrypoint: "emdash/middleware/redirect", order: "pre" },
+	);
+
+	if (!config.playground) {
+		entries.push(
+			{ entrypoint: "emdash/middleware/setup", order: "pre" },
+			{ entrypoint: "emdash/middleware/auth", order: "pre" },
+		);
+	}
+
+	entries.push(
+		{ entrypoint: "emdash/middleware/media-usage-write-fence", order: "pre" },
+		{ entrypoint: "emdash/middleware/request-context", order: "pre" },
+	);
+
+	return entries;
+}
+
 /**
  * Create the EmDash Astro integration
  */
@@ -185,6 +323,7 @@ export function emdash(config: EmDashConfig = {}): AstroIntegration {
 	const resolvedConfig: EmDashConfig = {
 		...config,
 		storage: config.storage ?? DEFAULT_STORAGE,
+		migrations: normalizeMigrationConfig(config.migrations),
 	};
 
 	// Validate marketplace URL
@@ -293,6 +432,7 @@ export function emdash(config: EmDashConfig = {}): AstroIntegration {
 	// i18n is populated in astro:config:setup from astroConfig.i18n
 	const serializableConfig: Record<string, unknown> = {
 		database: resolvedConfig.database,
+		migrations: resolvedConfig.migrations,
 		storage: resolvedConfig.storage,
 		auth: resolvedConfig.auth,
 		authProviders: resolvedConfig.authProviders,
@@ -302,6 +442,7 @@ export function emdash(config: EmDashConfig = {}): AstroIntegration {
 		trustedProxyHeaders: resolvedConfig.trustedProxyHeaders,
 		maxUploadSize: resolvedConfig.maxUploadSize,
 		admin: resolvedConfig.admin,
+		toolbar: resolvedConfig.toolbar,
 	};
 
 	// Determine auth mode for route injection
@@ -311,8 +452,10 @@ export function emdash(config: EmDashConfig = {}): AstroIntegration {
 	// Captured in astro:config:setup so the astro:server:setup hook can tell
 	// whether we're running `astro dev` (where the dev-bypass shortcut applies).
 	let astroCommand: "dev" | "build" | "preview" | "sync" | undefined;
+	let normalizedI18n: ReturnType<typeof normalizeAstroI18n> = null;
+	const migrationMetadata = createMigrationIntegrationMetadata(resolvedConfig.database);
 
-	return {
+	const integration: AstroIntegration = {
 		name: "emdash",
 		hooks: {
 			"astro:config:setup": ({
@@ -332,18 +475,14 @@ export function emdash(config: EmDashConfig = {}): AstroIntegration {
 				if (astroVersion !== undefined) {
 					serializableConfig.astroVersion = astroVersion;
 				}
-				// Extract i18n config from Astro config
-				// Astro locales can be strings OR { path, codes } objects — normalize to paths
-				if (astroConfig.i18n) {
-					const routing = astroConfig.i18n.routing;
-					serializableConfig.i18n = {
-						defaultLocale: astroConfig.i18n.defaultLocale,
-						locales: astroConfig.i18n.locales.map((l) => (typeof l === "string" ? l : l.path)),
-						fallback: astroConfig.i18n.fallback,
-						prefixDefaultLocale:
-							typeof routing === "object" ? (routing.prefixDefaultLocale ?? false) : false,
-					};
-				}
+				// EmDashHead must not access Astro.csp when the host has disabled
+				// Astro's built-in CSP runtime; Astro logs a warning for that access.
+				serializableConfig.astroCspEnabled = Boolean(astroConfig.security.csp);
+				// Expose Astro's trailingSlash routing policy so plugins can build
+				// URLs (sitemap/canonical/hreflang) that match what the site serves.
+				serializableConfig.trailingSlash = astroConfig.trailingSlash;
+				normalizedI18n = normalizeAstroI18n(astroConfig.i18n);
+				if (normalizedI18n) serializableConfig.i18n = normalizedI18n;
 
 				// Disable Astro's built-in checkOrigin -- EmDash's own CSRF
 				// layer (checkPublicCsrf in api/csrf.ts) handles origin
@@ -402,19 +541,32 @@ export function emdash(config: EmDashConfig = {}): AstroIntegration {
 								},
 							];
 
-				// Authorize media sources for Astro image optimization so the
-				// Image components can generate a responsive srcset for R2/S3 and
-				// same-origin proxied media. `updateConfig` merges arrays, so any
-				// user-configured remotePatterns are preserved.
+				// Authorize media sources so Astro's image service builds transform
+				// URLs for them (it won't optimize an un-allowed source). `updateConfig`
+				// merges arrays, so user-configured remotePatterns are preserved.
 				const imageRemotePatterns = buildImageRemotePatterns(
 					resolvedConfig.storage,
 					resolvedConfig.siteUrl,
 					command,
 				);
 
+				// Wrap Astro's image endpoint so EmDash media bytes load straight from
+				// storage (Access-safe) instead of over HTTP. Skip when the user opts
+				// out or has a custom endpoint we can't delegate back to.
+				const { entrypoint: imageEndpoint, warn: imageEndpointWarning } = resolveImageEndpoint({
+					imagesDisabled: resolvedConfig.images === false,
+					currentEntrypoint: astroConfig.image?.endpoint?.entrypoint,
+					isCloudflare: astroConfig.adapter?.name === "@astrojs/cloudflare",
+				});
+				if (imageEndpointWarning) logger.warn(imageEndpointWarning);
+
+				const imageConfig: Record<string, unknown> = {};
+				if (imageRemotePatterns.length) imageConfig.remotePatterns = imageRemotePatterns;
+				if (imageEndpoint) imageConfig.endpoint = { entrypoint: imageEndpoint };
+
 				updateConfig({
 					security: securityConfig,
-					...(imageRemotePatterns.length ? { image: { remotePatterns: imageRemotePatterns } } : {}),
+					...(Object.keys(imageConfig).length ? { image: imageConfig } : {}),
 					// fonts is a valid AstroConfig key but may not be in the
 					// type definition for the minimum supported Astro version
 					...({ fonts: emdashFonts } as Record<string, unknown>),
@@ -447,52 +599,39 @@ export function emdash(config: EmDashConfig = {}): AstroIntegration {
 					injectMcpRoute(injectRoute);
 				}
 
-				// In playground mode, inject the playground middleware FIRST.
-				// It sets up a per-session DO database in ALS before anything
-				// else runs, so the runtime init middleware sees a real DB.
-				if (resolvedConfig.playground) {
-					addMiddleware({
-						entrypoint: resolvedConfig.playground.middlewareEntrypoint,
-						order: "pre",
-					});
+				for (const middleware of buildMiddlewareEntries(resolvedConfig, astroConfig.root)) {
+					addMiddleware(middleware);
 				}
-
-				// Add middleware to provide database and manifest
-				addMiddleware({
-					entrypoint: "emdash/middleware",
-					order: "pre",
-				});
-
-				// Add redirect middleware (runs after runtime init, before setup/auth)
-				addMiddleware({
-					entrypoint: "emdash/middleware/redirect",
-					order: "pre",
-				});
-
-				// Skip setup and auth in playground mode -- the playground middleware
-				// handles session creation and injects an anonymous admin user.
-				if (!resolvedConfig.playground) {
-					addMiddleware({
-						entrypoint: "emdash/middleware/setup",
-						order: "pre",
-					});
-
-					addMiddleware({
-						entrypoint: "emdash/middleware/auth",
-						order: "pre",
-					});
-				}
-
-				// Add request context middleware (runs after auth, on ALL routes)
-				// Sets up ALS-based context for query functions (edit mode, preview)
-				addMiddleware({
-					entrypoint: "emdash/middleware/request-context",
-					order: "pre",
-				});
 
 				// Route info is printed with absolute, clickable URLs once the
 				// dev server is listening (see astro:server:setup), since the
 				// port isn't known yet here. Nothing useful to print for build.
+			},
+			"astro:config:done": async ({ config: finalConfig, logger }) => {
+				const warning = missingReactIntegrationWarning(finalConfig.integrations);
+				if (warning) logger.warn(warning);
+
+				if (astroCommand !== "build" && astroCommand !== "sync") return;
+				if (!migrationMetadata.database) {
+					logger.warn(
+						"EmDash migration manifest was not written because no database adapter is configured.",
+					);
+					return;
+				}
+				if (!migrationMetadata.database.migrations) {
+					logger.warn(
+						"EmDash migration manifest was not written because the configured database adapter does not support deployment migrations.",
+					);
+					return;
+				}
+
+				const identity = await getCoreMigrationIdentity();
+				const manifest = await buildMigrationManifest({
+					identity,
+					i18n: normalizedI18n,
+					database: migrationMetadata.database,
+				});
+				await writeMigrationManifest(fileURLToPath(finalConfig.root), manifest);
 			},
 			"astro:server:setup": ({ server, logger }) => {
 				// Print route info with absolute, clickable URLs once the server
@@ -570,6 +709,12 @@ export function emdash(config: EmDashConfig = {}): AstroIntegration {
 			},
 		},
 	};
+
+	Object.defineProperty(integration, MIGRATION_CONFIG_SYMBOL, {
+		value: migrationMetadata,
+		enumerable: false,
+	});
+	return integration;
 }
 
 export default emdash;

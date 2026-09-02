@@ -1,7 +1,7 @@
 import { z, type ZodTypeAny } from "zod";
 
 import { hashString } from "../utils/hash.js";
-import type { Field, FieldType, CollectionWithFields } from "./types.js";
+import type { CollectionWithFields, Field, FieldType, RepeaterSubField } from "./types.js";
 
 /** Pattern to split on underscores, hyphens, and spaces for PascalCase conversion */
 const PASCAL_CASE_SPLIT_PATTERN = /[_\-\s]+/;
@@ -58,7 +58,7 @@ export function generateFieldSchema(field: Field): ZodTypeAny {
 /**
  * Get base Zod schema for a field type
  */
-function getBaseSchema(type: FieldType, field: Field): ZodTypeAny {
+function getBaseSchema(type: FieldType, field: Pick<Field, "validation">): ZodTypeAny {
 	switch (type) {
 		case "url":
 			return z.string().url();
@@ -86,7 +86,15 @@ function getBaseSchema(type: FieldType, field: Field): ZodTypeAny {
 			return z.preprocess((v) => (v === 0 || v === 1 ? Boolean(v) : v), z.boolean());
 
 		case "datetime":
-			return z.string().datetime().or(z.string().date());
+			// Accept every value that legitimately round-trips through the admin
+			// and seeds: ISO with `Z`, ISO with a timezone offset, a naive
+			// datetime (`YYYY-MM-DDTHH:mm[:ss]` -- what `<input type="datetime-local">`
+			// and many seeds produce), and a date-only value. The admin re-sends
+			// every loaded field on autosave, so a stored naive datetime must
+			// validate or the entry becomes unsavable through its own editor
+			// (#1368; same class as #867). `z.iso.*` retains semantic validation,
+			// so impossible dates are still rejected.
+			return z.iso.datetime({ offset: true, local: true }).or(z.iso.date());
 
 		case "select": {
 			const options = field.validation?.options;
@@ -106,6 +114,9 @@ function getBaseSchema(type: FieldType, field: Field): ZodTypeAny {
 			return z.array(z.string());
 		}
 
+		case "repeater":
+			return z.array(generateRepeaterRowSchema(field.validation?.subFields ?? []));
+
 		case "portableText":
 			// Portable Text is an array of blocks. We require `_type` because
 			// renderers dispatch on it, but `_key` is intentionally optional:
@@ -124,13 +135,17 @@ function getBaseSchema(type: FieldType, field: Field): ZodTypeAny {
 					.passthrough(),
 			);
 
-		case "image":
-			return z.object({
+		case "image": {
+			const mediaSchema = z.object({
 				id: z.string(),
 				src: z.string().optional(),
 				alt: z.string().optional(),
 				width: z.number().optional(),
 				height: z.number().optional(),
+				filename: z.string().optional(),
+				mimeType: z.string().optional(),
+				blurhash: z.string().optional(),
+				dominantColor: z.string().optional(),
 				/** Provider ID (e.g. "local", "cloudflare-images") */
 				provider: z.string().optional(),
 				/** Admin-side preview URL for external providers (not persisted by plugins) */
@@ -138,10 +153,16 @@ function getBaseSchema(type: FieldType, field: Field): ZodTypeAny {
 				/** Provider-specific metadata; for local media this carries storageKey */
 				meta: z.record(z.string(), z.unknown()).optional(),
 			});
+			return mediaSchema.extend({
+				/** Counterpart shown when the page renders in a dark color scheme */
+				darkVariant: mediaSchema.optional(),
+			});
+		}
 
 		case "file":
 			return z.object({
 				id: z.string(),
+				url: z.string().optional(),
 				src: z.string().optional(),
 				filename: z.string().optional(),
 				mimeType: z.string().optional(),
@@ -161,6 +182,29 @@ function getBaseSchema(type: FieldType, field: Field): ZodTypeAny {
 		default:
 			return z.unknown();
 	}
+}
+
+function generateRepeaterRowSchema(
+	subFields: readonly RepeaterSubField[],
+): z.ZodObject<Record<string, ZodTypeAny>> {
+	const shape: Record<string, ZodTypeAny> = {};
+
+	for (const subField of subFields) {
+		let schema = getBaseSchema(subField.type, {
+			validation: subField.options ? { options: subField.options } : undefined,
+		});
+
+		if (subField.required && schema instanceof z.ZodString) {
+			schema = schema.min(1, "required (empty value not allowed)");
+		}
+		if (!subField.required) {
+			schema = schema.nullish();
+		}
+
+		shape[subField.slug] = schema;
+	}
+
+	return z.object(shape).passthrough();
 }
 
 /**
@@ -195,6 +239,17 @@ function applyValidation(schema: ZodTypeAny, field: Field): ZodTypeAny {
 			numSchema = numSchema.max(validation.max);
 		}
 		return numSchema;
+	}
+
+	if (field.type === "repeater" && schema instanceof z.ZodArray) {
+		let arraySchema = schema;
+		if (validation.minItems !== undefined) {
+			arraySchema = arraySchema.min(validation.minItems);
+		}
+		if (validation.maxItems !== undefined) {
+			arraySchema = arraySchema.max(validation.maxItems);
+		}
+		return arraySchema;
 	}
 
 	return schema;
@@ -268,8 +323,10 @@ export function validateContent(
  * Generate TypeScript interface from field definitions
  * Used by CLI `emdash types` to generate types
  */
-export function generateTypeScript(collection: CollectionWithFields): string {
-	const interfaceName = getInterfaceName(collection);
+export function generateTypeScript(
+	collection: CollectionWithFields,
+	interfaceName: string = getInterfaceName(collection),
+): string {
 	const lines: string[] = [];
 
 	lines.push(`export interface ${interfaceName} {`);
@@ -324,9 +381,14 @@ export function generateTypesFile(collections: CollectionWithFields[]): string {
 	lines.push(`import type { ${imports.join(", ")} } from "emdash";`);
 	lines.push(``);
 
+	// Singularizing the slug can map two distinct slugs to the same name
+	// (e.g. `book` and `books` both -> `Book`), so resolve collisions up front
+	// to keep every interface identifier unique within the file.
+	const interfaceNames = uniqueInterfaceNames(collections);
+
 	// Generate individual interfaces
 	for (const collection of collections) {
-		lines.push(generateTypeScript(collection));
+		lines.push(generateTypeScript(collection, interfaceNames.get(collection.slug)));
 		lines.push(``);
 	}
 
@@ -334,8 +396,7 @@ export function generateTypesFile(collections: CollectionWithFields[]): string {
 	lines.push(`declare module "emdash" {`);
 	lines.push(`  interface EmDashCollections {`);
 	for (const collection of collections) {
-		const interfaceName = getInterfaceName(collection);
-		lines.push(`    ${collection.slug}: ${interfaceName};`);
+		lines.push(`    ${collection.slug}: ${interfaceNames.get(collection.slug)};`);
 	}
 	lines.push(`  }`);
 	lines.push(`}`);
@@ -364,7 +425,10 @@ export async function generateSchemaHash(collections: CollectionWithFields[]): P
 /**
  * Map field type to TypeScript type
  */
-function fieldTypeToTypeScript(field: Field): string {
+function fieldTypeToTypeScript(field: {
+	type: Field["type"];
+	validation?: Field["validation"];
+}): string {
 	switch (field.type) {
 		case "string":
 		case "text":
@@ -394,14 +458,44 @@ function fieldTypeToTypeScript(field: Field): string {
 			}
 			return "string[]";
 
+		case "repeater": {
+			const subFields = field.validation?.subFields;
+			// `validation` is unvalidated JSON on the seed and registry paths.
+			if (!Array.isArray(subFields) || subFields.length === 0) return "unknown";
+
+			// A duplicated slug keeps its first position and last declaration, as
+			// `generateRepeaterRowSchema`'s `shape[subField.slug]` does.
+			const members = new Map<string, string>();
+
+			for (const subField of subFields) {
+				const type = fieldTypeToTypeScript({
+					type: subField.type,
+					validation: subField.options ? { options: subField.options } : undefined,
+				});
+				// A sub-field slug is not guaranteed to be a valid identifier, so it is
+				// quoted rather than emitted bare.
+				const name = JSON.stringify(subField.slug);
+				// A sub-field that is not required may be null at runtime.
+				members.set(
+					subField.slug,
+					subField.required ? `${name}: ${type}` : `${name}?: ${type} | null`,
+				);
+			}
+
+			return `{ ${[...members.values()].join("; ")} }[]`;
+		}
+
 		case "portableText":
 			return "PortableTextBlock[]";
 
-		case "image":
-			return "{ id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> }";
+		case "image": {
+			const media =
+				"{ id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; provider?: string; previewUrl?: string; meta?: Record<string, unknown> }";
+			return `${media.slice(0, -2)}; darkVariant?: ${media} }`;
+		}
 
 		case "file":
-			return "{ id: string; src?: string; filename?: string; mimeType?: string; size?: number; provider?: string; meta?: Record<string, unknown> }";
+			return "{ id: string; url?: string; src?: string; filename?: string; mimeType?: string; size?: number; provider?: string; meta?: Record<string, unknown> }";
 
 		case "reference":
 			// Could be enhanced to include the referenced collection type
@@ -427,7 +521,8 @@ function pascalCase(str: string): string {
 }
 
 /**
- * Simple singularization - handles common cases
+ * Naive singularization for slug-derived interface names. Handles the common
+ * English plural endings; intentionally simple, not a full inflector.
  */
 function singularize(str: string): string {
 	if (str.endsWith("ies")) {
@@ -446,8 +541,46 @@ function singularize(str: string): string {
 }
 
 /**
- * Get the interface name for a collection
+ * Get the interface name for a collection.
+ *
+ * Derived from the slug, not the human label. Slugs are constrained to
+ * `/^[a-z][a-z0-9_]*$/`, so PascalCasing one always yields a valid TS
+ * identifier; labels are arbitrary and user-controlled (punctuation, spaces,
+ * duplicates across collections), which produced syntactically invalid or
+ * duplicate interface names. The slug is singularized first because the
+ * interface describes a single entry, not the collection (`posts` -> `Post`).
+ *
+ * Singularization can map two distinct slugs onto the same name, so callers
+ * generating more than one interface must dedupe -- see `uniqueInterfaceNames`.
  */
 function getInterfaceName(collection: CollectionWithFields): string {
-	return pascalCase(collection.labelSingular || singularize(collection.slug));
+	return pascalCase(singularize(collection.slug));
+}
+
+/**
+ * Resolve interface names for a set of collections, guaranteeing each is
+ * unique within the file. Collisions (from singularization or PascalCasing
+ * collapsing distinct slugs) get a numeric suffix in collection order, so the
+ * generated `.d.ts` never declares two interfaces with the same identifier.
+ *
+ * The suffix is chosen against the set of names already emitted, not a
+ * per-base counter, so a generated name can't collide with another slug's
+ * base name (e.g. slugs `book`, `books`, `book2`: `books` -> `Book2` would
+ * clash with `book2`, so it advances to `Book3`).
+ */
+export function uniqueInterfaceNames(collections: CollectionWithFields[]): Map<string, string> {
+	const used = new Set<string>();
+	const names = new Map<string, string>();
+	for (const collection of collections) {
+		const base = getInterfaceName(collection);
+		let name = base;
+		let suffix = 2;
+		while (used.has(name)) {
+			name = `${base}${suffix}`;
+			suffix++;
+		}
+		used.add(name);
+		names.set(collection.slug, name);
+	}
+	return names;
 }

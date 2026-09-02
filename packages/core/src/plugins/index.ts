@@ -44,6 +44,7 @@ export type { PluginContextFactoryOptions } from "./context.js";
 // Hooks
 export { HookPipeline, createHookPipeline } from "./hooks.js";
 export type { HookResult } from "./hooks.js";
+export { ContentSaveRejectedError, isContentSaveRejection } from "./save-rejection.js";
 
 // Email pipeline
 export { EmailPipeline, EmailNotConfiguredError, EmailRecursionError } from "./email.js";
@@ -73,6 +74,10 @@ export {
 	NoopSandboxRunner,
 	SandboxNotAvailableError,
 	SandboxUnavailableError,
+	createSandboxRouteError,
+	createSandboxRouteErrorEnvelope,
+	getSandboxRouteErrorDetails,
+	getSandboxRouteErrorEnvelope,
 	createNoopSandboxRunner,
 } from "./sandbox/index.js";
 export type {
@@ -85,6 +90,9 @@ export type {
 	ResourceLimits,
 	PluginCodeStorage,
 	SerializedRequest,
+	SandboxRouteErrorCode,
+	SandboxRouteErrorDetails,
+	SandboxRouteErrorEnvelope,
 } from "./sandbox/index.js";
 
 // Types
@@ -115,9 +123,15 @@ export type {
 	UserInfo,
 	UserAccess,
 	ContentItem,
+	ContentCreateOptions,
+	ContentWriteInput,
 	MediaItem,
 	ContentListOptions,
 	MediaListOptions,
+	TaxonomyAccess,
+	TaxonomyDefInfo,
+	TaxonomyTermInfo,
+	TaxonomyReadOptions,
 
 	// Hook types
 	PluginHooks,
@@ -128,6 +142,9 @@ export type {
 	ContentHookEvent,
 	ContentDeleteEvent,
 	ContentPublishStateChangeEvent,
+	ContentRestoreStateChangeEvent,
+	ContentScheduleStateChangeEvent,
+	ContentStateChangeEvent,
 	MediaUploadEvent,
 	MediaAfterUploadEvent,
 	LifecycleEvent,
@@ -148,6 +165,9 @@ export type {
 	ContentAfterSaveHandler,
 	ContentBeforeDeleteHandler,
 	ContentAfterDeleteHandler,
+	ContentAfterRestoreHandler,
+	ContentAfterScheduleHandler,
+	ContentAfterUnscheduleHandler,
 	MediaBeforeUploadHandler,
 	MediaAfterUploadHandler,
 	LifecycleHandler,

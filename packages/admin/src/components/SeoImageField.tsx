@@ -6,12 +6,13 @@
  * Featured Image field in a two-column grid.
  */
 
-import { Button, Label } from "@cloudflare/kumo";
+import { Button } from "@cloudflare/kumo";
 import { useLingui } from "@lingui/react/macro";
 import { Image as ImageIcon, X } from "@phosphor-icons/react";
 import * as React from "react";
 
 import type { ContentSeo, ContentSeoInput, MediaItem } from "../lib/api";
+import { FieldHelpLabel } from "./FieldHelpLabel.js";
 import { MediaPickerModal } from "./MediaPickerModal";
 
 export interface SeoImageFieldProps {
@@ -38,10 +39,19 @@ export function SeoImageField({ seo, onChange }: SeoImageFieldProps) {
 
 	return (
 		<div>
-			<Label>{t`OG Image`}</Label>
+			<FieldHelpLabel
+				help={t`Image shown when this page is shared on social media`}
+				helpLabel={t`Why is this important for social sharing?`}
+			>
+				{t`OG Image`}
+			</FieldHelpLabel>
 			{imageUrl ? (
 				<div className="mt-2 relative group">
-					<img src={imageUrl} alt="" className="max-h-48 rounded-lg border object-cover" />
+					<img
+						src={imageUrl}
+						alt=""
+						className="emdash-media-transparency-grid max-h-48 rounded-lg border object-cover"
+					/>
 					<div className="absolute top-2 end-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
 						<Button type="button" size="sm" variant="secondary" onClick={() => setPickerOpen(true)}>
 							{t`Change`}
@@ -62,7 +72,7 @@ export function SeoImageField({ seo, onChange }: SeoImageFieldProps) {
 				<Button
 					type="button"
 					variant="outline"
-					className="mt-2 w-full h-32 border-dashed"
+					className="mt-2 h-32 w-full justify-center border-dashed"
 					onClick={() => setPickerOpen(true)}
 				>
 					<div className="flex flex-col items-center gap-2 text-kumo-subtle">
@@ -71,9 +81,6 @@ export function SeoImageField({ seo, onChange }: SeoImageFieldProps) {
 					</div>
 				</Button>
 			)}
-			<p className="text-xs text-kumo-subtle mt-1">
-				{t`Image shown when this page is shared on social media`}
-			</p>
 			<MediaPickerModal
 				open={pickerOpen}
 				onOpenChange={setPickerOpen}

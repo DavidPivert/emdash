@@ -78,22 +78,34 @@ export default defineConfig({
 		"src/astro/middleware.ts",
 		"src/astro/middleware/setup.ts",
 		"src/astro/middleware/auth.ts",
+		"src/astro/middleware/media-usage-write-fence.ts",
 		"src/astro/middleware/redirect.ts",
 		"src/astro/middleware/request-context.ts",
 		"src/astro/types.ts",
 		// Database adapters (config-time + runtime via virtual:emdash/dialect)
 		"src/db/index.ts",
 		"src/db/sqlite.ts",
+		"src/db/sqlite-migrations.ts",
 		"src/db/libsql.ts",
+		"src/db/libsql-migrations.ts",
 		"src/db/postgres.ts",
+		"src/db/postgres-migrations.ts",
+		"src/migrations/index.ts",
 		// Query instrumentation (used by first-party adapters like @emdash-cms/cloudflare)
 		"src/database/instrumentation.ts",
+		// Fail-fast Postgres migration lock (used by @emdash-cms/cloudflare's Hyperdrive adapter)
+		"src/database/pg-migration-lock.ts",
 		// Storage adapters (runtime - loaded via virtual:emdash/storage)
 		"src/storage/local.ts",
 		"src/storage/s3.ts",
+		// Object-cache memory backend (runtime - loaded via virtual:emdash/object-cache)
+		"src/object-cache/memory.ts",
 		// Media providers
 		"src/media/index.ts",
 		"src/media/local-runtime.ts",
+		// Image-endpoint helpers (portable) + the Node image endpoint
+		"src/media/image-endpoint.ts",
+		"src/astro/image-endpoint.ts",
 		// Runtime exports (depends on virtual modules - for live.config.ts)
 		"src/runtime.ts",
 		// Seed engine
@@ -129,8 +141,9 @@ export default defineConfig({
 	format: "esm",
 	dts: true,
 	clean: true,
-	// Deps are externalized via `external` + package.json deps; nothing is
-	// unintentionally bundled. Suppress tsdown's advisory (CI escalates it).
+	// pnpm applies the image-size patch only inside this workspace, so bundle
+	// the patched implementation into every published entry that uses it.
+	noExternal: ["image-size", /^@emdash-cms\/registry-verification(?:\/|$)/],
 	inlineOnly: false,
 	inputOptions: (options) => {
 		// tsdown has already normalized the `entry` array into an input record
@@ -148,10 +161,6 @@ export default defineConfig({
 	},
 	// Externalize native modules, dialect-specific packages, and internal shared modules
 	external: [
-		// Native modules that use __filename
-		"better-sqlite3",
-		"bindings",
-		"file-uri-to-path",
 		// Dialect-specific packages
 		"@libsql/kysely-libsql",
 		"pg",

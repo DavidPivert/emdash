@@ -1,15 +1,26 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import type { Plugin } from "vite";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import type { PluginDescriptor } from "../../../../src/astro/integration/runtime.js";
 import {
 	generateConfigModule,
 	generateDialectModule,
+	generateEnvModule,
 	generateSchedulerModule,
 	generateSeedModule,
+	RESOLVED_VIRTUAL_BUILD_ID,
+	RESOLVED_VIRTUAL_SANDBOXED_PLUGINS_ID,
+	RESOLVED_VIRTUAL_SCHEDULER_ID,
 } from "../../../../src/astro/integration/virtual-modules.js";
+import {
+	createVirtualModulesPlugin,
+	type VitePluginOptions,
+} from "../../../../src/astro/integration/vite-config.js";
 
 describe("generateConfigModule", () => {
 	it("round-trips the serialisable config shape via default export", () => {
@@ -31,7 +42,11 @@ describe("generateConfigModule", () => {
 
 describe("generateDialectModule", () => {
 	it("emits undefined createDialect and null stub when no entrypoint is configured", () => {
-		const out = generateDialectModule({ supportsRequestScope: false });
+		const out = generateDialectModule({
+			supportsRequestScope: false,
+			supportsCoalescing: false,
+			supportsCollectionDeletionGuard: false,
+		});
 		expect(out).toContain("export const createDialect = undefined");
 		expect(out).toContain("export const createRequestScopedDb = (_opts) => null");
 	});
@@ -41,9 +56,13 @@ describe("generateDialectModule", () => {
 			entrypoint: "some-adapter/dialect",
 			type: "sqlite",
 			supportsRequestScope: false,
+			supportsCoalescing: false,
+			supportsCollectionDeletionGuard: false,
 		});
 		expect(out).toContain(`import { createDialect as _createDialect } from "some-adapter/dialect"`);
 		expect(out).toContain("export const createRequestScopedDb = (_opts) => null");
+		expect(out).toContain("export const createCoalescingDialect = undefined");
+		expect(out).not.toContain("_dialectModule.createCoalescingDialect");
 		expect(out).not.toContain(`export { createRequestScopedDb } from`);
 	});
 
@@ -52,8 +71,17 @@ describe("generateDialectModule", () => {
 			entrypoint: "@emdash-cms/cloudflare/db/d1",
 			type: "sqlite",
 			supportsRequestScope: true,
+			supportsCoalescing: true,
+			supportsCollectionDeletionGuard: true,
 		});
 		expect(out).toContain(`export { createRequestScopedDb } from "@emdash-cms/cloudflare/db/d1"`);
+		expect(out).toContain(
+			`import { createCoalescingDialect as _createCoalescingDialect } from "@emdash-cms/cloudflare/db/d1"`,
+		);
+		expect(out).toContain("export const createCoalescingDialect = _createCoalescingDialect");
+		expect(out).toContain(
+			`export { executeCollectionDeletionGuard } from "@emdash-cms/cloudflare/db/d1"`,
+		);
 		expect(out).not.toContain("= () => null");
 		expect(out).not.toContain("= (_opts) => null");
 	});
@@ -63,6 +91,8 @@ describe("generateDialectModule", () => {
 			entrypoint: "emdash/db/postgres",
 			type: "postgres",
 			supportsRequestScope: false,
+			supportsCoalescing: false,
+			supportsCollectionDeletionGuard: false,
 		});
 		expect(out).toContain(`export const dialectType = "postgres"`);
 	});
@@ -95,6 +125,135 @@ describe("generateSchedulerModule", () => {
 	it("emits a NodeCronScheduler factory when no adapter is configured", () => {
 		const out = generateSchedulerModule(undefined, "build");
 		expect(out).toContain("export function createScheduler(executor)");
+	});
+});
+
+describe("generateEnvModule", () => {
+	it("re-exports cloudflare:workers' env under the Cloudflare adapter", () => {
+		const out = generateEnvModule("@astrojs/cloudflare");
+		expect(out).toBe('export { env } from "cloudflare:workers";');
+	});
+
+	it("exports undefined for non-Cloudflare adapters (#1736)", () => {
+		const out = generateEnvModule("@astrojs/node");
+		expect(out).toBe("export const env = undefined;");
+		expect(out).not.toContain("cloudflare:workers");
+	});
+
+	it("exports undefined when no adapter is configured", () => {
+		const out = generateEnvModule(undefined);
+		expect(out).toBe("export const env = undefined;");
+	});
+});
+
+describe("createVirtualModulesPlugin scheduler wiring", () => {
+	// Invoke a Vite plugin hook that may be a function or { handler } object.
+	function callHook<T>(hook: unknown, ...args: unknown[]): T {
+		const fn = typeof hook === "function" ? hook : (hook as { handler: unknown }).handler;
+		return (fn as (...a: unknown[]) => T)(...args);
+	}
+
+	function callHookWithContext<T>(hook: unknown, context: unknown, ...args: unknown[]): T {
+		const fn = typeof hook === "function" ? hook : (hook as { handler: unknown }).handler;
+		return (fn as (...a: unknown[]) => T).call(context, ...args);
+	}
+
+	function buildPlugin(
+		adapterName: string | undefined,
+		command: "dev" | "build" | "preview" | "sync",
+	): Plugin {
+		const options = {
+			serializableConfig: {},
+			resolvedConfig: {},
+			pluginDescriptors: [],
+			astroConfig: { adapter: adapterName ? { name: adapterName } : undefined },
+		} as unknown as VitePluginOptions;
+		return createVirtualModulesPlugin(options, command);
+	}
+
+	it("keeps the Node timer under the Cloudflare adapter during `astro dev` even when Vite reports command 'build'", () => {
+		// The Cloudflare adapter produces the worker bundle via a nested Vite
+		// *build* pass during `astro dev`, so Vite's config.command resolves to
+		// "build". The scheduler decision must use Astro's command ("dev")
+		// instead, otherwise plugin cron silently no-ops in local dev (#1635).
+		const plugin = buildPlugin("@astrojs/cloudflare", "dev");
+		callHook(plugin.configResolved, { command: "build" });
+
+		const out = callHook<string>(plugin.load, RESOLVED_VIRTUAL_SCHEDULER_ID);
+		expect(out).toContain('import { NodeCronScheduler } from "emdash"');
+		expect(out).not.toContain("createScheduler = null");
+	});
+
+	it("disables the timer under the Cloudflare adapter for a production build", () => {
+		const plugin = buildPlugin("@astrojs/cloudflare", "build");
+		callHook(plugin.configResolved, { command: "build" });
+
+		const out = callHook<string>(plugin.load, RESOLVED_VIRTUAL_SCHEDULER_ID);
+		expect(out).toContain("export const createScheduler = null");
+		expect(out).not.toContain("NodeCronScheduler");
+	});
+
+	it("keeps the build timestamp stable across repeated loads", () => {
+		const plugin = buildPlugin("@astrojs/cloudflare", "build");
+		callHook(plugin.configResolved, { command: "build" });
+
+		const first = callHook<string>(plugin.load, RESOLVED_VIRTUAL_BUILD_ID);
+		const second = callHook<string>(plugin.load, RESOLVED_VIRTUAL_BUILD_ID);
+
+		expect(first).toBe(second);
+		expect(Number(/buildTime = (\d+)/.exec(first)?.[1])).toBeGreaterThan(0);
+	});
+
+	it("watches resolved sandbox plugin entries", () => {
+		const projectRoot = mkdtempSync(join(tmpdir(), "emdash-sandbox-watch-test-"));
+		try {
+			const pluginDir = join(projectRoot, "node_modules", "@test", "watch-plugin");
+			const entryPath = join(pluginDir, "dist", "sandbox-entry.mjs");
+			mkdirSync(join(pluginDir, "dist"), { recursive: true });
+			writeFileSync(join(projectRoot, "package.json"), JSON.stringify({ name: "test-project" }));
+			writeFileSync(entryPath, "export default { hooks: {} };");
+			writeFileSync(
+				join(pluginDir, "package.json"),
+				JSON.stringify({
+					name: "@test/watch-plugin",
+					exports: { "./sandbox": "./dist/sandbox-entry.mjs" },
+				}),
+			);
+
+			const descriptor: PluginDescriptor = {
+				id: "watch-plugin",
+				version: "1.0.0",
+				entrypoint: "@test/watch-plugin/sandbox",
+				format: "standard",
+				capabilities: [],
+				allowedHosts: [],
+				storage: {},
+				adminPages: [],
+				adminWidgets: [],
+			};
+			const options = {
+				serializableConfig: {},
+				resolvedConfig: { sandboxed: [descriptor] },
+				pluginDescriptors: [],
+				astroConfig: { root: pathToFileURL(`${projectRoot}/`) },
+			} as unknown as VitePluginOptions;
+			const plugin = createVirtualModulesPlugin(options, "dev");
+			const addWatchFile = vi.fn();
+
+			const source = callHookWithContext<string>(
+				plugin.load,
+				{ addWatchFile },
+				RESOLVED_VIRTUAL_SANDBOXED_PLUGINS_ID,
+			);
+
+			expect(source).toContain("export default { hooks: {} };");
+			expect(addWatchFile).toHaveBeenCalledOnce();
+			// Module resolution canonicalizes macOS' /var -> /private/var symlink.
+			// Compare the physical path so this contract is portable across hosts.
+			expect(addWatchFile).toHaveBeenCalledWith(realpathSync(entryPath));
+		} finally {
+			rmSync(projectRoot, { recursive: true, force: true });
+		}
 	});
 });
 

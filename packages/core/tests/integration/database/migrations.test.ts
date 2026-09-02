@@ -1,14 +1,38 @@
-import type { Kysely } from "kysely";
+import type {
+	Kysely,
+	KyselyPlugin,
+	PluginTransformQueryArgs,
+	PluginTransformResultArgs,
+	QueryResult,
+	RootOperationNode,
+	UnknownRow,
+} from "kysely";
+import { sql } from "kysely";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 
 import { createDatabase } from "../../../src/database/connection.js";
 import {
 	runMigrations,
+	getExactMigrationStatus,
 	getMigrationStatus,
 	MIGRATION_COUNT,
+	MIGRATION_NAMES,
 } from "../../../src/database/migrations/runner.js";
 import type { Database } from "../../../src/database/types.js";
 import { setupTestDatabaseWithCollections } from "../../utils/test-db.js";
+
+class QueryCountingPlugin implements KyselyPlugin {
+	count = 0;
+
+	transformQuery(args: PluginTransformQueryArgs): RootOperationNode {
+		this.count += 1;
+		return args.node;
+	}
+
+	transformResult(args: PluginTransformResultArgs): Promise<QueryResult<UnknownRow>> {
+		return Promise.resolve(args.result);
+	}
+}
 
 describe("Database Migrations (Integration)", () => {
 	let db: Kysely<Database>;
@@ -48,6 +72,13 @@ describe("Database Migrations (Integration)", () => {
 			"_emdash_byline_fields",
 			"_emdash_byline_field_values",
 			"_emdash_byline_field_group_values",
+			"_emdash_media_usage_sources",
+			"_emdash_media_usage",
+			"_emdash_media_usage_cleanup",
+			"_emdash_media_usage_generation_writes",
+			"_emdash_media_usage_cleanup_fence",
+			"_emdash_media_usage_index_status",
+			"_emdash_media_usage_collection_deletions",
 		];
 
 		for (const table of tables) {
@@ -126,6 +157,36 @@ describe("Database Migrations (Integration)", () => {
 			"041_content_locale_list_index",
 			"042_byline_fields",
 			"043_content_references",
+			"044_comment_reactions",
+			"045_taxonomy_parent_group",
+			"046_media_usage_index",
+			"047_restore_taxonomy_parent_index",
+			"048_restore_content_taxonomies_term_index",
+			"049_taxonomies_name_locale_index",
+			"050_media_usage_index_status",
+			"051_content_taxonomies_denorm",
+			"052_media_usage_read_index",
+			"053_plugin_mcp_tools",
+			"054_media_upload_attempts",
+			"055_content_translation_group_locale_index",
+			"056_taxonomy_term_sort_order",
+			"057_collection_hidden",
+			"058_collection_sort_order",
+			"059_revision_prune_queue",
+			"060_collection_admin_config",
+			"061_media_usage_cleanup",
+			"062_media_usage_cleanup_fence",
+			"063_media_usage_incremental_work",
+			"064_fts_plain_text",
+			"065_media_usage_collection_deletion",
+			"066_media_usage_reconciliation",
+			"067_indexed_content_fields",
+			"068_content_taxonomy_entry_groups",
+			"069_collection_title_date_fields",
+			"070_collection_routable",
+			"071_restore_content_bylines_table",
+			"072_media_folders",
+			"073_media_focal_point",
 		];
 
 		await db.deleteFrom("_emdash_migrations").where("name", "in", trailing).execute();
@@ -150,6 +211,83 @@ describe("Database Migrations (Integration)", () => {
 		expect(statusAfter.applied).toContain("001_initial");
 		expect(statusAfter.applied).toContain("002_media_status");
 		expect(statusAfter.pending).toHaveLength(0);
+	});
+
+	describe("exact migration status", () => {
+		it("exports the registered migration names in execution order", async () => {
+			await runMigrations(db);
+			const rows = await db
+				.selectFrom("_emdash_migrations")
+				.select("name")
+				.orderBy("timestamp")
+				.execute();
+
+			expect(MIGRATION_NAMES).toEqual(rows.map((row) => row.name));
+			expect(MIGRATION_NAMES).toHaveLength(MIGRATION_COUNT);
+			expect(Object.isFrozen(MIGRATION_NAMES)).toBe(true);
+		});
+
+		it("reports every registered migration as pending for a fresh database", async () => {
+			const counter = new QueryCountingPlugin();
+
+			await expect(getExactMigrationStatus(db.withPlugin(counter))).resolves.toEqual({
+				knownApplied: [],
+				pending: MIGRATION_NAMES,
+				unknownApplied: [],
+			});
+			expect(counter.count).toBe(1);
+		});
+
+		it("recognizes a missing schema-qualified migration table", async () => {
+			await sql`ATTACH DATABASE ':memory:' AS migration_status`.execute(db);
+
+			await expect(
+				getExactMigrationStatus(db, { migrationTableSchema: "migration_status" }),
+			).resolves.toEqual({
+				knownApplied: [],
+				pending: MIGRATION_NAMES,
+				unknownApplied: [],
+			});
+		});
+
+		it("reports a current database with one migration-table query", async () => {
+			await runMigrations(db);
+			const counter = new QueryCountingPlugin();
+
+			await expect(getExactMigrationStatus(db.withPlugin(counter))).resolves.toEqual({
+				knownApplied: MIGRATION_NAMES,
+				pending: [],
+				unknownApplied: [],
+			});
+			expect(counter.count).toBe(1);
+		});
+
+		it("reports pending and unknown names in deterministic order", async () => {
+			await runMigrations(db);
+			const pending = [MIGRATION_NAMES[1]!, MIGRATION_NAMES.at(-2)!];
+			await db.deleteFrom("_emdash_migrations").where("name", "in", pending).execute();
+			await db
+				.insertInto("_emdash_migrations")
+				.values([
+					{ name: "999_future_z", timestamp: new Date().toISOString() },
+					{ name: "999_future_a", timestamp: new Date().toISOString() },
+				])
+				.execute();
+
+			const status = await getExactMigrationStatus(db);
+
+			expect(status.knownApplied).toEqual(
+				MIGRATION_NAMES.filter((name) => !pending.includes(name)),
+			);
+			expect(status.pending).toEqual(pending);
+			expect(status.unknownApplied).toEqual(["999_future_a", "999_future_z"]);
+		});
+
+		it("rethrows migration-table query errors other than a missing table", async () => {
+			await sql`CREATE TABLE _emdash_migrations (unexpected TEXT)`.execute(db);
+
+			await expect(getExactMigrationStatus(db)).rejects.toThrow(/no such column.*name/i);
+		});
 	});
 
 	it("should create schema registry tables", async () => {
@@ -335,6 +473,87 @@ describe("Database Migrations (Integration)", () => {
 			.executeTakeFirst();
 
 		expect(child?.parent_id).toBe(parentId);
+	});
+
+	it("should keep idx_taxonomies_parent after the full migration chain (regression for #1665)", async () => {
+		await runMigrations(db);
+
+		const indexes = await sql<{ name: string }>`
+			SELECT name FROM sqlite_master WHERE type = 'index' AND tbl_name = 'taxonomies'
+		`.execute(db);
+		const names = new Set(indexes.rows.map((r) => r.name));
+
+		expect(names).toContain("idx_taxonomies_parent");
+	});
+
+	it("should keep idx_content_taxonomies_term after the full migration chain (regression for #1701)", async () => {
+		await runMigrations(db);
+
+		const indexes = await sql<{ name: string }>`
+			SELECT name FROM sqlite_master WHERE type = 'index' AND tbl_name = 'content_taxonomies'
+		`.execute(db);
+		const names = new Set(indexes.rows.map((r) => r.name));
+
+		expect(names).toContain("idx_content_taxonomies_term");
+	});
+
+	it("should replace idx_taxonomies_name with composite idx_taxonomies_name_locale (#1723)", async () => {
+		await runMigrations(db);
+
+		const indexes = await sql<{ name: string }>`
+			SELECT name FROM sqlite_master WHERE type = 'index' AND tbl_name = 'taxonomies'
+		`.execute(db);
+		const names = new Set(indexes.rows.map((r) => r.name));
+
+		// The composite (name, locale) index is added...
+		expect(names).toContain("idx_taxonomies_name_locale");
+		// ...and it supersedes the single-column name index (leftmost prefix
+		// covers every name-only lookup), so the redundant one is dropped.
+		expect(names).not.toContain("idx_taxonomies_name");
+	});
+
+	it("plans findByName(name, locale) through the composite index instead of scanning the locale (regression for #1723)", async () => {
+		await runMigrations(db);
+
+		// One taxonomy dominates the locale; a small facet shares it. Without the
+		// composite index the planner picks idx_taxonomies_locale and reads every
+		// term in the locale to filter `name` in memory — per facet fetched.
+		for (let i = 0; i < 40; i++) {
+			await db
+				.insertInto("taxonomies")
+				.values({
+					id: `tag-${i}`,
+					name: "tag",
+					slug: `tag-${i}`,
+					label: `Tag ${i}`,
+					locale: "en",
+				})
+				.execute();
+		}
+		for (let i = 0; i < 3; i++) {
+			await db
+				.insertInto("taxonomies")
+				.values({
+					id: `cat-${i}`,
+					name: "category",
+					slug: `cat-${i}`,
+					label: `Category ${i}`,
+					locale: "en",
+				})
+				.execute();
+		}
+
+		// Exact query shape emitted by TaxonomyRepository.findByName(name, { locale }).
+		const plan = await sql<{ detail: string }>`
+			EXPLAIN QUERY PLAN
+			SELECT * FROM "taxonomies"
+			WHERE "name" = ${"category"} AND "locale" = ${"en"}
+			ORDER BY "sort_order" ASC, "label" ASC, "id" ASC
+		`.execute(db);
+		const details = plan.rows.map((r) => r.detail).join("\n");
+
+		expect(details).toContain("idx_taxonomies_name_locale");
+		expect(details).not.toContain("idx_taxonomies_locale");
 	});
 
 	it("should create content_taxonomies junction table", async () => {

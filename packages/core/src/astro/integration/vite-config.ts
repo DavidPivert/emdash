@@ -22,6 +22,8 @@ import {
 	RESOLVED_VIRTUAL_DIALECT_ID,
 	VIRTUAL_STORAGE_ID,
 	RESOLVED_VIRTUAL_STORAGE_ID,
+	VIRTUAL_OBJECT_CACHE_ID,
+	RESOLVED_VIRTUAL_OBJECT_CACHE_ID,
 	VIRTUAL_ADMIN_REGISTRY_ID,
 	RESOLVED_VIRTUAL_ADMIN_REGISTRY_ID,
 	VIRTUAL_PLUGINS_ID,
@@ -44,12 +46,19 @@ import {
 	RESOLVED_VIRTUAL_WAIT_UNTIL_ID,
 	VIRTUAL_SCHEDULER_ID,
 	RESOLVED_VIRTUAL_SCHEDULER_ID,
+	VIRTUAL_ENV_ID,
+	RESOLVED_VIRTUAL_ENV_ID,
+	VIRTUAL_BUILD_ID,
+	RESOLVED_VIRTUAL_BUILD_ID,
 	generateSeedModule,
 	generateWaitUntilModule,
 	generateSchedulerModule,
+	generateEnvModule,
+	generateBuildModule,
 	generateConfigModule,
 	generateDialectModule,
 	generateStorageModule,
+	generateObjectCacheModule,
 	generateAuthModule,
 	generateAuthProvidersModule,
 	generatePluginsModule,
@@ -142,6 +151,15 @@ function resolveAdminSource(projectRoot: string): string | undefined {
 	return undefined;
 }
 
+function resolveIntegrationShim(fileName: string): string {
+	const currentDir = dirname(fileURLToPath(import.meta.url));
+	const sourceShimPath = resolve(currentDir, "shims", fileName);
+	if (existsSync(sourceShimPath)) {
+		return sourceShimPath;
+	}
+	return resolve(currentDir, "..", "..", "src", "astro", "integration", "shims", fileName);
+}
+
 export interface VitePluginOptions {
 	/** Serializable config (database, storage, auth descriptors) */
 	serializableConfig: Record<string, unknown>;
@@ -156,10 +174,18 @@ export interface VitePluginOptions {
 /**
  * Creates the EmDash virtual modules Vite plugin.
  */
-export function createVirtualModulesPlugin(options: VitePluginOptions): Plugin {
+export function createVirtualModulesPlugin(
+	options: VitePluginOptions,
+	astroCommand: "dev" | "build" | "preview" | "sync",
+): Plugin {
 	const { serializableConfig, resolvedConfig, pluginDescriptors, astroConfig } = options;
 
 	let viteCommand: "build" | "serve" | undefined;
+
+	// Captured once per plugin instance rather than inside load(): Vite may load
+	// the module more than once (client and server passes, dev reloads), and a
+	// validator that moved between those loads would invalidate at random.
+	const buildTime = Date.now();
 
 	return {
 		name: "emdash-virtual-modules",
@@ -175,6 +201,9 @@ export function createVirtualModulesPlugin(options: VitePluginOptions): Plugin {
 			}
 			if (id === VIRTUAL_STORAGE_ID) {
 				return RESOLVED_VIRTUAL_STORAGE_ID;
+			}
+			if (id === VIRTUAL_OBJECT_CACHE_ID) {
+				return RESOLVED_VIRTUAL_OBJECT_CACHE_ID;
 			}
 			if (id === VIRTUAL_ADMIN_REGISTRY_ID) {
 				return RESOLVED_VIRTUAL_ADMIN_REGISTRY_ID;
@@ -209,6 +238,12 @@ export function createVirtualModulesPlugin(options: VitePluginOptions): Plugin {
 			if (id === VIRTUAL_SCHEDULER_ID) {
 				return RESOLVED_VIRTUAL_SCHEDULER_ID;
 			}
+			if (id === VIRTUAL_ENV_ID) {
+				return RESOLVED_VIRTUAL_ENV_ID;
+			}
+			if (id === VIRTUAL_BUILD_ID) {
+				return RESOLVED_VIRTUAL_BUILD_ID;
+			}
 		},
 		load(id: string) {
 			if (id === RESOLVED_VIRTUAL_CONFIG_ID) {
@@ -221,11 +256,22 @@ export function createVirtualModulesPlugin(options: VitePluginOptions): Plugin {
 					entrypoint: resolvedConfig.database?.entrypoint,
 					type: resolvedConfig.database?.type,
 					supportsRequestScope: resolvedConfig.database?.supportsRequestScope ?? false,
+					supportsCoalescing: resolvedConfig.database?.supportsCoalescing ?? false,
+					supportsCollectionDeletionGuard:
+						resolvedConfig.database?.supportsCollectionDeletionGuard ?? false,
 				});
 			}
 			// Generate a module that statically imports the configured storage
 			if (id === RESOLVED_VIRTUAL_STORAGE_ID) {
 				return generateStorageModule(resolvedConfig.storage?.entrypoint);
+			}
+			// Generate the object-cache module — statically imports the
+			// configured backend factory, or exports undefined (cache off).
+			if (id === RESOLVED_VIRTUAL_OBJECT_CACHE_ID) {
+				return generateObjectCacheModule(
+					resolvedConfig.objectCache?.entrypoint,
+					resolvedConfig.objectCache?.config,
+				);
 			}
 			// Generate plugins module that imports and instantiates all plugins
 			if (id === RESOLVED_VIRTUAL_PLUGINS_ID) {
@@ -245,7 +291,11 @@ export function createVirtualModulesPlugin(options: VitePluginOptions): Plugin {
 			if (id === RESOLVED_VIRTUAL_SANDBOXED_PLUGINS_ID) {
 				// Pass project root for proper module resolution
 				const projectRoot = fileURLToPath(astroConfig.root);
-				return generateSandboxedPluginsModule(resolvedConfig.sandboxed ?? [], projectRoot);
+				return generateSandboxedPluginsModule(
+					resolvedConfig.sandboxed ?? [],
+					projectRoot,
+					(filePath) => this.addWatchFile(filePath),
+				);
 			}
 			// Generate auth module that statically imports the configured auth provider
 			if (id === RESOLVED_VIRTUAL_AUTH_ID) {
@@ -280,8 +330,24 @@ export function createVirtualModulesPlugin(options: VitePluginOptions): Plugin {
 			// Generate scheduler module — a NodeCronScheduler factory on
 			// long-lived runtimes, or null under the Cloudflare adapter where
 			// a Cron Trigger drives scheduled work instead.
+			//
+			// Decide from Astro's command, not Vite's config.command: the
+			// Cloudflare adapter builds the worker bundle via a nested Vite
+			// *build* pass even during `astro dev`, so viteCommand reports
+			// "build" and would wrongly suppress the in-process timer (#1635).
+			// Astro's command stays "dev", which is the only case that should
+			// fall through to a NodeCronScheduler.
 			if (id === RESOLVED_VIRTUAL_SCHEDULER_ID) {
-				return generateSchedulerModule(astroConfig.adapter?.name, viteCommand);
+				const schedulerCommand = astroCommand === "dev" ? "serve" : "build";
+				return generateSchedulerModule(astroConfig.adapter?.name, schedulerCommand);
+			}
+			// Generate env module — re-exports cloudflare:workers' env under
+			// the Cloudflare adapter, undefined otherwise (#1736).
+			if (id === RESOLVED_VIRTUAL_ENV_ID) {
+				return generateEnvModule(astroConfig.adapter?.name);
+			}
+			if (id === RESOLVED_VIRTUAL_BUILD_ID) {
+				return generateBuildModule(buildTime);
 			}
 		},
 	};
@@ -293,13 +359,11 @@ export function createVirtualModulesPlugin(options: VitePluginOptions): Plugin {
  * On Cloudflare, the adapter handles its own externalization — setting
  * ssr.external there conflicts with @cloudflare/vite-plugin's validation.
  */
-const NODE_NATIVE_EXTERNALS = [
-	"better-sqlite3",
-	"bindings",
-	"file-uri-to-path",
-	"@libsql/kysely-libsql",
-	"pg",
-];
+// Matches the admin stylesheet import with or without a trailing query (e.g.
+// `?url`), so both forms resolve to dist rather than the source alias.
+const ADMIN_STYLES_ALIAS = /^@emdash-cms\/admin\/styles\.css/;
+
+const NODE_NATIVE_EXTERNALS = ["@libsql/kysely-libsql", "pg"];
 
 /**
  * Detect whether the Cloudflare adapter is being used.
@@ -322,6 +386,10 @@ export function createViteConfig(
 
 	const adminSourcePath = isDev ? resolveAdminSource(projectRoot) : undefined;
 	const useSource = adminSourcePath !== undefined;
+	const useSyncExternalStoreShimPath = resolveIntegrationShim("use-sync-external-store.js");
+	const useSyncExternalStoreWithSelectorShimPath = resolveIntegrationShim(
+		"use-sync-external-store-with-selector.js",
+	);
 
 	return {
 		// Astro SSR routes resolve version.ts from source (not tsdown dist),
@@ -339,8 +407,12 @@ export function createViteConfig(
 			// The styles.css alias must come before the package alias, otherwise
 			// Vite's prefix matching on "@emdash-cms/admin" would resolve
 			// "@emdash-cms/admin/styles.css" through the source directory.
+			// Regex (not string) so the `?url` variant — admin.astro imports the
+			// stylesheet as `?url` to keep it out of the page CSS graph — also
+			// resolves to dist; a string `find` only matches on a `/` or end
+			// boundary, so `styles.css?url` would slip through to the source alias.
 			alias: [
-				{ find: "@emdash-cms/admin/styles.css", replacement: resolve(adminDistPath, "styles.css") },
+				{ find: ADMIN_STYLES_ALIAS, replacement: resolve(adminDistPath, "styles.css") },
 				{ find: "@emdash-cms/admin", replacement: useSource ? adminSourcePath : adminDistPath },
 				// `use-sync-external-store/shim` is a React <18 polyfill that ships
 				// only as CJS. It's pulled in transitively by `@tiptap/react`. With
@@ -348,19 +420,34 @@ export function createViteConfig(
 				// dep scanner can't reach it for pre-bundling — so the browser is
 				// served raw `module.exports` and hydration fails with
 				// `SyntaxError: ... does not provide an export named
-				// 'useSyncExternalStore'`. Redirect both shim entry points to the
-				// main `use-sync-external-store` package, which on React >=18
-				// (our peer-dep floor) delegates to React's built-in hook.
+				// 'useSyncExternalStore'`. Redirect both shim entry points to a
+				// tiny ESM shim file that re-exports React's built-in hook, and
+				// redirect the selector entry points to an ESM wrapper around that
+				// hook. The absolute file paths are required because Vite/Rolldown
+				// dependency optimization applies aliases without EmDash's virtual
+				// module plugin. This also avoids the package main entry's React
+				// 18+ dev warning.
+				{
+					find: "use-sync-external-store/shim/with-selector.js",
+					replacement: useSyncExternalStoreWithSelectorShimPath,
+				},
+				{
+					find: "use-sync-external-store/shim/with-selector",
+					replacement: useSyncExternalStoreWithSelectorShimPath,
+				},
 				{
 					find: "use-sync-external-store/shim/index.js",
-					replacement: "use-sync-external-store",
+					replacement: useSyncExternalStoreShimPath,
 				},
-				{ find: "use-sync-external-store/shim", replacement: "use-sync-external-store" },
+				{
+					find: "use-sync-external-store/shim",
+					replacement: useSyncExternalStoreShimPath,
+				},
 			],
 		},
 		// eslint-disable-next-line typescript/no-unsafe-type-assertion -- Monorepo has both vite 6 (docs) and vite 7 (core). tsgo resolves correctly.
 		plugins: [
-			createVirtualModulesPlugin(options),
+			createVirtualModulesPlugin(options, command),
 			// In dev mode with source alias, compile Lingui macros on the fly
 			// and redirect locale .mjs imports to dist/.
 			// In production, macros are pre-compiled by tsdown in the admin package.
@@ -383,17 +470,30 @@ export function createViteConfig(
 						// during pre-bundling and can't resolve them. Vite's exclude
 						// uses prefix matching (id.startsWith(m + "/")), so
 						// "virtual:emdash" matches all "virtual:emdash/*" imports.
-						exclude: ["virtual:emdash"],
+						//
+						// First-party packages must also stay excluded. In a
+						// real install (unlike the workspace symlink, which Vite never
+						// optimizes), the optimizer bundles their dist and code-splits
+						// lazily-executed dynamic imports (MCP tools, content
+						// validation) into hashed chunks. A mid-session re-optimization
+						// deletes those chunks while loaded modules still reference
+						// them, so every content write fails with "The file does not
+						// exist at .../deps_ssr/..." until the dev server restarts.
+						// Their CJS deps are still pre-bundled via the "parent > dep"
+						// include entries below, which resolve through excluded parents.
+						exclude: ["virtual:emdash", "emdash", "@emdash-cms/admin", "@emdash-cms/cloudflare"],
 						include: [
 							// EmDash direct deps
 							"emdash > @portabletext/toolkit",
 							"emdash > @unpic/placeholder",
 							"emdash > blurhash",
 							"emdash > croner",
-							"emdash > image-size",
 							"emdash > jose",
 							"emdash > jpeg-js",
 							"emdash > kysely",
+							// Only imported by the migration runner, so the first
+							// dev-bypass/setup request would otherwise discover it.
+							"emdash > kysely/migration",
 							"emdash > mime/lite",
 							"emdash > modern-tar",
 							"emdash > sanitize-html",
@@ -435,8 +535,12 @@ export function createViteConfig(
 							// Top-level deps (use astro > path for pnpm compat)
 							"astro > zod/v4",
 							"astro > zod/v4/core",
+							"astro/zod",
+							// zod-generator imports the bare `zod` entry, not `zod/v4`
+							"emdash > zod",
 							"@emdash-cms/cloudflare > kysely-d1",
 							// Astro internal deps not covered by @astrojs/cloudflare adapter
+							"astro/app/manifest",
 							"astro/virtual-modules/middleware.js",
 							"astro/virtual-modules/live-config",
 							"astro/content/runtime",
@@ -444,6 +548,9 @@ export function createViteConfig(
 							"astro/assets/fonts/runtime.js",
 							"astro/assets/services/noop",
 							"@astrojs/cloudflare/image-service",
+							// Only imported by the /_image route, so the first image
+							// request would otherwise discover it.
+							"@astrojs/cloudflare/image-transform-endpoint",
 						],
 					},
 				}

@@ -16,10 +16,16 @@ declare module "virtual:emdash/config" {
 
 	interface VirtualConfig {
 		database?: DatabaseDescriptor;
+		migrations?: import("./database/migrations/policy.js").RuntimeMigrationConfig;
 		storage?: StorageDescriptor;
 		auth?: AuthDescriptor;
 		authProviders?: AuthProviderDescriptor[];
 		i18n?: I18nConfig | null;
+		toolbar?: "server" | "client" | false;
+		/** Public origin from astro.config.mjs, origin-normalized at startup. */
+		siteUrl?: string;
+		astroCspEnabled?: boolean;
+		trailingSlash?: "always" | "never" | "ignore";
 	}
 
 	const config: VirtualConfig;
@@ -30,10 +36,15 @@ declare module "virtual:emdash/dialect" {
 	import type { Dialect, Kysely } from "kysely";
 
 	import type { DatabaseDialectType } from "./db/adapters.js";
+	import type { ExecuteCollectionDeletionGuard } from "./db/adapters.js";
 
 	// Can be undefined if no database configured, or the actual function
 	export const createDialect: ((config: unknown) => Dialect) | undefined;
 	export const dialectType: DatabaseDialectType | undefined;
+
+	// Optional coalescing dialect for the runtime's cold-start read batch.
+	// Only batching backends (D1, DO) export it; undefined otherwise.
+	export const createCoalescingDialect: ((config: unknown) => Dialect | null) | undefined;
 
 	/**
 	 * Adapter-owned per-request scoping. Returns null when the configured
@@ -44,18 +55,43 @@ declare module "virtual:emdash/dialect" {
 	export interface RequestScopedDbOpts {
 		config: unknown;
 		isAuthenticated: boolean;
+		/**
+		 * Evaluated at commit() time: whether the request ended authenticated.
+		 * Login/signup/invite requests start unauthenticated and establish a
+		 * session mid-request; `isAuthenticated` captures only the request-start
+		 * state.
+		 */
+		endedAuthenticated?: () => boolean;
 		isWrite: boolean;
+		/** Whether core routing allows this request to use an anonymous public-read cache. */
+		canUseCachedBinding?: boolean;
 		cookies: {
 			get(name: string): { value: string } | undefined;
 			set(name: string, value: string, options: Record<string, unknown>): void;
 		};
 		url: URL;
+		/**
+		 * ms-epoch of the last content-namespace object-cache invalidation.
+		 * Hyperdrive uses this (with `preferUncachedAfterWriteMs`) to briefly
+		 * prefer the primary uncached binding after a publish.
+		 */
+		lastContentWriteAt?: number;
 	}
 	export interface RequestScopedDb {
 		db: Kysely<unknown>;
 		commit: () => void;
+		/**
+		 * Optional teardown, invoked once the response body has fully streamed
+		 * (or immediately for bodyless responses). Adapters that hold a real
+		 * connection for the request (e.g. a Postgres pool over Hyperdrive) close
+		 * it here — closing in `commit()` would cut the connection mid-render,
+		 * because Astro streams the HTML body and components issue queries while
+		 * it streams. Stateless adapters (D1) omit it.
+		 */
+		close?: () => void;
 	}
 	export const createRequestScopedDb: (opts: RequestScopedDbOpts) => RequestScopedDb | null;
+	export const executeCollectionDeletionGuard: ExecuteCollectionDeletionGuard | undefined;
 }
 
 declare module "virtual:emdash/storage" {
@@ -63,6 +99,17 @@ declare module "virtual:emdash/storage" {
 
 	// Can be undefined if no storage configured, or the actual function
 	export const createStorage: ((config: Record<string, unknown>) => Storage) | undefined;
+}
+
+declare module "virtual:emdash/object-cache" {
+	import type {
+		CreateObjectCacheBackendFn,
+		ObjectCacheRuntimeConfig,
+	} from "./object-cache/types.js";
+
+	// Can be undefined if no object cache is configured.
+	export const createObjectCache: CreateObjectCacheBackendFn | undefined;
+	export const objectCacheConfig: ObjectCacheRuntimeConfig | undefined;
 }
 
 declare module "virtual:emdash/auth" {
@@ -132,6 +179,25 @@ declare module "virtual:emdash/wait-until" {
 	export const waitUntil: ((promise: Promise<unknown>) => void) | undefined;
 }
 
+declare module "virtual:emdash/env" {
+	/**
+	 * Worker bindings/secrets. Resolves to Cloudflare's `env` (from
+	 * `cloudflare:workers`) under @astrojs/cloudflare; `undefined` on Node,
+	 * where callers should fall back to `import.meta.env`.
+	 */
+	export const env: Record<string, unknown> | undefined;
+}
+
+declare module "virtual:emdash/build" {
+	/**
+	 * Epoch milliseconds at which this build's virtual modules were generated.
+	 * Folded into the route cache validator so a code-only deploy — which
+	 * renames `/_astro/*` without touching content — still invalidates HTML a
+	 * browser cached from an earlier deployment.
+	 */
+	export const buildTime: number;
+}
+
 declare module "virtual:emdash/scheduler" {
 	import type { CreateSchedulerFn } from "./emdash-runtime.js";
 	/**
@@ -151,6 +217,8 @@ declare module "virtual:emdash/admin-registry" {
 	 *   - pages: Record<pageId, ComponentType>
 	 *   - widgets: Record<widgetId, ComponentType>
 	 *   - fields: Record<widgetName, ComponentType> (field widget renderers)
+	 *   - contentEditorPanels: Trusted content editor sidebar panels
+	 *   - contentListColumns: trusted-plugin content list column definitions
 	 */
 	export const pluginAdmins: Record<
 		string,
@@ -158,6 +226,8 @@ declare module "virtual:emdash/admin-registry" {
 			pages?: Record<string, unknown>;
 			widgets?: Record<string, unknown>;
 			fields?: Record<string, unknown>;
+			contentEditorPanels?: readonly unknown[];
+			contentListColumns?: readonly unknown[];
 		}
 	>;
 }

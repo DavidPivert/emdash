@@ -96,15 +96,11 @@ Returns: `void`
 
 ### `content:beforeSave`
 
-Runs before save. Return modified content, void to keep unchanged, or throw to cancel.
+Runs before save. Return modified content, or void to keep it unchanged. A plugin running in the sandbox cannot cancel a save: the sandbox logs the thrown error and the save continues. From the host process — a native plugin, or a sandboxed plugin moved to `plugins: []` — throw `ContentSaveRejectedError` (exported from `emdash`) to cancel with a message the admin shows to the editor; any other thrown error cancels with a generic message.
 
 ```typescript
 "content:beforeSave": async (event, ctx) => {
-	const { content, collection, isNew } = event;
-
-	if (collection === "posts" && !content.title) {
-		throw new Error("Posts require a title");
-	}
+	const { content } = event;
 
 	// Transform
 	if (content.slug) {
@@ -183,6 +179,45 @@ Runs after content is unpublished (reverted to draft). Side effects only.
 ```typescript
 "content:afterUnpublish": async (event, ctx) => {
 	ctx.log.info(`Unpublished ${event.collection}/${event.content.id}`);
+}
+```
+
+Event: `{ content: Record<string, unknown>, collection: string }`
+Returns: `void`
+
+### `content:afterRestore`
+
+Runs after trashed content is restored. Side effects only.
+
+```typescript
+"content:afterRestore": async (event, ctx) => {
+	ctx.log.info(`Restored ${event.collection}/${event.content.id}`);
+}
+```
+
+Event: `{ content: Record<string, unknown>, collection: string }`
+Returns: `void`
+
+### `content:afterSchedule`
+
+Runs after content is scheduled for future publishing. Side effects only.
+
+```typescript
+"content:afterSchedule": async (event, ctx) => {
+	ctx.log.info(`Scheduled ${event.collection}/${event.content.id}`);
+}
+```
+
+Event: `{ content: Record<string, unknown>, collection: string }`
+Returns: `void`
+
+### `content:afterUnschedule`
+
+Runs after scheduled content is unscheduled. Side effects only.
+
+```typescript
+"content:afterUnschedule": async (event, ctx) => {
+	ctx.log.info(`Unscheduled ${event.collection}/${event.content.id}`);
 }
 ```
 
@@ -418,23 +453,26 @@ Use `"continue"` for non-critical operations (analytics, notifications, external
 
 ## Quick Reference
 
-| Hook                     | Trigger              | Capability Required              | Return                       |
-| ------------------------ | -------------------- | -------------------------------- | ---------------------------- |
-| `plugin:install`         | First install        | —                                | `void`                       |
-| `plugin:activate`        | Plugin enabled       | —                                | `void`                       |
-| `plugin:deactivate`      | Plugin disabled      | —                                | `void`                       |
-| `plugin:uninstall`       | Plugin removed       | —                                | `void`                       |
-| `content:beforeSave`     | Before save          | `content:write`                  | Modified content or `void`   |
-| `content:afterSave`      | After save           | `content:read`                   | `void`                       |
-| `content:beforeDelete`   | Before delete        | `content:read`                   | `false` to cancel            |
-| `content:afterDelete`    | After delete         | `content:read`                   | `void`                       |
-| `content:afterPublish`   | After publish        | `content:read`                   | `void`                       |
-| `content:afterUnpublish` | After unpublish      | `content:read`                   | `void`                       |
-| `media:beforeUpload`     | Before upload        | —                                | Modified file info or `void` |
-| `media:afterUpload`      | After upload         | —                                | `void`                       |
-| `email:beforeSend`       | Before email send    | `hooks.email-events:register`    | Modified message or `false`  |
-| `email:deliver`          | Email delivery       | `hooks.email-transport:register` | `void` (exclusive)           |
-| `email:afterSend`        | After email send     | `hooks.email-events:register`    | `void`                       |
-| `cron`                   | Scheduled task fires | —                                | `void`                       |
-| `page:metadata`          | Page render          | —                                | Metadata contributions       |
-| `page:fragments`         | Page render          | — (trusted only)                 | Fragment contributions       |
+| Hook                      | Trigger              | Capability Required              | Return                       |
+| ------------------------- | -------------------- | -------------------------------- | ---------------------------- |
+| `plugin:install`          | First install        | —                                | `void`                       |
+| `plugin:activate`         | Plugin enabled       | —                                | `void`                       |
+| `plugin:deactivate`       | Plugin disabled      | —                                | `void`                       |
+| `plugin:uninstall`        | Plugin removed       | —                                | `void`                       |
+| `content:beforeSave`      | Before save          | `content:write`                  | Modified content or `void`   |
+| `content:afterSave`       | After save           | `content:read`                   | `void`                       |
+| `content:beforeDelete`    | Before delete        | `content:read`                   | `false` to cancel            |
+| `content:afterDelete`     | After delete         | `content:read`                   | `void`                       |
+| `content:afterPublish`    | After publish        | `content:read`                   | `void`                       |
+| `content:afterUnpublish`  | After unpublish      | `content:read`                   | `void`                       |
+| `content:afterRestore`    | After restore        | `content:read`                   | `void`                       |
+| `content:afterSchedule`   | After schedule       | `content:read`                   | `void`                       |
+| `content:afterUnschedule` | After unschedule     | `content:read`                   | `void`                       |
+| `media:beforeUpload`      | Before upload        | —                                | Modified file info or `void` |
+| `media:afterUpload`       | After upload         | —                                | `void`                       |
+| `email:beforeSend`        | Before email send    | `hooks.email-events:register`    | Modified message or `false`  |
+| `email:deliver`           | Email delivery       | `hooks.email-transport:register` | `void` (exclusive)           |
+| `email:afterSend`         | After email send     | `hooks.email-events:register`    | `void`                       |
+| `cron`                    | Scheduled task fires | —                                | `void`                       |
+| `page:metadata`           | Page render          | —                                | Metadata contributions       |
+| `page:fragments`          | Page render          | — (trusted only)                 | Fragment contributions       |

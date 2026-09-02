@@ -1,8 +1,14 @@
 // Database (only types and utilities - internal functions not exported)
-export { EmDashDatabaseError, getMigrationStatus } from "./database/index.js";
+export {
+	EmDashDatabaseError,
+	getMigrationStatus,
+	getExactMigrationStatus,
+	MIGRATION_NAMES,
+} from "./database/index.js";
 export type {
 	DatabaseConfig,
 	MigrationStatus,
+	ExactMigrationStatus,
 	Database,
 	UserTable,
 	MediaTable,
@@ -27,7 +33,15 @@ export type {
 	FindManyOptions,
 	FindManyResult,
 } from "./database/repositories/index.js";
+export type {
+	ContentFieldFilterScalar,
+	ContentFieldFilterValue,
+	ContentFieldFilters,
+	ContentFieldInFilter,
+	ContentFieldRangeFilter,
+} from "./content-list-query.js";
 export type { MediaItem, CreateMediaInput } from "./database/repositories/media.js";
+export type { CompoundSelectLimitedAdapter } from "./database/dialect-helpers.js";
 
 // Fields
 export { portableText, image, file, reference } from "./fields/index.js";
@@ -70,6 +84,9 @@ export {
 	handleMediaCreate,
 	handleMediaUpdate,
 	handleMediaDelete,
+	handleMediaUsageActivationAdvance,
+	handleMediaUsageProgress,
+	handleMediaUsageRepair,
 	handleRevisionList,
 	handleRevisionGet,
 	handleRevisionRestore,
@@ -108,7 +125,7 @@ export type {
 export { ulid } from "ulidx";
 export { computeContentHash, hashString } from "./utils/hash.js";
 export { sanitizeHref, isSafeHref } from "./utils/url.js";
-export { decodeSlug } from "./utils/slugify.js";
+export { decodeSlug, slugify } from "./utils/slugify.js";
 
 // Live Collections query functions (loader is in emdash/runtime)
 export {
@@ -143,7 +160,12 @@ export { after } from "./after.js";
 export type { WaitUntilFn } from "./after.js";
 
 // i18n configuration (from Astro config)
-export { getI18nConfig, isI18nEnabled, getFallbackChain } from "./i18n/config.js";
+export {
+	getI18nConfig,
+	isI18nEnabled,
+	getFallbackChain,
+	resolveContentCreateLocale,
+} from "./i18n/config.js";
 export type { I18nConfig } from "./i18n/config.js";
 
 // Visual editing
@@ -192,6 +214,28 @@ export type {
 } from "./storage/types.js";
 export { EmDashStorageError } from "./storage/types.js";
 
+// Object cache (distributed read-through query cache)
+export {
+	cachedQuery,
+	invalidateObjectCache,
+	invalidateCollectionCache,
+	invalidateTaxonomyObjectCache,
+	invalidateBylineObjectCache,
+	invalidateMenuObjectCache,
+	invalidateSchemaObjectCache,
+	invalidateCommentObjectCache,
+	contentNamespace,
+	contentNamespaces,
+	CacheNamespace,
+} from "./object-cache/index.js";
+export type { CachedQueryOptions } from "./object-cache/index.js";
+export type {
+	ObjectCacheBackend,
+	ObjectCacheDescriptor,
+	ObjectCacheRuntimeConfig,
+	CreateObjectCacheBackendFn,
+} from "./object-cache/types.js";
+
 // Plugin system
 export {
 	definePlugin,
@@ -202,12 +246,18 @@ export {
 	PluginManager,
 	createPluginManager,
 	PluginRouteError,
+	ContentSaveRejectedError,
+	isContentSaveRejection,
 	// Scheduler (Node timer heartbeat — used by virtual:emdash/scheduler)
 	NodeCronScheduler,
 	// Sandbox
 	NoopSandboxRunner,
 	SandboxNotAvailableError,
 	SandboxUnavailableError,
+	createSandboxRouteError,
+	createSandboxRouteErrorEnvelope,
+	getSandboxRouteErrorDetails,
+	getSandboxRouteErrorEnvelope,
 	createNoopSandboxRunner,
 	// HTTP access for plugins (shared between in-process, Cloudflare, and workerd runners)
 	createHttpAccess,
@@ -222,9 +272,14 @@ export type {
 	StorageCollection,
 	KVAccess,
 	ContentAccess,
+	ContentCreateOptions,
 	MediaAccess,
 	HttpAccess,
 	LogAccess,
+	TaxonomyAccess,
+	TaxonomyDefInfo,
+	TaxonomyTermInfo,
+	TaxonomyReadOptions,
 	PluginHooks,
 	HookConfig,
 	HookName,
@@ -233,6 +288,9 @@ export type {
 	ContentHookEvent,
 	ContentDeleteEvent,
 	ContentPublishStateChangeEvent,
+	ContentRestoreStateChangeEvent,
+	ContentScheduleStateChangeEvent,
+	ContentStateChangeEvent,
 	MediaUploadEvent,
 	HookResult,
 	PluginRoute,
@@ -270,6 +328,9 @@ export type {
 	PluginManifest,
 	ValidatedPluginManifest,
 	SerializedRequest,
+	SandboxRouteErrorCode,
+	SandboxRouteErrorDetails,
+	SandboxRouteErrorEnvelope,
 } from "./plugins/index.js";
 
 // Capability normalization (legacy → canonical alias layer)
@@ -379,8 +440,8 @@ export type {
 } from "./settings/types.js";
 
 // SEO
-export { getSeoMeta, getContentSeo } from "./seo/index.js";
-export type { SeoMeta, SeoMetaOptions } from "./seo/index.js";
+export { getSeoMeta, getContentSeo, getHreflangAlternates } from "./seo/index.js";
+export type { SeoMeta, SeoMetaOptions, HreflangAlternate, HreflangOptions } from "./seo/index.js";
 
 // Public page contribution types
 export type {
@@ -480,6 +541,7 @@ export type {
 
 // Search
 export {
+	SEARCH_TOKENIZERS,
 	FTSManager,
 	search,
 	searchWithDb,
@@ -491,6 +553,7 @@ export {
 } from "./search/index.js";
 export type {
 	SearchConfig,
+	SearchTokenizer,
 	SearchOptions,
 	CollectionSearchOptions,
 	SearchResult,
@@ -518,4 +581,7 @@ export type {
 	SqliteConfig,
 	LibsqlConfig,
 	PostgresConfig,
+	CollectionDeletionGuardInput,
+	CollectionDeletionGuardResult,
+	ExecuteCollectionDeletionGuard,
 } from "./db/adapters.js";

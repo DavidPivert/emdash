@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { cursorPaginationQuery, httpUrl } from "./common.js";
+import { cursorPaginationQuery, httpUrl, localeCode } from "./common.js";
 
 /** Slug pattern: lowercase letters, digits, and hyphens; must start with a letter */
 const bylineSlugPattern = /^[a-z][a-z0-9-]*$/;
@@ -19,6 +19,14 @@ export const bylineSummarySchema = z
 		 */
 		avatarStorageKey: z.string().nullish(),
 		avatarAlt: z.string().nullish(),
+		/**
+		 * Avatar media LQIP placeholder (blurhash + dominant colour, migration
+		 * 024), from the same media join. Lets clients render a placeholder
+		 * while the avatar loads. Null under the same conditions as
+		 * `avatarStorageKey`.
+		 */
+		avatarBlurhash: z.string().nullish(),
+		avatarDominantColor: z.string().nullish(),
 		websiteUrl: z.string().nullable(),
 		userId: z.string().nullable(),
 		isGuest: z.boolean(),
@@ -73,7 +81,7 @@ export const bylinesListQuery = cursorPaginationQuery
 		 * Rejects empty strings so the picker can't silently fetch the
 		 * unfiltered list when the admin URL has `?locale=` with no value.
 		 */
-		locale: z.string().min(1).optional(),
+		locale: localeCode.optional(),
 	})
 	.meta({ id: "BylinesListQuery" });
 
@@ -94,7 +102,7 @@ export const bylineCreateBody = z
 		 * configured `defaultLocale`) is used. Rejects empty strings — an
 		 * empty locale would create rows no resolver requests.
 		 */
-		locale: z.string().min(1).optional(),
+		locale: localeCode.optional(),
 		/**
 		 * When set, the new row joins the source byline's translation_group
 		 * rather than minting a fresh one. Requires `locale`.
@@ -118,7 +126,7 @@ export const bylineCreateBody = z
 
 export const bylineTranslationCreateBody = z
 	.object({
-		locale: z.string().min(1),
+		locale: localeCode,
 		slug: z
 			.string()
 			.min(1)

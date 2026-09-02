@@ -153,13 +153,16 @@ export async function exportSeed(db: Kysely<Database>, withContent?: string): Pr
 
 	// 7. Export content (if requested)
 	if (withContent !== undefined) {
-		const collections =
-			withContent === "" || withContent === "true"
-				? null // all collections
-				: withContent
-						.split(",")
-						.map((s) => s.trim())
-						.filter(Boolean);
+		// Treat "all" as a synonym for the bare flag and "true". The args help
+		// text documents `all` as a valid value, but without this the literal
+		// string is read as a collection name and matches no collection (#1329).
+		const includeAll = withContent === "" || withContent === "true" || withContent === "all";
+		const collections = includeAll
+			? null // all collections
+			: withContent
+					.split(",")
+					.map((s) => s.trim())
+					.filter(Boolean);
 
 		seed.content = await exportContent(
 			db,
@@ -311,17 +314,12 @@ async function exportCollections(db: Kysely<Database>): Promise<SeedCollection[]
 			labelSingular: collection.labelSingular || undefined,
 			description: collection.description || undefined,
 			icon: collection.icon || undefined,
-			supports:
-				collection.supports.length > 0
-					? (collection.supports as (
-							| "drafts"
-							| "revisions"
-							| "preview"
-							| "scheduling"
-							| "search"
-						)[])
-					: undefined,
+			admin: collection.admin,
+			supports: collection.supports.length > 0 ? collection.supports : undefined,
 			urlPattern: collection.urlPattern || undefined,
+			routable: collection.routable === false ? false : undefined,
+			hidden: collection.hidden || undefined,
+			sortOrder: collection.sortOrder,
 			fields: fields.map(
 				(field): SeedField => ({
 					slug: field.slug,
@@ -330,6 +328,7 @@ async function exportCollections(db: Kysely<Database>): Promise<SeedCollection[]
 					required: field.required || undefined,
 					unique: field.unique || undefined,
 					searchable: field.searchable || undefined,
+					indexed: field.indexed || undefined,
 					defaultValue: field.defaultValue,
 					validation: field.validation ? { ...field.validation } : undefined,
 					widget: field.widget || undefined,
@@ -372,9 +371,10 @@ async function exportTaxonomies(
 		// Terms in this def's locale.
 		const terms = await termRepo.findByName(def.name, { locale: def.locale });
 
-		// id -> slug for parent resolution within this locale.
-		const idToSlug = new Map<string, string>();
-		for (const term of terms) idToSlug.set(term.id, term.slug);
+		// translation_group -> slug for parent resolution within this locale.
+		// `parentId` stores the parent's translation_group, not a row id.
+		const groupToSlug = new Map<string, string>();
+		for (const term of terms) groupToSlug.set(term.translationGroup ?? term.id, term.slug);
 
 		// translation_group -> seed id of the anchor term.
 		const termGroupToSeedId = new Map<string, string>();
@@ -393,7 +393,7 @@ async function exportTaxonomies(
 				description: typeof term.data?.description === "string" ? term.data.description : undefined,
 			};
 
-			if (term.parentId) seedTerm.parent = idToSlug.get(term.parentId);
+			if (term.parentId) seedTerm.parent = groupToSlug.get(term.parentId);
 
 			if (i18nEnabled && term.locale) {
 				seedTerm.locale = term.locale;
@@ -749,7 +749,7 @@ async function exportContent(
 
 				const entry: SeedContentEntry = {
 					id: seedId,
-					slug: item.slug || item.id,
+					slug: item.slug?.trim() ? item.slug : collection.routable === false ? undefined : item.id,
 					status: item.status === "published" || item.status === "draft" ? item.status : undefined,
 					data: processedData,
 				};

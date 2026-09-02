@@ -2,7 +2,7 @@
 
 Generated TypeScript types and runtime validation schemas for the EmDash plugin registry lexicons.
 
-> EXPERIMENTAL: NSIDs and shapes will change. The registry is still on the `wip/plugin-rfc` branch (RFC 0001). Pin to an exact version while we iterate. Once stable, NSIDs are expected to migrate to either `pm.fair.package.*` (if FAIR adopts the shape) or `com.emdashcms.package.*`.
+> EXPERIMENTAL: NSIDs and shapes will change. Pin to an exact version while RFC 0001 is in progress. The stable package namespace target is `com.emdashcms.package.*`.
 
 ## What's in here
 
@@ -60,5 +60,7 @@ Everything under `com.emdashcms.experimental.*` is unstable by design. The contr
 - New NSIDs and fields may be added in any release.
 - Existing fields may have their constraints tightened or loosened in any release.
 - NSIDs may be renamed at the next stable cutover (see RFC 0001's migration plan).
+
+Delegated release grants include the create-only release collection plus gzip and image blob scopes. When the release NSID or blob scope set changes, every publisher must authorize a new grant. `getDelegatedReleasePermission()` returns the complete active scope string so clients do not hard-code it.
 
 Once the registry is non-experimental, this package will publish a 1.0 with the post-experimental NSIDs and a stability commitment.

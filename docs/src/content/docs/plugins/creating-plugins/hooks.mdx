@@ -136,15 +136,17 @@ Run during create, update, and delete operations on site content.
 
 ### `content:beforeSave`
 
-Runs before content is saved. Return modified content, or `void` to leave it unchanged. Throw to cancel.
+Runs before content is saved. Return modified content, or `void` to leave it unchanged.
+
+<Aside type="caution">
+	A plugin running in the sandbox cannot cancel a save: the sandbox logs the thrown error and the save continues. Cancelling works in the host process — in a native plugin, or in a sandboxed plugin [moved to `plugins: []`](/plugins/creating-plugins/choosing-a-format/#sandbox-runners-and-platform-support).
+</Aside>
+
+To cancel the save from a plugin running in the host process, throw `ContentSaveRejectedError` (exported from `emdash`): the API responds with a `SAVE_REJECTED` error that carries your message, and the admin shows it to the editor. Any other thrown error also cancels the save, but the response replaces its message with a generic one.
 
 ```typescript
 "content:beforeSave": async (event, ctx) => {
-	const { content, collection } = event;
-
-	if (collection === "posts" && !content.title) {
-		throw new Error("Posts require a title");
-	}
+	const { content } = event;
 
 	if (typeof content.slug === "string") {
 		content.slug = content.slug.toLowerCase().replace(/\s+/g, "-");
@@ -212,6 +214,24 @@ Runs after content is promoted from draft to live. Requires `content:read` capab
 ### `content:afterUnpublish`
 
 Runs after content is reverted from live to draft. Requires `content:read` capability.
+
+**Event:** `{ content, collection }` — **Returns:** `Promise<void>`
+
+### `content:afterRestore`
+
+Runs after trashed content is restored. Requires `content:read` capability.
+
+**Event:** `{ content, collection }` — **Returns:** `Promise<void>`
+
+### `content:afterSchedule`
+
+Runs after content is scheduled for future publishing. Requires `content:read` capability.
+
+**Event:** `{ content, collection }` — **Returns:** `Promise<void>`
+
+### `content:afterUnschedule`
+
+Runs after scheduled content is unscheduled. Requires `content:read` capability.
 
 **Event:** `{ content, collection }` — **Returns:** `Promise<void>`
 
@@ -379,8 +399,11 @@ Hooks default to 5000ms. Bump the timeout for slower work:
 | `content:beforeDelete`   | Before content delete         | `false` to cancel, else allow        | No        |
 | `content:afterDelete`    | After content delete          | `void`                               | No        |
 | `content:afterPublish`   | After content publish         | `void`                               | No        |
-| `content:afterUnpublish` | After content unpublish       | `void`                               | No        |
-| `media:beforeUpload`     | Before file upload            | Modified file info or `void`         | No        |
+| `content:afterUnpublish`  | After content unpublish       | `void`                               | No        |
+| `content:afterRestore`    | After content restore         | `void`                               | No        |
+| `content:afterSchedule`   | After content schedule        | `void`                               | No        |
+| `content:afterUnschedule` | After content unschedule      | `void`                               | No        |
+| `media:beforeUpload`      | Before file upload            | Modified file info or `void`         | No        |
 | `media:afterUpload`      | After file upload             | `void`                               | No        |
 | `cron`                   | Scheduled task fires          | `void`                               | No        |
 | `email:beforeSend`       | Before email delivery         | Modified message, `false`, or `void` | No        |

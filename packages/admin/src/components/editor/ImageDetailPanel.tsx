@@ -20,6 +20,7 @@ import * as React from "react";
 
 import type { MediaItem } from "../../lib/api";
 import { useStableCallback } from "../../lib/hooks";
+import { canonicalMediaProviderId } from "../../lib/media-utils.js";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { MediaPickerModal } from "../MediaPickerModal";
 
@@ -29,14 +30,21 @@ export interface ImageAttributes {
 	title?: string;
 	caption?: string;
 	mediaId?: string;
+	provider?: string;
 	/** Original image width */
 	width?: number;
 	/** Original image height */
 	height?: number;
+	/** LQIP blurhash placeholder */
+	blurhash?: string;
+	/** LQIP dominant-color placeholder */
+	dominantColor?: string;
 	/** Display width for this instance (defaults to original) */
 	displayWidth?: number;
 	/** Display height for this instance (defaults to original) */
 	displayHeight?: number;
+	/** Alignment for this image instance (e.g. from a WordPress import) */
+	alignment?: "left" | "center" | "right" | "wide" | "full";
 }
 
 export interface ImageDetailPanelProps {
@@ -77,6 +85,9 @@ export function ImageDetailPanel({
 		attributes.displayHeight ?? attributes.height,
 	);
 	const [lockAspectRatio, setLockAspectRatio] = React.useState(true);
+	const [alignment, setAlignment] = React.useState<ImageAttributes["alignment"]>(
+		attributes.alignment,
+	);
 
 	// Calculate aspect ratio from original dimensions
 	const aspectRatio =
@@ -108,8 +119,11 @@ export function ImageDetailPanel({
 			src: item.url,
 			alt: item.alt || item.filename,
 			mediaId: item.id,
+			provider: canonicalMediaProviderId(item.provider),
 			width: item.width,
 			height: item.height,
+			blurhash: item.blurhash,
+			dominantColor: item.dominantColor,
 			// Clear caption/title since it's a new image
 			caption: undefined,
 			title: undefined,
@@ -127,9 +141,10 @@ export function ImageDetailPanel({
 			caption !== (attributes.caption ?? "") ||
 			title !== (attributes.title ?? "") ||
 			displayWidth !== originalDisplayWidth ||
-			displayHeight !== originalDisplayHeight
+			displayHeight !== originalDisplayHeight ||
+			alignment !== attributes.alignment
 		);
-	}, [attributes, alt, caption, title, displayWidth, displayHeight]);
+	}, [attributes, alt, caption, title, displayWidth, displayHeight, alignment]);
 
 	const handleSave = () => {
 		onUpdate({
@@ -138,9 +153,19 @@ export function ImageDetailPanel({
 			title: title || undefined,
 			displayWidth,
 			displayHeight,
+			alignment,
 		});
 		onClose();
 	};
+
+	const alignmentOptions: { value: ImageAttributes["alignment"]; label: string }[] = [
+		{ value: undefined, label: t`None` },
+		{ value: "left", label: t`Left` },
+		{ value: "center", label: t`Center` },
+		{ value: "right", label: t`Right` },
+		{ value: "wide", label: t`Wide` },
+		{ value: "full", label: t`Full` },
+	];
 
 	const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
 
@@ -210,7 +235,7 @@ export function ImageDetailPanel({
 
 				{/* Preview */}
 				<div className="p-4 border-b">
-					<div className="aspect-video bg-kumo-tint rounded-lg overflow-hidden flex items-center justify-center relative group">
+					<div className="emdash-media-transparency-grid group relative flex aspect-video items-center justify-center overflow-hidden rounded-lg">
 						<img
 							src={attributes.src}
 							alt={attributes.alt || ""}
@@ -240,19 +265,21 @@ export function ImageDetailPanel({
 					)}
 				</div>
 
-				{/* Display Size */}
-				{attributes.width && attributes.height && (
+				{/* Display Size — shown for any image; migrated images may lack original dims */}
+				{attributes.src && (
 					<div className="p-4 border-b space-y-3">
 						<div className="flex items-center justify-between">
 							<Label>{t`Display Size`}</Label>
-							<Button
-								variant="ghost"
-								size="sm"
-								onClick={handleResetDimensions}
-								className="h-auto py-1 px-2 text-xs"
-							>
-								{t`Reset to original`}
-							</Button>
+							{attributes.width && attributes.height && (
+								<Button
+									variant="ghost"
+									size="sm"
+									onClick={handleResetDimensions}
+									className="h-auto py-1 px-2 text-xs"
+								>
+									{t`Reset to original`}
+								</Button>
+							)}
 						</div>
 						<div className="flex items-center gap-2">
 							<div className="flex-1">
@@ -263,20 +290,22 @@ export function ImageDetailPanel({
 									onChange={(e) => handleWidthChange(e.target.value)}
 								/>
 							</div>
-							<Button
-								variant="ghost"
-								shape="square"
-								className="mt-5"
-								onClick={() => setLockAspectRatio(!lockAspectRatio)}
-								title={lockAspectRatio ? t`Unlock aspect ratio` : t`Lock aspect ratio`}
-								aria-label={lockAspectRatio ? t`Unlock aspect ratio` : t`Lock aspect ratio`}
-							>
-								{lockAspectRatio ? (
-									<LinkSimple className="h-4 w-4" />
-								) : (
-									<LinkBreak className="h-4 w-4 text-kumo-subtle" />
-								)}
-							</Button>
+							{aspectRatio && (
+								<Button
+									variant="ghost"
+									shape="square"
+									className="mt-5"
+									onClick={() => setLockAspectRatio(!lockAspectRatio)}
+									title={lockAspectRatio ? t`Unlock aspect ratio` : t`Lock aspect ratio`}
+									aria-label={lockAspectRatio ? t`Unlock aspect ratio` : t`Lock aspect ratio`}
+								>
+									{lockAspectRatio ? (
+										<LinkSimple className="h-4 w-4" />
+									) : (
+										<LinkBreak className="h-4 w-4 text-kumo-subtle" />
+									)}
+								</Button>
+							)}
 							<div className="flex-1">
 								<Input
 									label={t`Height`}
@@ -289,6 +318,26 @@ export function ImageDetailPanel({
 						<p className="text-xs text-kumo-subtle">
 							{t`Set a custom display size for this image instance.`}
 						</p>
+					</div>
+				)}
+
+				{/* Alignment */}
+				{attributes.src && (
+					<div className="p-4 border-b space-y-3">
+						<Label>{t`Alignment`}</Label>
+						<div className="flex flex-wrap gap-1">
+							{alignmentOptions.map((opt) => (
+								<Button
+									key={opt.value ?? "none"}
+									type="button"
+									size="sm"
+									variant={alignment === opt.value ? "primary" : "secondary"}
+									onClick={() => setAlignment(opt.value)}
+								>
+									{opt.label}
+								</Button>
+							))}
+						</div>
 					</div>
 				)}
 
@@ -373,7 +422,7 @@ export function ImageDetailPanel({
 			<div className="flex-1 overflow-y-auto">
 				{/* Preview */}
 				<div className="p-4 border-b">
-					<div className="aspect-video bg-kumo-tint rounded-lg overflow-hidden flex items-center justify-center relative group">
+					<div className="emdash-media-transparency-grid group relative flex aspect-video items-center justify-center overflow-hidden rounded-lg">
 						<img
 							src={attributes.src}
 							alt={attributes.alt || ""}
@@ -405,19 +454,21 @@ export function ImageDetailPanel({
 					</div>
 				)}
 
-				{/* Display Size */}
-				{attributes.width && attributes.height && (
+				{/* Display Size — shown for any image; migrated images may lack original dims */}
+				{attributes.src && (
 					<div className="p-4 border-b space-y-3">
 						<div className="flex items-center justify-between">
 							<Label>{t`Display Size`}</Label>
-							<Button
-								variant="ghost"
-								size="sm"
-								onClick={handleResetDimensions}
-								className="h-auto py-1 px-2 text-xs"
-							>
-								{t`Reset to original`}
-							</Button>
+							{attributes.width && attributes.height && (
+								<Button
+									variant="ghost"
+									size="sm"
+									onClick={handleResetDimensions}
+									className="h-auto py-1 px-2 text-xs"
+								>
+									{t`Reset to original`}
+								</Button>
+							)}
 						</div>
 						<div className="flex items-center gap-2">
 							<div className="flex-1">
@@ -428,20 +479,22 @@ export function ImageDetailPanel({
 									onChange={(e) => handleWidthChange(e.target.value)}
 								/>
 							</div>
-							<Button
-								variant="ghost"
-								shape="square"
-								className="mt-5"
-								onClick={() => setLockAspectRatio(!lockAspectRatio)}
-								title={lockAspectRatio ? t`Unlock aspect ratio` : t`Lock aspect ratio`}
-								aria-label={lockAspectRatio ? t`Unlock aspect ratio` : t`Lock aspect ratio`}
-							>
-								{lockAspectRatio ? (
-									<LinkSimple className="h-4 w-4" />
-								) : (
-									<LinkBreak className="h-4 w-4 text-kumo-subtle" />
-								)}
-							</Button>
+							{aspectRatio && (
+								<Button
+									variant="ghost"
+									shape="square"
+									className="mt-5"
+									onClick={() => setLockAspectRatio(!lockAspectRatio)}
+									title={lockAspectRatio ? t`Unlock aspect ratio` : t`Lock aspect ratio`}
+									aria-label={lockAspectRatio ? t`Unlock aspect ratio` : t`Lock aspect ratio`}
+								>
+									{lockAspectRatio ? (
+										<LinkSimple className="h-4 w-4" />
+									) : (
+										<LinkBreak className="h-4 w-4 text-kumo-subtle" />
+									)}
+								</Button>
+							)}
 							<div className="flex-1">
 								<Input
 									label={t`Height`}
@@ -454,6 +507,26 @@ export function ImageDetailPanel({
 						<p className="text-xs text-kumo-subtle">
 							{t`Set a custom display size for this image instance.`}
 						</p>
+					</div>
+				)}
+
+				{/* Alignment */}
+				{attributes.src && (
+					<div className="p-4 border-b space-y-3">
+						<Label>{t`Alignment`}</Label>
+						<div className="flex flex-wrap gap-1">
+							{alignmentOptions.map((opt) => (
+								<Button
+									key={opt.value ?? "none"}
+									type="button"
+									size="sm"
+									variant={alignment === opt.value ? "primary" : "secondary"}
+									onClick={() => setAlignment(opt.value)}
+								>
+									{opt.label}
+								</Button>
+							))}
+						</div>
 					</div>
 				)}
 

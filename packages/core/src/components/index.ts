@@ -22,8 +22,15 @@
 // Wrapper component with EmDash defaults
 export { default as PortableText } from "./PortableText.astro";
 
-// Comment components
+/**
+ * @deprecated Import from `emdash/ui/comments` instead. Barrel re-exports pull
+ * comment CSS into every page that imports `emdash/ui` (#2039). Will be removed in 1.0.
+ */
 export { default as Comments } from "./Comments.astro";
+/**
+ * @deprecated Import from `emdash/ui/comments` instead. Barrel re-exports pull
+ * comment CSS into every page that imports `emdash/ui` (#2039). Will be removed in 1.0.
+ */
 export { default as CommentForm } from "./CommentForm.astro";
 
 // Widget components
@@ -36,6 +43,7 @@ export { default as EmDashImage } from "./EmDashImage.astro";
 export { default as EmDashMedia } from "./EmDashMedia.astro";
 
 // Portable Text block type components
+export { default as Block } from "./Block.astro";
 export { default as Image } from "./Image.astro";
 export { default as Code } from "./Code.astro";
 export { default as Embed } from "./Embed.astro";
@@ -57,6 +65,8 @@ export { default as Underline } from "./marks/Underline.astro";
 export { default as StrikeThrough } from "./marks/StrikeThrough.astro";
 export { default as Link } from "./marks/Link.astro";
 
+import BlockComponent from "./Block.astro";
+import BlockquoteGroupComponent from "./BlockquoteGroup.astro";
 import BreakComponent from "./Break.astro";
 import ButtonComponent from "./Button.astro";
 import ButtonsComponent from "./Buttons.astro";
@@ -70,6 +80,7 @@ import HtmlBlockComponent from "./HtmlBlock.astro";
 // Pre-configured components object for PortableText
 import ImageComponent from "./Image.astro";
 import { emdashMarkComponents } from "./marks.js";
+import OrderedListComponent from "./OrderedList.astro";
 import PullquoteComponent from "./Pullquote.astro";
 import TableComponent from "./Table.astro";
 
@@ -77,12 +88,19 @@ import TableComponent from "./Table.astro";
  * Pre-configured components for EmDash Portable Text content
  *
  * Includes renderers for:
+ * - Block styles: paragraph, h1..h6, blockquote — with `textAlign` honoured
+ *   as a WordPress-style `has-text-align-{value}` class (#1201)
  * - Block types: image, code, embed, gallery, columns, break, htmlBlock, table,
  *   button, buttons, cover, file, pullquote
  * - Marks: superscript, subscript, underline, strike-through, link
  */
 export const emdashComponents = {
+	block: BlockComponent,
+	list: {
+		number: OrderedListComponent,
+	},
 	type: {
+		blockquoteGroup: BlockquoteGroupComponent,
 		image: ImageComponent,
 		code: CodeComponent,
 		embed: EmbedComponent,

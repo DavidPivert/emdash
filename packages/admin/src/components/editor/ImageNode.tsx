@@ -34,15 +34,27 @@ declare module "@tiptap/react" {
 				provider?: string;
 				width?: number;
 				height?: number;
+				/** LQIP blurhash placeholder */
+				blurhash?: string;
+				/** LQIP dominant-color placeholder */
+				dominantColor?: string;
 				displayWidth?: number;
 				displayHeight?: number;
+				alignment?: "left" | "center" | "right" | "wide" | "full";
 			}) => ReturnType;
 		};
 	}
 }
 
 // React component for the image node view
-function ImageNodeView({ node, updateAttributes, selected, deleteNode, editor }: NodeViewProps) {
+function ImageNodeView({
+	node,
+	updateAttributes,
+	selected,
+	deleteNode,
+	editor,
+	getPos,
+}: NodeViewProps) {
 	const { t } = useLingui();
 	const [isEditingAlt, setIsEditingAlt] = React.useState(false);
 	const [altText, setAltText] = React.useState(node.attrs.alt || "");
@@ -70,16 +82,28 @@ function ImageNodeView({ node, updateAttributes, selected, deleteNode, editor }:
 		setAltText(node.attrs.alt || "");
 	}, [node.attrs.alt]);
 
+	const handlePointerDown = (event: React.PointerEvent) => {
+		if (!editor.isEditable || !event.isPrimary || event.button !== 0) return;
+		const position = getPos();
+		if (typeof position === "number") {
+			editor.commands.setNodeSelection(position);
+		}
+	};
+
 	const getImageAttrs = (): ImageAttributes => ({
 		src: node.attrs.src,
 		alt: node.attrs.alt,
 		title: node.attrs.title,
 		caption: node.attrs.caption,
 		mediaId: node.attrs.mediaId,
+		provider: node.attrs.provider,
 		width: node.attrs.width,
 		height: node.attrs.height,
+		blurhash: node.attrs.blurhash,
+		dominantColor: node.attrs.dominantColor,
 		displayWidth: node.attrs.displayWidth,
 		displayHeight: node.attrs.displayHeight,
+		alignment: node.attrs.alignment,
 	});
 
 	const openSidebar = () => {
@@ -134,12 +158,31 @@ function ImageNodeView({ node, updateAttributes, selected, deleteNode, editor }:
 		}
 	}, [selected]);
 
+	const alignment = node.attrs.alignment as
+		| "left"
+		| "center"
+		| "right"
+		| "wide"
+		| "full"
+		| undefined;
+	// Mirror the published <Image> layout so the editor is WYSIWYG: left/right
+	// float (text wraps), center/wide/full size the block.
+	const alignmentStyle: React.CSSProperties =
+		alignment === "left"
+			? { float: "left", width: "fit-content", maxWidth: "50%", marginInlineEnd: "1.5rem" }
+			: alignment === "right"
+				? { float: "right", width: "fit-content", maxWidth: "50%", marginInlineStart: "1.5rem" }
+				: alignment === "center"
+					? { width: "fit-content", marginInline: "auto" }
+					: alignment === "wide" || alignment === "full"
+						? { width: "100%" }
+						: {};
+
 	return (
 		<NodeViewWrapper
-			className={cn(
-				"relative my-4 group",
-				selected && "ring-2 ring-kumo-brand ring-offset-2 rounded-lg",
-			)}
+			style={alignmentStyle}
+			onPointerDown={handlePointerDown}
+			className={cn("relative my-4", selected && "ring-2 ring-kumo-brand ring-offset-2 rounded-lg")}
 		>
 			<figure className="relative">
 				<img
@@ -156,7 +199,7 @@ function ImageNodeView({ node, updateAttributes, selected, deleteNode, editor }:
 
 				{/* Selection overlay with actions */}
 				{selected && (
-					<div className="absolute top-2 end-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+					<div className="absolute top-2 end-2 flex gap-1">
 						<Button
 							type="button"
 							variant="secondary"
@@ -241,10 +284,10 @@ function ImageNodeView({ node, updateAttributes, selected, deleteNode, editor }:
 					</div>
 				)}
 
-				{/* Caption display (shows caption if set, falls back to alt) */}
-				{!isEditingAlt && (node.attrs.caption || node.attrs.alt) && (
+				{/* Caption only — must mirror the published renderer (Image.astro) */}
+				{!isEditingAlt && node.attrs.caption && (
 					<figcaption className="text-center text-sm text-kumo-subtle mt-2">
-						{node.attrs.caption || node.attrs.alt}
+						{node.attrs.caption}
 					</figcaption>
 				)}
 			</figure>
@@ -319,10 +362,19 @@ export const ImageExtension = Node.create({
 			height: {
 				default: null,
 			},
+			blurhash: {
+				default: null,
+			},
+			dominantColor: {
+				default: null,
+			},
 			displayWidth: {
 				default: null,
 			},
 			displayHeight: {
+				default: null,
+			},
+			alignment: {
 				default: null,
 			},
 		};
@@ -356,8 +408,11 @@ export const ImageExtension = Node.create({
 					provider?: string;
 					width?: number;
 					height?: number;
+					blurhash?: string;
+					dominantColor?: string;
 					displayWidth?: number;
 					displayHeight?: number;
+					alignment?: "left" | "center" | "right" | "wide" | "full";
 				}) =>
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				({ commands }: any) => {
