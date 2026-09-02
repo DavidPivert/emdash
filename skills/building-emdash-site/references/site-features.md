@@ -258,12 +258,9 @@ Search requires per-collection enablement:
 ## SEO Meta
 
 > [!IMPORTANT]
-> The admin **SEO panel** (SEO title, meta description, OG image, canonical URL,
-> "hide from search engines"/noindex) lives on `entry.data.seo` and is **only
-> honored if your page reads it**. A page that hand-rolls
-> `<title>{entry.data.title}</title>` silently bypasses the entire panel —
-> including the `noindex` toggle. **Every content detail page must wire
-> `getSeoMeta` (or `getContentSeo`), not just the scaffolded `posts` page.**
+> Content detail pages must render metadata from `getSeoMeta`. A template that
+> hard-codes `<title>{entry.data.title}</title>` bypasses the admin SEO panel,
+> including its "hide from search engines" setting.
 
 Generate SEO meta from content entries:
 
@@ -276,37 +273,31 @@ const seo = getSeoMeta(post, {
 	path: `/posts/${slug}`,
 	defaultOgImage: featuredImageUrl, // Optional fallback
 });
-
-// Returns: { title, description, canonical, ogImage, robots }
 ```
 
 Use in your layout's `<head>`:
 
 ```astro
 <title>{seo.title}</title>
-<meta name="description" content={seo.description} />
-<link rel="canonical" href={seo.canonical} />
-<meta property="og:image" content={seo.ogImage} />
+{seo.description && <meta name="description" content={seo.description} />}
+{seo.canonical && <link rel="canonical" href={seo.canonical} />}
+{seo.ogImage && <meta property="og:image" content={seo.ogImage} />}
 {seo.robots && <meta name="robots" content={seo.robots} />}
 ```
 
-### Composing panel overrides with custom defaults
+### Custom title and description defaults
 
-`getSeoMeta` only falls back to `data.title` / `data.excerpt`. If a page computes
-its own title or description (e.g. `"Maeta — {title} (cover of {artist})"`), read
-the raw panel with `getContentSeo` and let it take precedence over your default:
+Pass computed fallbacks through `defaultTitle` and `defaultDescription`. Values
+set in the SEO panel take precedence over these defaults:
 
 ```ts
-import { getContentSeo } from "emdash";
+import { getSeoMeta } from "emdash";
 
-const panel = getContentSeo(entry); // { title, description, image, canonical, noIndex } | undefined
-const title = panel?.title || myComputedTitle;
-const description = panel?.description || myComputedDescription;
-const robots = panel?.noIndex ? "noindex, nofollow" : null;
+const seo = getSeoMeta(post, {
+	defaultTitle: `${post.data.title}: A practical guide`,
+	defaultDescription: `Read ${post.data.title} on My Blog.`,
+});
 ```
-
-This keeps editor-supplied SEO fields authoritative while preserving sensible
-per-page defaults.
 
 ## Comments
 
