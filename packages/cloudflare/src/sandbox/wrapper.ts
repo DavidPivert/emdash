@@ -106,6 +106,9 @@ function createContext(env) {
 	const kv = {
 		get: (key) => bridge.kvGet(key),
 		set: (key, value) => bridge.kvSet(key, value),
+		getVersioned: (key) => bridge.kvGetVersioned(key),
+		compareAndSet: (key, expectedRevision, value) => bridge.kvCompareAndSet(key, expectedRevision, value),
+		compareAndDelete: (key, expectedRevision) => bridge.kvCompareAndDelete(key, expectedRevision),
 		delete: (key) => bridge.kvDelete(key),
 		list: (prefix) => bridge.kvList(prefix)
 	};
@@ -115,6 +118,9 @@ function createContext(env) {
 		return {
 			get: (id) => bridge.storageGet(collectionName, id),
 			put: (id, data) => bridge.storagePut(collectionName, id, data),
+			getVersioned: (id) => bridge.storageGetVersioned(collectionName, id),
+			compareAndSet: (id, expectedRevision, data) => bridge.storageCompareAndSet(collectionName, id, expectedRevision, data),
+			compareAndDelete: (id, expectedRevision) => bridge.storageCompareAndDelete(collectionName, id, expectedRevision),
 			updateIf: async (id, args) => {
 				const result = await bridge.storageUpdateIf(collectionName, id, args);
 				if (result && typeof result === "object" && "__emdashStorageError" in result) {
