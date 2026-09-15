@@ -707,7 +707,7 @@ msgstr ""
 msgid "A publication time has not been selected"
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:728
+#: packages/admin/src/components/ContentEditor.tsx:729
 msgid "A publishing action is already in progress"
 msgstr ""
 
@@ -2085,7 +2085,7 @@ msgstr ""
 msgid "Close panel"
 msgstr "Panel bezárása"
 
-#: packages/admin/src/components/ContentEditor.tsx:1482
+#: packages/admin/src/components/ContentEditor.tsx:1483
 msgid "Close settings"
 msgstr ""
 
@@ -3763,7 +3763,7 @@ msgstr ""
 msgid "Enter a URL (https://…) or a relative path (/…)"
 msgstr "Adj meg egy URL-t (https://…) vagy relatív útvonalat (/…)"
 
-#: packages/admin/src/components/ContentEditor.tsx:1895
+#: packages/admin/src/components/ContentEditor.tsx:1896
 msgid "Enter a valid URL (e.g. https://example.com)"
 msgstr "Adj meg érvényes URL-t (pl. https://example.com)"
 
@@ -3783,7 +3783,7 @@ msgstr "E-mail megadása"
 msgid "Enter HTML..."
 msgstr "HTML megadása..."
 
-#: packages/admin/src/components/ContentEditor.tsx:1667
+#: packages/admin/src/components/ContentEditor.tsx:1668
 msgid "Enter markdown content..."
 msgstr "Markdown tartalom megadása..."
 
@@ -3870,6 +3870,10 @@ msgstr "Létezik"
 #: packages/admin/src/components/ContentEditor.tsx:1096
 msgid "Exit distraction-free mode"
 msgstr "Kilépés a zavarásmentes módból"
+
+#: packages/admin/src/components/ContentEditor.tsx:1097
+msgid "Exit distraction-free mode (⌘⇧\\)"
+msgstr ""
 
 #: packages/admin/src/components/PluginManager.tsx:571
 #: packages/admin/src/components/PluginManager.tsx:576
@@ -4672,11 +4676,11 @@ msgstr ""
 msgid "First-time commenters only"
 msgstr "Csak első hozzászólók"
 
-#: packages/admin/src/components/ContentEditor.tsx:781
+#: packages/admin/src/components/ContentEditor.tsx:782
 msgid "Fix invalid fields before changing the publication date"
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:732
+#: packages/admin/src/components/ContentEditor.tsx:733
 msgid "Fix invalid fields before changing the schedule"
 msgstr ""
 
@@ -5403,7 +5407,7 @@ msgstr ""
 msgid "Invalid invite link"
 msgstr "Érvénytelen meghívólink"
 
-#: packages/admin/src/components/ContentEditor.tsx:1964
+#: packages/admin/src/components/ContentEditor.tsx:1965
 msgid "Invalid JSON"
 msgstr "Érvénytelen JSON"
 
@@ -7785,7 +7789,7 @@ msgstr ""
 
 #: packages/admin/src/components/BlockKitMediaPickerField.tsx:84
 #: packages/admin/src/components/BlockKitMediaPickerField.tsx:115
-#: packages/admin/src/components/ContentEditor.tsx:2124
+#: packages/admin/src/components/ContentEditor.tsx:2125
 #: packages/admin/src/components/editor/GalleryDetailPanel.tsx:471
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:309
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:731
@@ -7821,7 +7825,7 @@ msgstr ""
 msgid "Remove {entry}"
 msgstr "{entry} eltávolítása"
 
-#: packages/admin/src/components/ContentEditor.tsx:2122
+#: packages/admin/src/components/ContentEditor.tsx:2123
 msgid "Remove {label}"
 msgstr "{label} eltávolítása"
 
@@ -7934,8 +7938,8 @@ msgstr "Ismétlő"
 msgid "Repeating group of fields"
 msgstr "Ismétlődő mezőcsoport"
 
-#: packages/admin/src/components/ContentEditor.tsx:2114
-#: packages/admin/src/components/ContentEditor.tsx:2151
+#: packages/admin/src/components/ContentEditor.tsx:2115
+#: packages/admin/src/components/ContentEditor.tsx:2152
 #: packages/admin/src/components/editor/GalleryDetailPanel.tsx:447
 #: packages/admin/src/components/editor/GalleryDetailPanel.tsx:504
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:250
@@ -7948,7 +7952,7 @@ msgstr "Ismétlődő mezőcsoport"
 msgid "Replace"
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:2150
+#: packages/admin/src/components/ContentEditor.tsx:2151
 #: packages/admin/src/components/ImageFieldRenderer.tsx:571
 msgid "Replace {label}"
 msgstr ""
@@ -8092,7 +8096,7 @@ msgstr ""
 msgid "Resize crop from top-right corner. Use the Arrow keys to resize."
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:1304
+#: packages/admin/src/components/ContentEditor.tsx:1305
 msgid "Resize settings panel"
 msgstr ""
 
@@ -8345,7 +8349,7 @@ msgstr "Mentés (Enter)"
 msgid "Save alt text"
 msgstr "Alternatív szöveg mentése"
 
-#: packages/admin/src/components/ContentEditor.tsx:1120
+#: packages/admin/src/components/ContentEditor.tsx:1121
 msgid "Save anyway"
 msgstr ""
 
@@ -8752,8 +8756,8 @@ msgid "Select"
 msgstr "Kiválasztás"
 
 #: packages/admin/src/components/BlockKitMediaPickerField.tsx:140
-#: packages/admin/src/components/ContentEditor.tsx:2134
-#: packages/admin/src/components/ContentEditor.tsx:2150
+#: packages/admin/src/components/ContentEditor.tsx:2135
+#: packages/admin/src/components/ContentEditor.tsx:2151
 #: packages/admin/src/components/ImageFieldRenderer.tsx:572
 msgid "Select {label}"
 msgstr "{label} kiválasztása"
@@ -8815,7 +8819,7 @@ msgstr ""
 msgid "Select Favicon"
 msgstr "Favicon kiválasztása"
 
-#: packages/admin/src/components/ContentEditor.tsx:2138
+#: packages/admin/src/components/ContentEditor.tsx:2139
 #: packages/admin/src/components/MediaPickerModal.tsx:228
 msgid "Select file"
 msgstr "Fájl kiválasztása"
@@ -9003,8 +9007,8 @@ msgid "Setting up..."
 msgstr "Beállítás..."
 
 #: packages/admin/src/components/AdminCommandPalette.tsx:234
-#: packages/admin/src/components/ContentEditor.tsx:1169
-#: packages/admin/src/components/ContentEditor.tsx:1468
+#: packages/admin/src/components/ContentEditor.tsx:1170
+#: packages/admin/src/components/ContentEditor.tsx:1469
 #: packages/admin/src/components/ContentTypeEditor.tsx:392
 #: packages/admin/src/components/Header.tsx:101
 #: packages/admin/src/components/PluginManager.tsx:543
@@ -9330,7 +9334,7 @@ msgstr ""
 msgid "Start Import"
 msgstr "Import indítása"
 
-#: packages/admin/src/components/ContentEditor.tsx:1640
+#: packages/admin/src/components/ContentEditor.tsx:1641
 #: packages/admin/src/components/PortableTextEditor.tsx:2757
 #: packages/admin/src/components/PortableTextEditor.tsx:2758
 msgid "Start writing, or type '/' for commands"
@@ -9700,7 +9704,7 @@ msgstr ""
 msgid "This doesn't look like a valid migration key. Generate a new one in the plugin and paste the full string starting with \"em1.\"."
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:1116
+#: packages/admin/src/components/ContentEditor.tsx:1117
 msgid "This entry changed somewhere else after you opened it."
 msgstr ""
 
@@ -9725,7 +9729,7 @@ msgstr ""
 msgid "This field does not accept {mimeType} files."
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:2154
+#: packages/admin/src/components/ContentEditor.tsx:2155
 #: packages/admin/src/components/ImageFieldRenderer.tsx:591
 msgid "This field is required"
 msgstr "Ez a mező kötelező"
@@ -10224,7 +10228,7 @@ msgstr ""
 msgid "Untitled"
 msgstr "Cím nélküli"
 
-#: packages/admin/src/components/ContentEditor.tsx:2056
+#: packages/admin/src/components/ContentEditor.tsx:2057
 msgid "Untitled file"
 msgstr "Cím nélküli fájl"
 
@@ -10484,7 +10488,7 @@ msgstr "Tartalék Open Graph képként használatos, ha az oldalhoz nincs kép m
 msgid "Used as the identifier. Lowercase letters, numbers, and underscores only."
 msgstr "Azonosítóként használatos. Csak kisbetűk, számok és aláhúzások."
 
-#: packages/admin/src/components/ContentEditor.tsx:1744
+#: packages/admin/src/components/ContentEditor.tsx:1745
 msgid "Used as the main visual for this post on listing pages and at the top of the post"
 msgstr "A bejegyzés fő vizuális elemeként használatos a listanézetekben és a bejegyzés tetején"
 
@@ -10721,7 +10725,7 @@ msgstr ""
 msgid "What will happen when you import"
 msgstr "Mi fog történni importáláskor"
 
-#: packages/admin/src/components/ContentEditor.tsx:1117
+#: packages/admin/src/components/ContentEditor.tsx:1118
 msgid "What you typed is still here. Saving replaces the newer version."
 msgstr ""
 
