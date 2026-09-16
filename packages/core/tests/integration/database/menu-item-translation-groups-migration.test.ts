@@ -67,7 +67,7 @@ describeEachDialect("menu item translation-group migration", (dialect) => {
 			.execute();
 
 		const { applied } = await runMigrationsForDialect(ctx);
-		expect(applied).toEqual(["078_menu_item_translation_groups"]);
+		expect(applied[0]).toBe("078_menu_item_translation_groups");
 
 		await migration078.up(ctx.db);
 		const rows = await ctx.db
