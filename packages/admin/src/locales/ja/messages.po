@@ -64,17 +64,17 @@ msgstr "（対応バージョンより新しい）"
 #. placeholder {0}: items.length
 #. placeholder {0}: orphan.rowCount
 #: packages/admin/src/components/ContentTypeList.tsx:147
-#: packages/admin/src/components/RepeaterField.tsx:152
+#: packages/admin/src/components/RepeaterField.tsx:154
 msgid "{0, plural, one {(# item)} other {(# items)}}"
 msgstr "{0, plural, one {（#件）} other {（#件）}}"
 
 #. placeholder {0}: bounds.max
-#: packages/admin/src/components/ContentEditor.tsx:1943
+#: packages/admin/src/components/ContentEditor.tsx:1956
 msgid "{0, plural, one {{counted} of # character, at least {min}} other {{counted} of # characters, at least {min}}}"
 msgstr ""
 
 #. placeholder {0}: bounds.max
-#: packages/admin/src/components/ContentEditor.tsx:1948
+#: packages/admin/src/components/ContentEditor.tsx:1961
 msgid "{0, plural, one {{counted} of # character} other {{counted} of # characters}}"
 msgstr ""
 
@@ -96,7 +96,7 @@ msgid "{0, plural, one {# comment imported} other {# comments imported}}"
 msgstr "{0, plural, one {#件のコメントをインポート} other {#件のコメントをインポート}}"
 
 #. placeholder {0}: result.affected
-#: packages/admin/src/router.tsx:2084
+#: packages/admin/src/router.tsx:2086
 msgid "{0, plural, one {# comment updated} other {# comments updated}}"
 msgstr "{0, plural, one {#件のコメントを更新} other {#件のコメントを更新}}"
 
@@ -224,7 +224,7 @@ msgid "{0, plural, one {Add # image} other {Add # images}}"
 msgstr ""
 
 #. placeholder {0}: bounds.min
-#: packages/admin/src/components/ContentEditor.tsx:1953
+#: packages/admin/src/components/ContentEditor.tsx:1966
 msgid "{0, plural, one {At least # character} other {At least # characters}}"
 msgstr ""
 
@@ -722,11 +722,11 @@ msgstr "同じ名前のメディアフォルダーが既に存在します"
 msgid "A publication time has not been selected"
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:730
+#: packages/admin/src/components/ContentEditor.tsx:733
 msgid "A publishing action is already in progress"
 msgstr ""
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:176
+#: packages/admin/src/components/settings/GeneralSettings.tsx:177
 msgid "A short description of your site"
 msgstr "サイトの概要"
 
@@ -759,7 +759,7 @@ msgstr "招待を承諾"
 msgid "Access denied"
 msgstr "アクセスが拒否されました"
 
-#: packages/admin/src/router.tsx:2104
+#: packages/admin/src/router.tsx:2106
 msgid "Access Denied"
 msgstr "アクセスが拒否されました"
 
@@ -894,7 +894,7 @@ msgstr "フィールドを追加してコンテンツの構造を定義します
 msgid "Add First Field"
 msgstr "最初のフィールドを追加"
 
-#: packages/admin/src/components/RepeaterField.tsx:174
+#: packages/admin/src/components/RepeaterField.tsx:176
 msgid "Add First Item"
 msgstr "最初の項目を追加"
 
@@ -910,7 +910,7 @@ msgstr "ギャラリーに画像を追加"
 msgid "Add item"
 msgstr "項目を追加"
 
-#: packages/admin/src/components/RepeaterField.tsx:158
+#: packages/admin/src/components/RepeaterField.tsx:160
 msgid "Add Item"
 msgstr "項目を追加"
 
@@ -1185,9 +1185,9 @@ msgstr ""
 #: packages/admin/src/components/settings/BackupSettings.tsx:123
 #: packages/admin/src/components/settings/BackupSettings.tsx:166
 #: packages/admin/src/components/settings/EmailSettings.tsx:45
-#: packages/admin/src/components/settings/GeneralSettings.tsx:78
-#: packages/admin/src/components/settings/GeneralSettings.tsx:140
+#: packages/admin/src/components/settings/GeneralSettings.tsx:79
 #: packages/admin/src/components/settings/GeneralSettings.tsx:141
+#: packages/admin/src/components/settings/GeneralSettings.tsx:142
 #: packages/admin/src/components/settings/SecuritySettings.tsx:51
 #: packages/admin/src/components/settings/SecuritySettings.tsx:67
 #: packages/admin/src/components/settings/SecuritySettings.tsx:124
@@ -1205,19 +1205,19 @@ msgstr ""
 #: packages/admin/src/router.tsx:500
 #: packages/admin/src/router.tsx:514
 #: packages/admin/src/router.tsx:738
-#: packages/admin/src/router.tsx:1074
-#: packages/admin/src/router.tsx:1161
-#: packages/admin/src/router.tsx:1186
-#: packages/admin/src/router.tsx:1210
-#: packages/admin/src/router.tsx:1234
-#: packages/admin/src/router.tsx:1280
-#: packages/admin/src/router.tsx:1299
-#: packages/admin/src/router.tsx:1330
-#: packages/admin/src/router.tsx:1351
-#: packages/admin/src/router.tsx:2049
-#: packages/admin/src/router.tsx:2065
-#: packages/admin/src/router.tsx:2090
-#: packages/admin/src/router.tsx:2615
+#: packages/admin/src/router.tsx:1075
+#: packages/admin/src/router.tsx:1162
+#: packages/admin/src/router.tsx:1187
+#: packages/admin/src/router.tsx:1211
+#: packages/admin/src/router.tsx:1235
+#: packages/admin/src/router.tsx:1281
+#: packages/admin/src/router.tsx:1300
+#: packages/admin/src/router.tsx:1331
+#: packages/admin/src/router.tsx:1352
+#: packages/admin/src/router.tsx:2051
+#: packages/admin/src/router.tsx:2067
+#: packages/admin/src/router.tsx:2092
+#: packages/admin/src/router.tsx:2617
 #: packages/admin/src/routes/byline-schema.tsx:103
 #: packages/admin/src/routes/byline-schema.tsx:123
 #: packages/admin/src/routes/byline-schema.tsx:139
@@ -1354,11 +1354,11 @@ msgstr "WordPressの投稿者をEmDashユーザーに割り当てます。選択
 msgid "Astro"
 msgstr "Astro"
 
-#: packages/admin/src/components/ContentEditor.tsx:1976
+#: packages/admin/src/components/ContentEditor.tsx:1989
 msgid "At least {min}"
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:1973
+#: packages/admin/src/components/ContentEditor.tsx:1986
 msgid "At most {max}"
 msgstr ""
 
@@ -1461,7 +1461,7 @@ msgstr "自動バックアップ"
 msgid "Automatic backups need a storage backend (R2, S3, or local storage). Configure storage in your EmDash config to enable them."
 msgstr "自動バックアップにはストレージバックエンド（R2、S3、またはローカルストレージ）が必要です。有効にするにはEmDashの設定でストレージを構成してください。"
 
-#: packages/admin/src/router.tsx:1160
+#: packages/admin/src/router.tsx:1161
 msgid "Autosave failed"
 msgstr "自動保存に失敗しました"
 
@@ -1500,7 +1500,7 @@ msgstr "アバター"
 msgid "Back"
 msgstr "戻る"
 
-#: packages/admin/src/components/ContentEditor.tsx:956
+#: packages/admin/src/components/ContentEditor.tsx:959
 msgid "Back to {collectionLabel} list"
 msgstr "{collectionLabel}一覧へ戻る"
 
@@ -1582,7 +1582,7 @@ msgstr "送信前："
 msgid "Before you continue:"
 msgstr "続行する前に、次の点を確認してください。"
 
-#: packages/admin/src/components/ContentEditor.tsx:1970
+#: packages/admin/src/components/ContentEditor.tsx:1983
 msgid "Between {min} and {max}"
 msgstr ""
 
@@ -1837,7 +1837,7 @@ msgstr "変更"
 msgid "Change <0>{0}</0> from <1>{1}</1> to <2>{2}</2>? They will lose access to higher-level features."
 msgstr "<0>{0}</0>を<1>{1}</1>から<2>{2}</2>に変更しますか？上位レベルの機能にアクセスできなくなります。"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:280
+#: packages/admin/src/components/settings/GeneralSettings.tsx:281
 msgid "Change Favicon"
 msgstr "ファビコンを変更"
 
@@ -1845,7 +1845,7 @@ msgstr "ファビコンを変更"
 msgid "Change Image"
 msgstr "画像を変更"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:220
+#: packages/admin/src/components/settings/GeneralSettings.tsx:221
 msgid "Change Logo"
 msgstr "ロゴを変更"
 
@@ -1870,7 +1870,7 @@ msgstr "更新履歴"
 msgid "Changes apply everywhere this byline appears."
 msgstr ""
 
-#: packages/admin/src/router.tsx:1226
+#: packages/admin/src/router.tsx:1227
 msgid "Changes discarded"
 msgstr "変更を破棄しました"
 
@@ -2112,7 +2112,7 @@ msgstr ""
 msgid "Close panel"
 msgstr "パネルを閉じる"
 
-#: packages/admin/src/components/ContentEditor.tsx:1484
+#: packages/admin/src/components/ContentEditor.tsx:1488
 msgid "Close settings"
 msgstr "設定を閉じる"
 
@@ -2298,7 +2298,7 @@ msgstr "コンテンツエラー（{0}）"
 msgid "Content found:"
 msgstr "検出されたコンテンツ："
 
-#: packages/admin/src/router.tsx:1273
+#: packages/admin/src/router.tsx:1274
 msgid "Content has been scheduled for publishing"
 msgstr "コンテンツの公開を予約しました"
 
@@ -2310,7 +2310,7 @@ msgstr "選択した版の内容に更新しました。"
 msgid "Content ID:"
 msgstr "コンテンツID："
 
-#: packages/admin/src/router.tsx:1180
+#: packages/admin/src/router.tsx:1181
 msgid "Content is now live"
 msgstr "コンテンツを公開しました"
 
@@ -2322,11 +2322,11 @@ msgstr "コンテンツの言語"
 msgid "Content Read"
 msgstr "コンテンツの読み取り"
 
-#: packages/admin/src/router.tsx:1204
+#: packages/admin/src/router.tsx:1205
 msgid "Content removed from public view"
 msgstr "コンテンツを公開表示から外しました"
 
-#: packages/admin/src/router.tsx:1292
+#: packages/admin/src/router.tsx:1293
 msgid "Content reverted to draft"
 msgstr "コンテンツを下書きに戻しました"
 
@@ -2706,7 +2706,7 @@ msgid "Created {0}"
 msgstr "作成日時：{0}"
 
 #. placeholder {0}: result.locale?.toUpperCase() ?? t`new`
-#: packages/admin/src/router.tsx:1324
+#: packages/admin/src/router.tsx:1325
 msgid "Created {0} translation"
 msgstr "{0}の翻訳を作成しました"
 
@@ -2833,7 +2833,7 @@ msgstr "日付と時刻を選択"
 msgid "Date field to filter on"
 msgstr "絞り込み対象の日付"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:324
+#: packages/admin/src/components/settings/GeneralSettings.tsx:325
 msgid "Date Format"
 msgstr "日付形式"
 
@@ -3307,7 +3307,7 @@ msgstr "タグクラウドを表示"
 msgid "Displayed below the image as a visible caption."
 msgstr "画像の下にキャプションとして表示されます。"
 
-#: packages/admin/src/components/ContentEditor.tsx:1030
+#: packages/admin/src/components/ContentEditor.tsx:1033
 msgid "Distraction-free mode (⌘⇧\\)"
 msgstr "集中モード（⌘⇧\\）"
 
@@ -3533,7 +3533,7 @@ msgstr "{0}を編集"
 msgid "Edit {0} field"
 msgstr "{0}フィールドを編集"
 
-#: packages/admin/src/components/ContentEditor.tsx:963
+#: packages/admin/src/components/ContentEditor.tsx:966
 msgid "Edit {itemLabel}"
 msgstr "{itemLabel}を編集"
 
@@ -3790,7 +3790,7 @@ msgstr ""
 msgid "Enter a URL (https://…) or a relative path (/…)"
 msgstr "URL（https://…）または相対パス（/…）を入力"
 
-#: packages/admin/src/components/ContentEditor.tsx:2017
+#: packages/admin/src/components/ContentEditor.tsx:2030
 msgid "Enter a valid URL (e.g. https://example.com)"
 msgstr "有効なURL（例：https://example.com）を入力"
 
@@ -3798,7 +3798,7 @@ msgstr "有効なURL（例：https://example.com）を入力"
 msgid "Enter credentials manually"
 msgstr "認証情報を手動で入力"
 
-#: packages/admin/src/components/ContentEditor.tsx:1029
+#: packages/admin/src/components/ContentEditor.tsx:1032
 msgid "Enter distraction-free mode"
 msgstr "集中モードに入る"
 
@@ -3810,7 +3810,7 @@ msgstr "メールアドレスを入力"
 msgid "Enter HTML..."
 msgstr "HTMLを入力…"
 
-#: packages/admin/src/components/ContentEditor.tsx:1700
+#: packages/admin/src/components/ContentEditor.tsx:1706
 msgid "Enter markdown content..."
 msgstr "マークダウンを入力…"
 
@@ -3845,7 +3845,7 @@ msgstr "WordPressサイトのURLを入力"
 #: packages/admin/src/components/SetupWizard.tsx:532
 #: packages/admin/src/components/TaxonomyManager.tsx:947
 #: packages/admin/src/components/Widgets.tsx:769
-#: packages/admin/src/router.tsx:2831
+#: packages/admin/src/router.tsx:2833
 msgid "Error"
 msgstr "エラー"
 
@@ -3878,7 +3878,7 @@ msgid "Every published release of this plugin has been withdrawn or could not be
 msgstr "このプラグインのリリースはすべて撤回されたか、確認できませんでした。時間をおいて再度確認するか、提供元にお問い合わせください。"
 
 #. placeholder {0}: formData.dateFormat ?? "MMMM d, yyyy"
-#: packages/admin/src/components/settings/GeneralSettings.tsx:327
+#: packages/admin/src/components/settings/GeneralSettings.tsx:328
 msgid "Example: {0} → January 23, 2026"
 msgstr "例：{0} → 2026年1月23日"
 
@@ -3894,11 +3894,11 @@ msgstr "既存コンテンツの確認が完了しました。今後、メディ
 msgid "Exists"
 msgstr "既存"
 
-#: packages/admin/src/components/ContentEditor.tsx:1097
+#: packages/admin/src/components/ContentEditor.tsx:1100
 msgid "Exit distraction-free mode"
 msgstr "集中モードを終了"
 
-#: packages/admin/src/components/ContentEditor.tsx:1098
+#: packages/admin/src/components/ContentEditor.tsx:1101
 msgid "Exit distraction-free mode (⌘⇧\\)"
 msgstr ""
 
@@ -3990,14 +3990,14 @@ msgid "Failed to create term"
 msgstr "分類項目の作成に失敗しました"
 
 #: packages/admin/src/components/TaxonomySidebar.tsx:475
-#: packages/admin/src/router.tsx:1329
+#: packages/admin/src/router.tsx:1330
 msgid "Failed to create translation"
 msgstr "翻訳の作成に失敗しました"
 
 #: packages/admin/src/router.tsx:470
 #: packages/admin/src/router.tsx:499
 #: packages/admin/src/router.tsx:582
-#: packages/admin/src/router.tsx:1350
+#: packages/admin/src/router.tsx:1351
 msgid "Failed to delete"
 msgstr "削除に失敗しました"
 
@@ -4022,7 +4022,7 @@ msgid "Failed to delete collection"
 msgstr "コンテンツタイプの削除に失敗しました"
 
 #: packages/admin/src/lib/api/comments.ts:111
-#: packages/admin/src/router.tsx:2064
+#: packages/admin/src/router.tsx:2066
 msgid "Failed to delete comment"
 msgstr "コメントの削除に失敗しました"
 
@@ -4092,7 +4092,7 @@ msgstr "検索の無効化に失敗しました"
 msgid "Failed to disable user"
 msgstr "ユーザーの無効化に失敗しました"
 
-#: packages/admin/src/router.tsx:1233
+#: packages/admin/src/router.tsx:1234
 msgid "Failed to discard changes"
 msgstr "変更の破棄に失敗しました"
 
@@ -4121,7 +4121,7 @@ msgstr "ユーザーの有効化に失敗しました"
 msgid "Failed to execute import"
 msgstr "インポートの実行に失敗しました"
 
-#: packages/admin/src/lib/api/client.ts:334
+#: packages/admin/src/lib/api/client.ts:336
 msgid "Failed to fetch auth mode"
 msgstr "認証モードの取得に失敗しました"
 
@@ -4146,7 +4146,7 @@ msgstr "メール設定の取得に失敗しました"
 msgid "Failed to fetch entry terms"
 msgstr "コンテンツに設定された分類項目の取得に失敗しました"
 
-#: packages/admin/src/lib/api/client.ts:317
+#: packages/admin/src/lib/api/client.ts:319
 msgid "Failed to fetch manifest"
 msgstr "マニフェストの取得に失敗しました"
 
@@ -4219,8 +4219,8 @@ msgstr "分類項目の取得に失敗しました"
 #: packages/admin/src/lib/api/current-user.ts:22
 #: packages/admin/src/lib/api/users.ts:88
 #: packages/admin/src/lib/api/users.ts:93
-#: packages/admin/src/router.tsx:956
-#: packages/admin/src/router.tsx:1995
+#: packages/admin/src/router.tsx:957
+#: packages/admin/src/router.tsx:1997
 msgid "Failed to fetch user"
 msgstr "ユーザーの取得に失敗しました"
 
@@ -4335,7 +4335,7 @@ msgstr "ウィジェットの読み込みに失敗しました"
 msgid "Failed to lock the entry"
 msgstr ""
 
-#: packages/admin/src/router.tsx:2089
+#: packages/admin/src/router.tsx:2091
 msgid "Failed to perform bulk action"
 msgstr "一括操作に失敗しました"
 
@@ -4348,7 +4348,7 @@ msgid "Failed to prepare import"
 msgstr "インポートの準備に失敗しました"
 
 #: packages/admin/src/router.tsx:538
-#: packages/admin/src/router.tsx:1185
+#: packages/admin/src/router.tsx:1186
 msgid "Failed to publish"
 msgstr "公開に失敗しました"
 
@@ -4420,8 +4420,8 @@ msgid "Failed to rewrite URLs"
 msgstr "URLの書き換えに失敗しました"
 
 #: packages/admin/src/router.tsx:737
-#: packages/admin/src/router.tsx:1073
-#: packages/admin/src/router.tsx:2614
+#: packages/admin/src/router.tsx:1074
+#: packages/admin/src/router.tsx:2616
 msgid "Failed to save"
 msgstr "保存に失敗しました"
 
@@ -4434,13 +4434,13 @@ msgid "Failed to save field"
 msgstr "項目を保存できませんでした"
 
 #: packages/admin/src/components/PluginSettings.tsx:74
-#: packages/admin/src/components/settings/GeneralSettings.tsx:77
+#: packages/admin/src/components/settings/GeneralSettings.tsx:78
 #: packages/admin/src/components/settings/SeoSettings.tsx:76
 #: packages/admin/src/components/settings/SocialSettings.tsx:66
 msgid "Failed to save settings"
 msgstr "設定の保存に失敗しました"
 
-#: packages/admin/src/router.tsx:1279
+#: packages/admin/src/router.tsx:1280
 msgid "Failed to schedule"
 msgstr "公開予約に失敗しました"
 
@@ -4471,11 +4471,11 @@ msgstr "コンテンツへの分類項目の設定に失敗しました"
 msgid "Failed to uninstall plugin"
 msgstr "プラグインのアンインストールに失敗しました"
 
-#: packages/admin/src/router.tsx:1209
+#: packages/admin/src/router.tsx:1210
 msgid "Failed to unpublish"
 msgstr "非公開化に失敗しました"
 
-#: packages/admin/src/router.tsx:1298
+#: packages/admin/src/router.tsx:1299
 msgid "Failed to unschedule"
 msgstr "公開予約の解除に失敗しました"
 
@@ -4526,7 +4526,7 @@ msgstr "セクションの更新に失敗しました"
 msgid "Failed to update settings"
 msgstr "設定の更新に失敗しました"
 
-#: packages/admin/src/router.tsx:2048
+#: packages/admin/src/router.tsx:2050
 msgid "Failed to update status"
 msgstr "ステータスの更新に失敗しました"
 
@@ -4558,8 +4558,8 @@ msgstr "登録の検証に失敗しました"
 msgid "FAQ"
 msgstr "よくある質問"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:251
-#: packages/admin/src/components/settings/GeneralSettings.tsx:258
+#: packages/admin/src/components/settings/GeneralSettings.tsx:252
+#: packages/admin/src/components/settings/GeneralSettings.tsx:259
 msgid "Favicon"
 msgstr "ファビコン"
 
@@ -4703,11 +4703,11 @@ msgstr ""
 msgid "First-time commenters only"
 msgstr "初回コメント投稿者のみ"
 
-#: packages/admin/src/components/ContentEditor.tsx:783
+#: packages/admin/src/components/ContentEditor.tsx:786
 msgid "Fix invalid fields before changing the publication date"
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:734
+#: packages/admin/src/components/ContentEditor.tsx:737
 msgid "Fix invalid fields before changing the schedule"
 msgstr ""
 
@@ -4733,7 +4733,7 @@ msgstr "フォルダーを削除しました"
 msgid "Folder name must be between 1 and 200 characters"
 msgstr "フォルダー名は1～200文字で入力してください"
 
-#: packages/admin/src/router.tsx:1718
+#: packages/admin/src/router.tsx:1720
 msgid "Folder no longer exists"
 msgstr "フォルダーが見つかりません"
 
@@ -4829,7 +4829,7 @@ msgstr "ギャラリー設定"
 msgid "General"
 msgstr "一般"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:118
+#: packages/admin/src/components/settings/GeneralSettings.tsx:119
 msgid "General Settings"
 msgstr "一般設定"
 
@@ -4858,7 +4858,7 @@ msgid "Go"
 msgstr "Go"
 
 #: packages/admin/src/components/WordPressImport.tsx:2434
-#: packages/admin/src/router.tsx:2851
+#: packages/admin/src/router.tsx:2853
 msgid "Go to Dashboard"
 msgstr "ダッシュボードへ"
 
@@ -5434,7 +5434,7 @@ msgstr ""
 msgid "Invalid invite link"
 msgstr "無効な招待リンク"
 
-#: packages/admin/src/components/ContentEditor.tsx:2086
+#: packages/admin/src/components/ContentEditor.tsx:2099
 msgid "Invalid JSON"
 msgstr "無効なJSON"
 
@@ -5482,7 +5482,7 @@ msgstr "斜体"
 
 #. placeholder {0}: index + 1
 #: packages/admin/src/components/PortableTextEditor.tsx:2465
-#: packages/admin/src/components/RepeaterField.tsx:239
+#: packages/admin/src/components/RepeaterField.tsx:244
 msgid "Item {0}"
 msgstr "項目{0}"
 
@@ -5713,8 +5713,8 @@ msgstr "リスト表示"
 msgid "Live version"
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:1003
-#: packages/admin/src/components/ContentEditor.tsx:1054
+#: packages/admin/src/components/ContentEditor.tsx:1006
+#: packages/admin/src/components/ContentEditor.tsx:1057
 #: packages/admin/src/components/ContentSettingsPanel.tsx:660
 msgid "Live View"
 msgstr "ライブビュー"
@@ -5743,7 +5743,7 @@ msgstr "さらに読み込む"
 msgid "Load more folders"
 msgstr "さらにフォルダーを読み込む"
 
-#: packages/admin/src/router.tsx:2806
+#: packages/admin/src/router.tsx:2808
 msgid "Loading"
 msgstr "読み込み中"
 
@@ -5759,8 +5759,8 @@ msgstr "コンテンツタイプを読み込み中…"
 msgid "Loading comments..."
 msgstr "コメントを読み込み中…"
 
-#: packages/admin/src/router.tsx:2808
-#: packages/admin/src/router.tsx:2820
+#: packages/admin/src/router.tsx:2810
+#: packages/admin/src/router.tsx:2822
 msgid "Loading configuration..."
 msgstr "設定を読み込み中…"
 
@@ -5812,7 +5812,7 @@ msgid "Loading sections..."
 msgstr "セクションを読み込み中…"
 
 #: packages/admin/src/components/PluginSettings.tsx:131
-#: packages/admin/src/components/settings/GeneralSettings.tsx:129
+#: packages/admin/src/components/settings/GeneralSettings.tsx:130
 #: packages/admin/src/components/settings/SeoSettings.tsx:128
 #: packages/admin/src/components/settings/SocialSettings.tsx:100
 msgid "Loading settings..."
@@ -5902,8 +5902,8 @@ msgstr "保存済みの値があるため、このフィールドはロックさ
 msgid "Log out"
 msgstr "ログアウト"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:191
-#: packages/admin/src/components/settings/GeneralSettings.tsx:198
+#: packages/admin/src/components/settings/GeneralSettings.tsx:192
+#: packages/admin/src/components/settings/GeneralSettings.tsx:199
 msgid "Logo"
 msgstr "ロゴ"
 
@@ -6469,7 +6469,7 @@ msgstr "対応が必要"
 msgid "Never"
 msgstr "ログイン履歴なし"
 
-#: packages/admin/src/router.tsx:1324
+#: packages/admin/src/router.tsx:1325
 msgid "new"
 msgstr "新規"
 
@@ -6486,7 +6486,7 @@ msgstr "新規"
 msgid "New {0}"
 msgstr "新しい{0}"
 
-#: packages/admin/src/components/ContentEditor.tsx:963
+#: packages/admin/src/components/ContentEditor.tsx:966
 msgid "New {itemLabel}"
 msgstr "新しい{itemLabel}"
 
@@ -6733,7 +6733,7 @@ msgid "No invite token provided"
 msgstr "招待トークンが指定されていません"
 
 #: packages/admin/src/components/PortableTextEditor.tsx:2388
-#: packages/admin/src/components/RepeaterField.tsx:165
+#: packages/admin/src/components/RepeaterField.tsx:167
 #: packages/admin/src/components/settings/BackupSettings.tsx:283
 msgid "No items yet"
 msgstr "項目はまだありません"
@@ -6843,7 +6843,7 @@ msgid "No redirects yet"
 msgstr "リダイレクトはまだありません"
 
 #: packages/admin/src/components/PortableTextEditor.tsx:1944
-#: packages/admin/src/components/RepeaterField.tsx:374
+#: packages/admin/src/components/RepeaterField.tsx:387
 msgid "No results"
 msgstr "一致する項目はありません"
 
@@ -6938,7 +6938,7 @@ msgstr "数値"
 msgid "Number of posts"
 msgstr "表示する投稿数"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:319
+#: packages/admin/src/components/settings/GeneralSettings.tsx:320
 msgid "Number of posts to show per page on list views"
 msgstr "一覧表示でページあたりに表示する投稿数"
 
@@ -7133,7 +7133,7 @@ msgstr "投稿者"
 msgid "Package"
 msgstr "パッケージ"
 
-#: packages/admin/src/router.tsx:2846
+#: packages/admin/src/router.tsx:2848
 msgid "Page Not Found"
 msgstr "ページが見つかりません"
 
@@ -7424,7 +7424,7 @@ msgstr "プラグインレジストリ"
 msgid "Plugin registry configuration error"
 msgstr ""
 
-#: packages/admin/src/router.tsx:2297
+#: packages/admin/src/router.tsx:2299
 msgid "Plugin registry is not configured."
 msgstr ""
 
@@ -7490,7 +7490,7 @@ msgstr "投稿"
 msgid "Posts & Pages"
 msgstr "投稿とページ"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:313
+#: packages/admin/src/components/settings/GeneralSettings.tsx:314
 msgid "Posts Per Page"
 msgstr "1ページあたりの投稿数"
 
@@ -7604,7 +7604,7 @@ msgstr ""
 #: packages/admin/src/components/ContentList.tsx:870
 #: packages/admin/src/components/ContentStatusBadge.tsx:59
 #: packages/admin/src/components/Dashboard.tsx:298
-#: packages/admin/src/router.tsx:1180
+#: packages/admin/src/router.tsx:1181
 msgid "Published"
 msgstr "公開済み"
 
@@ -7702,7 +7702,7 @@ msgstr "分類グループと分類項目を読み取る"
 msgid "Read-only"
 msgstr ""
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:310
+#: packages/admin/src/components/settings/GeneralSettings.tsx:311
 msgid "Reading"
 msgstr "表示設定"
 
@@ -7760,7 +7760,7 @@ msgstr "やり直す"
 msgid "Reference"
 msgstr "参照"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:269
+#: packages/admin/src/components/settings/GeneralSettings.tsx:270
 msgid "Referenced favicon unavailable."
 msgstr "参照先のファビコンを利用できません。"
 
@@ -7816,7 +7816,7 @@ msgstr "EmDashを更新した後、ページを再読み込みしてからもう
 
 #: packages/admin/src/components/BlockKitMediaPickerField.tsx:84
 #: packages/admin/src/components/BlockKitMediaPickerField.tsx:115
-#: packages/admin/src/components/ContentEditor.tsx:2246
+#: packages/admin/src/components/ContentEditor.tsx:2259
 #: packages/admin/src/components/editor/GalleryDetailPanel.tsx:471
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:309
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:731
@@ -7825,8 +7825,8 @@ msgstr "EmDashを更新した後、ページを再読み込みしてからもう
 #: packages/admin/src/components/ImageFieldRenderer.tsx:438
 #: packages/admin/src/components/media/MediaBrowserItems.tsx:221
 #: packages/admin/src/components/PortableTextEditor.tsx:4700
-#: packages/admin/src/components/settings/GeneralSettings.tsx:229
-#: packages/admin/src/components/settings/GeneralSettings.tsx:289
+#: packages/admin/src/components/settings/GeneralSettings.tsx:230
+#: packages/admin/src/components/settings/GeneralSettings.tsx:290
 #: packages/admin/src/components/settings/PasskeyItem.tsx:180
 #: packages/admin/src/components/settings/PasskeyItem.tsx:202
 #: packages/admin/src/components/settings/SeoSettings.tsx:212
@@ -7852,7 +7852,7 @@ msgstr ""
 msgid "Remove {entry}"
 msgstr "{entry}を削除"
 
-#: packages/admin/src/components/ContentEditor.tsx:2244
+#: packages/admin/src/components/ContentEditor.tsx:2257
 msgid "Remove {label}"
 msgstr "{label}を削除"
 
@@ -7893,7 +7893,7 @@ msgstr ""
 
 #. placeholder {0}: index + 1
 #: packages/admin/src/components/PortableTextEditor.tsx:2504
-#: packages/admin/src/components/RepeaterField.tsx:275
+#: packages/admin/src/components/RepeaterField.tsx:280
 msgid "Remove item {0}"
 msgstr "項目{0}を削除"
 
@@ -7965,8 +7965,8 @@ msgstr "リピーター"
 msgid "Repeating group of fields"
 msgstr "繰り返しフィールドグループ"
 
-#: packages/admin/src/components/ContentEditor.tsx:2236
-#: packages/admin/src/components/ContentEditor.tsx:2273
+#: packages/admin/src/components/ContentEditor.tsx:2249
+#: packages/admin/src/components/ContentEditor.tsx:2286
 #: packages/admin/src/components/editor/GalleryDetailPanel.tsx:447
 #: packages/admin/src/components/editor/GalleryDetailPanel.tsx:504
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:250
@@ -7979,7 +7979,7 @@ msgstr "繰り返しフィールドグループ"
 msgid "Replace"
 msgstr "置き換え"
 
-#: packages/admin/src/components/ContentEditor.tsx:2272
+#: packages/admin/src/components/ContentEditor.tsx:2285
 #: packages/admin/src/components/ImageFieldRenderer.tsx:571
 msgid "Replace {label}"
 msgstr ""
@@ -8036,7 +8036,7 @@ msgstr "リポジトリ"
 msgid "Request a new link"
 msgstr "新しいリンクをリクエスト"
 
-#: packages/admin/src/lib/api/client.ts:305
+#: packages/admin/src/lib/api/client.ts:307
 msgid "Request failed"
 msgstr "リクエストに失敗しました"
 
@@ -8123,7 +8123,7 @@ msgstr ""
 msgid "Resize crop from top-right corner. Use the Arrow keys to resize."
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:1306
+#: packages/admin/src/components/ContentEditor.tsx:1310
 msgid "Resize settings panel"
 msgstr "設定パネルのサイズを変更"
 
@@ -8178,7 +8178,7 @@ msgstr "復元中…"
 #: packages/admin/src/components/PluginFieldErrorBoundary.tsx:44
 #: packages/admin/src/components/ThemeMarketplaceBrowse.tsx:122
 #: packages/admin/src/lib/content-editor-panels.tsx:201
-#: packages/admin/src/router.tsx:2834
+#: packages/admin/src/router.tsx:2836
 #: packages/admin/src/routes/byline-schema.tsx:280
 msgid "Retry"
 msgstr "再試行"
@@ -8216,7 +8216,7 @@ msgstr "再設定中…"
 msgid "Reusable content blocks you can insert into any content"
 msgstr "コンテンツに挿入して再利用できるセクションを管理"
 
-#: packages/admin/src/router.tsx:1227
+#: packages/admin/src/router.tsx:1228
 msgid "Reverted to published version"
 msgstr "公開版に戻しました"
 
@@ -8376,7 +8376,7 @@ msgstr "保存（Enter）"
 msgid "Save alt text"
 msgstr "代替テキストを保存"
 
-#: packages/admin/src/components/ContentEditor.tsx:1122
+#: packages/admin/src/components/ContentEditor.tsx:1125
 msgid "Save anyway"
 msgstr ""
 
@@ -8477,7 +8477,7 @@ msgstr ""
 #: packages/admin/src/components/ContentList.tsx:861
 #: packages/admin/src/components/ContentSettingsPanel.tsx:545
 #: packages/admin/src/components/ContentStatusBadge.tsx:63
-#: packages/admin/src/router.tsx:1272
+#: packages/admin/src/router.tsx:1273
 msgid "Scheduled"
 msgstr "予約済み"
 
@@ -8783,8 +8783,8 @@ msgid "Select"
 msgstr "選択"
 
 #: packages/admin/src/components/BlockKitMediaPickerField.tsx:140
-#: packages/admin/src/components/ContentEditor.tsx:2256
-#: packages/admin/src/components/ContentEditor.tsx:2272
+#: packages/admin/src/components/ContentEditor.tsx:2269
+#: packages/admin/src/components/ContentEditor.tsx:2285
 #: packages/admin/src/components/ImageFieldRenderer.tsx:572
 msgid "Select {label}"
 msgstr "{label}を選択"
@@ -8838,15 +8838,15 @@ msgstr ""
 msgid "Select default social image"
 msgstr ""
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:364
+#: packages/admin/src/components/settings/GeneralSettings.tsx:365
 msgid "Select favicon"
 msgstr ""
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:301
+#: packages/admin/src/components/settings/GeneralSettings.tsx:302
 msgid "Select Favicon"
 msgstr "ファビコンを選択"
 
-#: packages/admin/src/components/ContentEditor.tsx:2260
+#: packages/admin/src/components/ContentEditor.tsx:2273
 #: packages/admin/src/components/MediaPickerModal.tsx:228
 msgid "Select file"
 msgstr "ファイルを選択"
@@ -8865,11 +8865,11 @@ msgstr "画像を選択"
 msgid "Select Image"
 msgstr "画像を選択"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:356
+#: packages/admin/src/components/settings/GeneralSettings.tsx:357
 msgid "Select logo"
 msgstr ""
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:241
+#: packages/admin/src/components/settings/GeneralSettings.tsx:242
 msgid "Select Logo"
 msgstr "ロゴを選択"
 
@@ -8895,7 +8895,7 @@ msgstr "インポートするコンテンツタイプを選択してください
 
 #: packages/admin/src/components/BlockKitFieldWidget.tsx:108
 #: packages/admin/src/components/PortableTextEditor.tsx:2599
-#: packages/admin/src/components/RepeaterField.tsx:372
+#: packages/admin/src/components/RepeaterField.tsx:385
 msgid "Select..."
 msgstr "選択…"
 
@@ -9034,8 +9034,8 @@ msgid "Setting up..."
 msgstr "セットアップ中…"
 
 #: packages/admin/src/components/AdminCommandPalette.tsx:234
-#: packages/admin/src/components/ContentEditor.tsx:1171
-#: packages/admin/src/components/ContentEditor.tsx:1470
+#: packages/admin/src/components/ContentEditor.tsx:1175
+#: packages/admin/src/components/ContentEditor.tsx:1474
 #: packages/admin/src/components/ContentTypeEditor.tsx:392
 #: packages/admin/src/components/Header.tsx:101
 #: packages/admin/src/components/PluginManager.tsx:543
@@ -9054,7 +9054,7 @@ msgid "Settings Read"
 msgstr "設定の参照"
 
 #: packages/admin/src/components/PluginSettings.tsx:68
-#: packages/admin/src/components/settings/GeneralSettings.tsx:70
+#: packages/admin/src/components/settings/GeneralSettings.tsx:71
 msgid "Settings saved successfully"
 msgstr "設定を保存しました"
 
@@ -9178,7 +9178,7 @@ msgstr "1行テキスト入力"
 msgid "Site"
 msgstr "サイト"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:162
+#: packages/admin/src/components/settings/GeneralSettings.tsx:163
 msgid "Site Identity"
 msgstr "サイト情報"
 
@@ -9187,7 +9187,7 @@ msgid "site identity applied (title, tagline, logo)"
 msgstr "サイト情報を適用しました（タイトル、タグライン、ロゴ）"
 
 #: packages/admin/src/components/Settings.tsx:53
-#: packages/admin/src/components/settings/GeneralSettings.tsx:119
+#: packages/admin/src/components/settings/GeneralSettings.tsx:120
 msgid "Site identity, logo, favicon, and reading preferences"
 msgstr "サイト情報、ロゴ、ファビコン、閲覧設定"
 
@@ -9196,7 +9196,7 @@ msgstr "サイト情報、ロゴ、ファビコン、閲覧設定"
 msgid "Site Settings"
 msgstr "サイト設定"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:165
+#: packages/admin/src/components/settings/GeneralSettings.tsx:166
 #: packages/admin/src/components/SetupWizard.tsx:116
 msgid "Site Title"
 msgstr "サイトタイトル"
@@ -9209,7 +9209,7 @@ msgstr "サイトタイトルとキャッチフレーズ"
 msgid "Site title is required"
 msgstr "サイトタイトルは必須です"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:181
+#: packages/admin/src/components/settings/GeneralSettings.tsx:182
 msgid "Site URL"
 msgstr "サイトURL"
 
@@ -9361,7 +9361,7 @@ msgstr ""
 msgid "Start Import"
 msgstr "インポートを開始"
 
-#: packages/admin/src/components/ContentEditor.tsx:1664
+#: packages/admin/src/components/ContentEditor.tsx:1670
 #: packages/admin/src/components/PortableTextEditor.tsx:2757
 #: packages/admin/src/components/PortableTextEditor.tsx:2758
 msgid "Start writing, or type '/' for commands"
@@ -9490,7 +9490,7 @@ msgstr ""
 msgid "Tables cannot be pasted inside lists or quotes. Paste the table into its own paragraph and try again."
 msgstr ""
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:173
+#: packages/admin/src/components/settings/GeneralSettings.tsx:174
 #: packages/admin/src/components/SetupWizard.tsx:127
 msgid "Tagline"
 msgstr "キャッチフレーズ"
@@ -9634,11 +9634,11 @@ msgstr "マーケットプレイスは空です。新しいプラグインが追
 msgid "The menu has been deleted."
 msgstr "メニューを削除しました。"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:168
+#: packages/admin/src/components/settings/GeneralSettings.tsx:169
 msgid "The name of your site, used in the header and metadata"
 msgstr "サイトの名前。ヘッダーとメタデータに使用されます"
 
-#: packages/admin/src/router.tsx:2848
+#: packages/admin/src/router.tsx:2850
 msgid "The page you're looking for doesn't exist."
 msgstr "お探しのページは存在しません。"
 
@@ -9650,7 +9650,7 @@ msgstr ""
 msgid "The plugin field widget failed to render."
 msgstr "プラグインのフィールドウィジェットを表示できませんでした。"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:185
+#: packages/admin/src/components/settings/GeneralSettings.tsx:186
 msgid "The public URL of your site (used for canonical links and sitemaps)"
 msgstr "サイトの公開URL（正規リンクとサイトマップに使用）"
 
@@ -9663,7 +9663,7 @@ msgstr ""
 msgid "The referenced image is no longer available. Pick a new one or remove the reference."
 msgstr "設定されている画像は利用できません。別の画像を選択するか、現在の設定を解除してください。"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:209
+#: packages/admin/src/components/settings/GeneralSettings.tsx:210
 msgid "The referenced logo is no longer available. Pick a new one or remove the reference."
 msgstr "参照先のロゴは利用できなくなりました。新しいロゴを選択するか、参照を削除してください。"
 
@@ -9731,7 +9731,7 @@ msgstr "このコンテンツは安全に編集できません"
 msgid "This doesn't look like a valid migration key. Generate a new one in the plugin and paste the full string starting with \"em1.\"."
 msgstr "有効な移行キーではないようです。プラグインで新しいキーを生成し、「em1.」で始まる文字列全体を貼り付けてください。"
 
-#: packages/admin/src/components/ContentEditor.tsx:1118
+#: packages/admin/src/components/ContentEditor.tsx:1121
 msgid "This entry changed somewhere else after you opened it."
 msgstr ""
 
@@ -9756,7 +9756,7 @@ msgstr ""
 msgid "This field does not accept {mimeType} files."
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:2276
+#: packages/admin/src/components/ContentEditor.tsx:2289
 #: packages/admin/src/components/ImageFieldRenderer.tsx:591
 msgid "This field is required"
 msgstr "この項目は必須です"
@@ -9927,11 +9927,11 @@ msgid "Time"
 msgstr ""
 
 #: packages/admin/src/components/PublishingDateTimeEditor.tsx:252
-#: packages/admin/src/components/settings/GeneralSettings.tsx:332
+#: packages/admin/src/components/settings/GeneralSettings.tsx:333
 msgid "Timezone"
 msgstr "タイムゾーン"
 
-#: packages/admin/src/components/settings/GeneralSettings.tsx:335
+#: packages/admin/src/components/settings/GeneralSettings.tsx:336
 msgid "Timezone for displaying dates (e.g., America/New_York)"
 msgstr "日時の表示に使用するタイムゾーン（例：Asia/Tokyo）"
 
@@ -10025,7 +10025,7 @@ msgstr "翻訳中…"
 #: packages/admin/src/components/MenuEditor.tsx:143
 #: packages/admin/src/components/TaxonomyManager.tsx:993
 #: packages/admin/src/components/TaxonomySidebar.tsx:471
-#: packages/admin/src/router.tsx:1323
+#: packages/admin/src/router.tsx:1324
 msgid "Translation created"
 msgstr "翻訳を作成しました"
 
@@ -10224,7 +10224,7 @@ msgstr "名前のないパスキー"
 msgid "Unpublish {itemLabel}"
 msgstr "{itemLabel}を非公開にする"
 
-#: packages/admin/src/router.tsx:1204
+#: packages/admin/src/router.tsx:1205
 msgid "Unpublished"
 msgstr "非公開"
 
@@ -10236,7 +10236,7 @@ msgstr "未登録のコンテンツテーブルがあります"
 msgid "Unresolved assignment"
 msgstr "未解決の割り当て"
 
-#: packages/admin/src/router.tsx:1291
+#: packages/admin/src/router.tsx:1292
 msgid "Unscheduled"
 msgstr "予約なし"
 
@@ -10255,7 +10255,7 @@ msgstr "{0}以前"
 msgid "Untitled"
 msgstr "無題"
 
-#: packages/admin/src/components/ContentEditor.tsx:2178
+#: packages/admin/src/components/ContentEditor.tsx:2191
 msgid "Untitled file"
 msgstr "無題のファイル"
 
@@ -10515,7 +10515,7 @@ msgstr "ページにSNS共有用の画像（Open Graph画像）が設定され�
 msgid "Used as the identifier. Lowercase letters, numbers, and underscores only."
 msgstr "分類グループの識別名として使用します。半角英小文字、数字、アンダースコア（_）のみ使用できます。"
 
-#: packages/admin/src/components/ContentEditor.tsx:1778
+#: packages/admin/src/components/ContentEditor.tsx:1790
 msgid "Used as the main visual for this post on listing pages and at the top of the post"
 msgstr "一覧ページや記事の上部に表示されるメインビジュアルとして使用されます"
 
@@ -10752,7 +10752,7 @@ msgstr ""
 msgid "What will happen when you import"
 msgstr "インポート時の動作"
 
-#: packages/admin/src/components/ContentEditor.tsx:1119
+#: packages/admin/src/components/ContentEditor.tsx:1122
 msgid "What you typed is still here. Saving replaces the newer version."
 msgstr ""
 
@@ -10986,7 +10986,7 @@ msgstr "執筆者情報の項目を管理するには、管理者権限が必要
 msgid "You need Admin permissions to manage media usage tracking."
 msgstr "メディアの使用状況を管理するには、管理者権限が必要です。"
 
-#: packages/admin/src/router.tsx:2105
+#: packages/admin/src/router.tsx:2107
 msgid "You need Editor permissions to moderate comments."
 msgstr "コメントを管理するには、編集者権限が必要です。"
 
