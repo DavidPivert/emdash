@@ -68,6 +68,16 @@ msgstr "(muito recente)"
 msgid "{0, plural, one {(# item)} other {(# items)}}"
 msgstr "{0, plural, one {(# item)} other {(# itens)}}"
 
+#. placeholder {0}: bounds.max
+#: packages/admin/src/components/ContentEditor.tsx:1943
+msgid "{0, plural, one {{counted} of # character, at least {min}} other {{counted} of # characters, at least {min}}}"
+msgstr ""
+
+#. placeholder {0}: bounds.max
+#: packages/admin/src/components/ContentEditor.tsx:1948
+msgid "{0, plural, one {{counted} of # character} other {{counted} of # characters}}"
+msgstr ""
+
 #. placeholder {0}: 1
 #. placeholder {0}: value.bylineIds.length
 #: packages/admin/src/components/BylineFilter.tsx:105
@@ -212,6 +222,11 @@ msgstr "{0, plural, one {Adicionar # arquivo} other {Adicionar # arquivos}}"
 #: packages/admin/src/components/MediaPickerModal.tsx:859
 msgid "{0, plural, one {Add # image} other {Add # images}}"
 msgstr "{0, plural, one {Adicionar # imagem} other {Adicionar # imagens}}"
+
+#. placeholder {0}: bounds.min
+#: packages/admin/src/components/ContentEditor.tsx:1953
+msgid "{0, plural, one {At least # character} other {At least # characters}}"
+msgstr ""
 
 #. placeholder {0}: state.columns
 #: packages/admin/src/components/editor/TableControls.tsx:250
@@ -707,7 +722,7 @@ msgstr "Já existe uma pasta de mídia com este nome"
 msgid "A publication time has not been selected"
 msgstr "Um horário de publicação não foi selecionado"
 
-#: packages/admin/src/components/ContentEditor.tsx:729
+#: packages/admin/src/components/ContentEditor.tsx:730
 msgid "A publishing action is already in progress"
 msgstr "Uma ação de publicação já está em andamento"
 
@@ -1339,6 +1354,14 @@ msgstr "Atribua autores do WordPress a usuários do EmDash. Os posts serão atri
 msgid "Astro"
 msgstr "Astro"
 
+#: packages/admin/src/components/ContentEditor.tsx:1976
+msgid "At least {min}"
+msgstr ""
+
+#: packages/admin/src/components/ContentEditor.tsx:1973
+msgid "At most {max}"
+msgstr ""
+
 #: packages/admin/src/components/AllowedTypesEditor.tsx:69
 #: packages/admin/src/components/MediaLibrary.tsx:987
 #: packages/admin/src/components/MediaPickerModal.tsx:385
@@ -1477,7 +1500,7 @@ msgstr "Avatar"
 msgid "Back"
 msgstr "Voltar"
 
-#: packages/admin/src/components/ContentEditor.tsx:955
+#: packages/admin/src/components/ContentEditor.tsx:956
 msgid "Back to {collectionLabel} list"
 msgstr "Voltar para a lista de {collectionLabel}"
 
@@ -1558,6 +1581,10 @@ msgstr "Antes do envio:"
 #: packages/admin/src/components/settings/MediaUsageSettings.tsx:590
 msgid "Before you continue:"
 msgstr "Antes de continuar:"
+
+#: packages/admin/src/components/ContentEditor.tsx:1970
+msgid "Between {min} and {max}"
+msgstr ""
 
 #: packages/admin/src/components/settings/SeoSettings.tsx:233
 #: packages/admin/src/components/settings/SeoSettings.tsx:247
@@ -2085,7 +2112,7 @@ msgstr "Fechar configurações da imagem"
 msgid "Close panel"
 msgstr "Fechar painel"
 
-#: packages/admin/src/components/ContentEditor.tsx:1483
+#: packages/admin/src/components/ContentEditor.tsx:1484
 msgid "Close settings"
 msgstr "Fechar configurações"
 
@@ -3280,7 +3307,7 @@ msgstr "Exibir nuvem de tags"
 msgid "Displayed below the image as a visible caption."
 msgstr "Exibido abaixo da imagem como legenda visível."
 
-#: packages/admin/src/components/ContentEditor.tsx:1029
+#: packages/admin/src/components/ContentEditor.tsx:1030
 msgid "Distraction-free mode (⌘⇧\\)"
 msgstr "Modo sem distrações (⌘⇧\\)"
 
@@ -3506,7 +3533,7 @@ msgstr "Editar {0}"
 msgid "Edit {0} field"
 msgstr "Editar campo {0}"
 
-#: packages/admin/src/components/ContentEditor.tsx:962
+#: packages/admin/src/components/ContentEditor.tsx:963
 msgid "Edit {itemLabel}"
 msgstr "Editar {itemLabel}"
 
@@ -3763,7 +3790,7 @@ msgstr "Digite um nome."
 msgid "Enter a URL (https://…) or a relative path (/…)"
 msgstr "Digite uma URL (https://…) ou um caminho relativo (/…)"
 
-#: packages/admin/src/components/ContentEditor.tsx:1896
+#: packages/admin/src/components/ContentEditor.tsx:2017
 msgid "Enter a valid URL (e.g. https://example.com)"
 msgstr "Digite uma URL válida (ex.: https://example.com)"
 
@@ -3771,7 +3798,7 @@ msgstr "Digite uma URL válida (ex.: https://example.com)"
 msgid "Enter credentials manually"
 msgstr "Digitar credenciais manualmente"
 
-#: packages/admin/src/components/ContentEditor.tsx:1028
+#: packages/admin/src/components/ContentEditor.tsx:1029
 msgid "Enter distraction-free mode"
 msgstr "Entrar no modo sem distrações"
 
@@ -3783,7 +3810,7 @@ msgstr "Digite o e-mail"
 msgid "Enter HTML..."
 msgstr "Digite o HTML..."
 
-#: packages/admin/src/components/ContentEditor.tsx:1668
+#: packages/admin/src/components/ContentEditor.tsx:1700
 msgid "Enter markdown content..."
 msgstr "Digite o conteúdo em markdown..."
 
@@ -3867,11 +3894,11 @@ msgstr "O conteúdo existente está no índice. Novas alterações entram automa
 msgid "Exists"
 msgstr "Existe"
 
-#: packages/admin/src/components/ContentEditor.tsx:1096
+#: packages/admin/src/components/ContentEditor.tsx:1097
 msgid "Exit distraction-free mode"
 msgstr "Sair do modo sem distrações"
 
-#: packages/admin/src/components/ContentEditor.tsx:1097
+#: packages/admin/src/components/ContentEditor.tsx:1098
 msgid "Exit distraction-free mode (⌘⇧\\)"
 msgstr ""
 
@@ -4676,11 +4703,11 @@ msgstr "Primeira publicação"
 msgid "First-time commenters only"
 msgstr "Apenas quem comenta pela primeira vez"
 
-#: packages/admin/src/components/ContentEditor.tsx:782
+#: packages/admin/src/components/ContentEditor.tsx:783
 msgid "Fix invalid fields before changing the publication date"
 msgstr ""
 
-#: packages/admin/src/components/ContentEditor.tsx:733
+#: packages/admin/src/components/ContentEditor.tsx:734
 msgid "Fix invalid fields before changing the schedule"
 msgstr "Corrija os campos inválidos antes de alterar o agendamento"
 
@@ -5407,7 +5434,7 @@ msgstr ""
 msgid "Invalid invite link"
 msgstr "Link de convite inválido"
 
-#: packages/admin/src/components/ContentEditor.tsx:1965
+#: packages/admin/src/components/ContentEditor.tsx:2086
 msgid "Invalid JSON"
 msgstr "JSON inválido"
 
@@ -5686,8 +5713,8 @@ msgstr "Visualização em lista"
 msgid "Live version"
 msgstr "Versão no ar"
 
-#: packages/admin/src/components/ContentEditor.tsx:1002
-#: packages/admin/src/components/ContentEditor.tsx:1053
+#: packages/admin/src/components/ContentEditor.tsx:1003
+#: packages/admin/src/components/ContentEditor.tsx:1054
 #: packages/admin/src/components/ContentSettingsPanel.tsx:660
 msgid "Live View"
 msgstr "Visualização ao vivo"
@@ -6459,7 +6486,7 @@ msgstr "NOVO"
 msgid "New {0}"
 msgstr "Novo {0}"
 
-#: packages/admin/src/components/ContentEditor.tsx:962
+#: packages/admin/src/components/ContentEditor.tsx:963
 msgid "New {itemLabel}"
 msgstr "Novo {itemLabel}"
 
@@ -7789,7 +7816,7 @@ msgstr "Depois de atualizar o EmDash, recarregue a página antes de tentar novam
 
 #: packages/admin/src/components/BlockKitMediaPickerField.tsx:84
 #: packages/admin/src/components/BlockKitMediaPickerField.tsx:115
-#: packages/admin/src/components/ContentEditor.tsx:2125
+#: packages/admin/src/components/ContentEditor.tsx:2246
 #: packages/admin/src/components/editor/GalleryDetailPanel.tsx:471
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:309
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:731
@@ -7825,7 +7852,7 @@ msgstr "Remover {0} da seleção"
 msgid "Remove {entry}"
 msgstr "Remover {entry}"
 
-#: packages/admin/src/components/ContentEditor.tsx:2123
+#: packages/admin/src/components/ContentEditor.tsx:2244
 msgid "Remove {label}"
 msgstr "Remover {label}"
 
@@ -7938,8 +7965,8 @@ msgstr "Repetidor"
 msgid "Repeating group of fields"
 msgstr "Grupo de campos repetidor"
 
-#: packages/admin/src/components/ContentEditor.tsx:2115
-#: packages/admin/src/components/ContentEditor.tsx:2152
+#: packages/admin/src/components/ContentEditor.tsx:2236
+#: packages/admin/src/components/ContentEditor.tsx:2273
 #: packages/admin/src/components/editor/GalleryDetailPanel.tsx:447
 #: packages/admin/src/components/editor/GalleryDetailPanel.tsx:504
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:250
@@ -7952,7 +7979,7 @@ msgstr "Grupo de campos repetidor"
 msgid "Replace"
 msgstr "Substituir"
 
-#: packages/admin/src/components/ContentEditor.tsx:2151
+#: packages/admin/src/components/ContentEditor.tsx:2272
 #: packages/admin/src/components/ImageFieldRenderer.tsx:571
 msgid "Replace {label}"
 msgstr "Substituir {label}"
@@ -8096,7 +8123,7 @@ msgstr "Redimensionar o recorte pelo canto superior esquerdo. Use as teclas de s
 msgid "Resize crop from top-right corner. Use the Arrow keys to resize."
 msgstr "Redimensionar o recorte pelo canto superior direito. Use as teclas de seta para redimensionar."
 
-#: packages/admin/src/components/ContentEditor.tsx:1305
+#: packages/admin/src/components/ContentEditor.tsx:1306
 msgid "Resize settings panel"
 msgstr "Redimensionar painel de configurações"
 
@@ -8349,7 +8376,7 @@ msgstr "Salvar (Enter)"
 msgid "Save alt text"
 msgstr "Salvar texto alternativo"
 
-#: packages/admin/src/components/ContentEditor.tsx:1121
+#: packages/admin/src/components/ContentEditor.tsx:1122
 msgid "Save anyway"
 msgstr "Salvar mesmo assim"
 
@@ -8756,8 +8783,8 @@ msgid "Select"
 msgstr "Selecionar"
 
 #: packages/admin/src/components/BlockKitMediaPickerField.tsx:140
-#: packages/admin/src/components/ContentEditor.tsx:2135
-#: packages/admin/src/components/ContentEditor.tsx:2151
+#: packages/admin/src/components/ContentEditor.tsx:2256
+#: packages/admin/src/components/ContentEditor.tsx:2272
 #: packages/admin/src/components/ImageFieldRenderer.tsx:572
 msgid "Select {label}"
 msgstr "Selecionar {label}"
@@ -8819,7 +8846,7 @@ msgstr "Selecionar favicon"
 msgid "Select Favicon"
 msgstr "Selecionar favicon"
 
-#: packages/admin/src/components/ContentEditor.tsx:2139
+#: packages/admin/src/components/ContentEditor.tsx:2260
 #: packages/admin/src/components/MediaPickerModal.tsx:228
 msgid "Select file"
 msgstr "Selecionar arquivo"
@@ -9007,8 +9034,8 @@ msgid "Setting up..."
 msgstr "Configurando..."
 
 #: packages/admin/src/components/AdminCommandPalette.tsx:234
-#: packages/admin/src/components/ContentEditor.tsx:1170
-#: packages/admin/src/components/ContentEditor.tsx:1469
+#: packages/admin/src/components/ContentEditor.tsx:1171
+#: packages/admin/src/components/ContentEditor.tsx:1470
 #: packages/admin/src/components/ContentTypeEditor.tsx:392
 #: packages/admin/src/components/Header.tsx:101
 #: packages/admin/src/components/PluginManager.tsx:543
@@ -9334,7 +9361,7 @@ msgstr "Quadrado (1:1)"
 msgid "Start Import"
 msgstr "Iniciar importação"
 
-#: packages/admin/src/components/ContentEditor.tsx:1641
+#: packages/admin/src/components/ContentEditor.tsx:1664
 #: packages/admin/src/components/PortableTextEditor.tsx:2757
 #: packages/admin/src/components/PortableTextEditor.tsx:2758
 msgid "Start writing, or type '/' for commands"
@@ -9704,7 +9731,7 @@ msgstr "Este conteúdo não pode ser editado com segurança"
 msgid "This doesn't look like a valid migration key. Generate a new one in the plugin and paste the full string starting with \"em1.\"."
 msgstr "Isto não parece uma chave de migração válida. Gere uma nova no plugin e cole a string completa começando com \"em1.\"."
 
-#: packages/admin/src/components/ContentEditor.tsx:1117
+#: packages/admin/src/components/ContentEditor.tsx:1118
 msgid "This entry changed somewhere else after you opened it."
 msgstr "Esta entrada foi alterada em outro lugar depois que você a abriu."
 
@@ -9729,7 +9756,7 @@ msgstr ""
 msgid "This field does not accept {mimeType} files."
 msgstr "Este campo não aceita arquivos {mimeType}."
 
-#: packages/admin/src/components/ContentEditor.tsx:2155
+#: packages/admin/src/components/ContentEditor.tsx:2276
 #: packages/admin/src/components/ImageFieldRenderer.tsx:591
 msgid "This field is required"
 msgstr "Este campo é obrigatório"
@@ -10228,7 +10255,7 @@ msgstr "Até {0}"
 msgid "Untitled"
 msgstr "Sem título"
 
-#: packages/admin/src/components/ContentEditor.tsx:2057
+#: packages/admin/src/components/ContentEditor.tsx:2178
 msgid "Untitled file"
 msgstr "Arquivo sem título"
 
@@ -10488,7 +10515,7 @@ msgstr "Usada como imagem Open Graph de reserva quando uma página não tem nenh
 msgid "Used as the identifier. Lowercase letters, numbers, and underscores only."
 msgstr "Usado como identificador. Apenas letras minúsculas, números e sublinhados."
 
-#: packages/admin/src/components/ContentEditor.tsx:1745
+#: packages/admin/src/components/ContentEditor.tsx:1778
 msgid "Used as the main visual for this post on listing pages and at the top of the post"
 msgstr "Usado como imagem principal do post nas páginas de listagem e no topo do post"
 
@@ -10725,7 +10752,7 @@ msgstr ""
 msgid "What will happen when you import"
 msgstr "O que acontecerá quando você importar"
 
-#: packages/admin/src/components/ContentEditor.tsx:1118
+#: packages/admin/src/components/ContentEditor.tsx:1119
 msgid "What you typed is still here. Saving replaces the newer version."
 msgstr "O que você digitou continua aqui. Salvar substitui a versão mais recente."
 
