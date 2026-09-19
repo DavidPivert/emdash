@@ -48,12 +48,18 @@ import { createContentAccess } from "./content-access.js";
 import { CronAccessImpl } from "./cron.js";
 import type { EmailPipeline } from "./email.js";
 import { readPluginMediaBytes, toPluginMediaItem, updatePluginMediaMetadata } from "./media.js";
+import {
+	createPluginSecretRedactor,
+	createSettingsAccess,
+	type PluginSecretRedactor,
+} from "./settings.js";
 import type {
 	ResolvedPlugin,
 	PluginContext,
 	PluginStorageConfig,
 	StorageCollection,
 	KVAccess,
+	SettingsAccess,
 	CronAccess,
 	EmailAccess,
 	ContentAccess,
@@ -106,43 +112,75 @@ export { createContentAccess } from "./content-access.js";
  * Create KV accessor for a plugin
  * All keys are automatically prefixed with the plugin ID
  */
-export function createKVAccess(optionsRepo: OptionsRepository, pluginId: string): KVAccess {
+export function createKVAccess(
+	optionsRepo: OptionsRepository,
+	pluginId: string,
+	settings: SettingsAccess = createSettingsAccess(optionsRepo, pluginId),
+): KVAccess {
 	const prefix = `plugin:${pluginId}:`;
 
 	return {
 		async get<T>(key: string): Promise<T | null> {
+			if (key.startsWith("settings:")) return settings.get<T>(key.slice("settings:".length));
 			return optionsRepo.get<T>(`${prefix}${key}`);
 		},
 		async getVersioned<T>(key: string) {
 			assertStorageKey(key);
+			if (key.startsWith("settings:")) {
+				return settings.getVersioned<T>(key.slice("settings:".length));
+			}
 			return optionsRepo.getVersioned<T>(`${prefix}${key}`);
 		},
 		async compareAndSet(key, expectedRevision, value) {
 			assertStorageKey(key);
+			if (key.startsWith("settings:")) {
+				return settings.compareAndSet(key.slice("settings:".length), expectedRevision, value);
+			}
 			return optionsRepo.compareAndSet(`${prefix}${key}`, expectedRevision, value);
 		},
 		async compareAndDelete(key, expectedRevision) {
 			assertStorageKey(key);
+			if (key.startsWith("settings:")) {
+				return settings.compareAndDelete(key.slice("settings:".length), expectedRevision);
+			}
 			return optionsRepo.compareAndDelete(`${prefix}${key}`, expectedRevision);
 		},
 
 		async set(key: string, value: unknown): Promise<void> {
+			if (key.startsWith("settings:")) {
+				await settings.set(key.slice("settings:".length), value);
+				return;
+			}
 			await optionsRepo.set(`${prefix}${key}`, value);
 		},
 
 		async delete(key: string): Promise<boolean> {
+			if (key.startsWith("settings:")) return settings.delete(key.slice("settings:".length));
 			return optionsRepo.delete(`${prefix}${key}`);
 		},
 
 		async list(keyPrefix?: string): Promise<Array<{ key: string; value: unknown }>> {
-			const fullPrefix = `${prefix}${keyPrefix ?? ""}`;
+			const requestedPrefix = keyPrefix ?? "";
+			const includesSettings =
+				"settings:".startsWith(requestedPrefix) || requestedPrefix.startsWith("settings:");
+			const fullPrefix = `${prefix}${requestedPrefix}`;
 			const entriesMap = await optionsRepo.getByPrefix(fullPrefix);
 			const result: Array<{ key: string; value: unknown }> = [];
 			for (const [fullKey, value] of entriesMap) {
+				if (includesSettings && fullKey.startsWith(`${prefix}settings:`)) continue;
 				result.push({
 					key: fullKey.slice(prefix.length),
 					value,
 				});
+			}
+			if (includesSettings) {
+				const settingPrefix = requestedPrefix.startsWith("settings:")
+					? requestedPrefix.slice("settings:".length)
+					: "";
+				for (const entry of await settings.list(settingPrefix)) {
+					const key = `settings:${entry.key}`;
+					if (key.startsWith(requestedPrefix)) result.push({ key, value: entry.value });
+				}
 			}
 			return result;
 		},
@@ -1203,39 +1241,40 @@ export function createBlockedHttpAccess(pluginId: string): HttpAccess {
 /**
  * Create logger for a plugin
  */
-export function createLogAccess(pluginId: string): LogAccess {
+export function createLogAccess(pluginId: string, redactor?: PluginSecretRedactor): LogAccess {
 	const prefix = `[plugin:${pluginId}]`;
+	const redact = <T>(value: T): T => redactor?.redact(value) ?? value;
 
 	return {
 		debug(message: string, data?: unknown): void {
 			if (data !== undefined) {
-				console.debug(prefix, message, data);
+				console.debug(prefix, redact(message), redact(data));
 			} else {
-				console.debug(prefix, message);
+				console.debug(prefix, redact(message));
 			}
 		},
 
 		info(message: string, data?: unknown): void {
 			if (data !== undefined) {
-				console.info(prefix, message, data);
+				console.info(prefix, redact(message), redact(data));
 			} else {
-				console.info(prefix, message);
+				console.info(prefix, redact(message));
 			}
 		},
 
 		warn(message: string, data?: unknown): void {
 			if (data !== undefined) {
-				console.warn(prefix, message, data);
+				console.warn(prefix, redact(message), redact(data));
 			} else {
-				console.warn(prefix, message);
+				console.warn(prefix, redact(message));
 			}
 		},
 
 		error(message: string, data?: unknown): void {
 			if (data !== undefined) {
-				console.error(prefix, message, data);
+				console.error(prefix, redact(message), redact(data));
 			} else {
-				console.error(prefix, message);
+				console.error(prefix, redact(message));
 			}
 		},
 	};
@@ -1478,8 +1517,16 @@ export class PluginContextFactory {
 		const optionsRepo = new OptionsRepository(db);
 
 		// Always available
-		const kv = createKVAccess(optionsRepo, plugin.id);
-		const log = createLogAccess(plugin.id);
+		const secretRedactor = createPluginSecretRedactor();
+		const settings = createSettingsAccess(
+			optionsRepo,
+			plugin.id,
+			plugin.admin.settingsSchema ?? {},
+			undefined,
+			secretRedactor.add,
+		);
+		const kv = createKVAccess(optionsRepo, plugin.id, settings);
+		const log = createLogAccess(plugin.id, secretRedactor);
 		const storage = createStorageAccess(db, plugin.id, plugin.storage);
 
 		// Capability-gated: content
@@ -1608,6 +1655,7 @@ export class PluginContextFactory {
 			},
 			storage,
 			kv,
+			settings,
 			content,
 			schema,
 			taxonomies,

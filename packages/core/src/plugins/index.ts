@@ -117,6 +117,15 @@ export type {
 } from "./sandbox/index.js";
 
 export { StorageSerializationError } from "./storage-query.js";
+export {
+	PluginSettingEncryptionError,
+	createPluginSecretRedactor,
+	createSettingsAccess,
+	decodePluginSettingValue,
+	encryptPluginSetting,
+	isEncryptedPluginSetting,
+} from "./settings.js";
+export type { EncryptedPluginSetting, PluginSecretRedactor } from "./settings.js";
 
 // Types
 export type {
@@ -142,6 +151,7 @@ export type {
 	ConditionalWriteResult,
 	ConditionalDeleteResult,
 	KVAccess,
+	SettingsAccess,
 	ContentAccess,
 	ContentAccessWithWrite,
 	MediaAccess,

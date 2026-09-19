@@ -163,6 +163,8 @@ describe("Capability Enforcement Integration (v2)", () => {
 	});
 
 	afterEach(async () => {
+		vi.unstubAllEnvs();
+		vi.restoreAllMocks();
 		setI18nConfig(null);
 		await db.destroy();
 		sqliteDb.close();
@@ -1195,6 +1197,42 @@ describe("Capability Enforcement Integration (v2)", () => {
 	});
 
 	describe("PluginContextFactory", () => {
+		it("provides encrypted settings without granting another plugin authority", async () => {
+			vi.stubEnv(
+				"EMDASH_ENCRYPTION_KEY",
+				"emdash_enc_v1_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+			);
+			const factory = new PluginContextFactory({ db });
+			const ctx = factory.createContext(
+				createTestPlugin({
+					id: "settings-owner",
+					admin: {
+						settingsSchema: { apiKey: { type: "secret", label: "API key" } },
+					},
+				}),
+			);
+
+			await ctx.settings.set("apiKey", "native-secret");
+			await expect(ctx.settings.get("apiKey")).resolves.toBe("native-secret");
+			await expect(ctx.kv.get("settings:apiKey")).resolves.toBe("native-secret");
+			const raw = await new OptionsRepository(db).get("plugin:settings-owner:settings:apiKey");
+			expect(JSON.stringify(raw)).not.toContain("native-secret");
+			const errorLog = vi.spyOn(console, "error").mockImplementation(() => undefined);
+			ctx.log.error("credential=native-secret", { nested: { token: "native-secret" } });
+			expect(JSON.stringify(errorLog.mock.calls)).toContain("[REDACTED]");
+			expect(JSON.stringify(errorLog.mock.calls)).not.toContain("native-secret");
+
+			const other = factory.createContext(
+				createTestPlugin({
+					id: "other-plugin",
+					admin: {
+						settingsSchema: { apiKey: { type: "secret", label: "API key" } },
+					},
+				}),
+			);
+			await expect(other.settings.get("apiKey")).resolves.toBeNull();
+		});
+
 		it("gates schema and revision history independently", () => {
 			const factory = new PluginContextFactory({ db });
 			const ordinary = factory.createContext(createTestPlugin({ capabilities: ["content:read"] }));

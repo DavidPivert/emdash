@@ -107,7 +107,7 @@ Use only canonical capability names:
 
 The old `read:*`, `write:*`, `network:fetch*`, `email:provide`, `email:intercept`, and `page:inject` names are deprecated. Validation warns about them and publishing rejects them.
 
-KV and declared storage need no capability. They are always scoped to the plugin. Installation shows capability consent; updates require renewed approval when declared access grows. MCP tools and routes becoming public have separate consent checks.
+Settings, KV, and declared storage need no capability. They are always scoped to the plugin. Installation shows capability consent; updates require renewed approval when declared access grows. MCP tools and routes becoming public have separate consent checks.
 
 Content reads include the entry's author ID, translation group, live and draft revision pointers, and row version. `getPublicUrl()` returns only published, routable URLs and never returns a preview URL. Revision snapshots require `content:revisions:read`; their retained field data can include values that an administrator removed later, but revision author identity is not exposed.
 
@@ -121,6 +121,7 @@ Hooks receive `(event, ctx)`. Sandboxed routes receive `(routeCtx, ctx)`.
 interface PluginContext {
 	plugin: { id: string; version: string };
 	storage: Record<string, StorageCollection>;
+	settings: SettingsAccess;
 	kv: KVAccess;
 	log: LogAccess;
 	site: SiteInfo;
@@ -155,7 +156,7 @@ Read [API routes](./references/api-routes.md) for complete route and MCP example
 
 ## Storage and media
 
-Use `ctx.kv` for settings and small state. Use a declared `ctx.storage.<collection>` for records, indexed queries, batch operations, `updateIf()`, and revision-based compare-and-set/delete. Re-read after a CAS conflict and keep retries bounded. Read [Storage, KV, and settings](./references/storage.md) for the full operation list and concurrency behavior.
+Use `ctx.settings` for settings and `ctx.kv` for small internal state. A field declared as `secret` in `admin.settingsSchema` is encrypted before persistence. Use a declared `ctx.storage.<collection>` for records, indexed queries, batch operations, `updateIf()`, and revision-based compare-and-set/delete. Re-read after a CAS conflict and keep retries bounded. Read [Storage, KV, and settings](./references/storage.md) for the full operation list, encryption-key requirements, and concurrency behavior.
 
 Sandboxed plugins cannot follow a presigned upload URL directly. With `media:write`, upload bytes through the bridge:
 
@@ -229,7 +230,7 @@ await host.dispose();
 
 The direct host builds the plugin and invokes it through Cloudflare Worker Loader, the production wrapper, and `PluginBridge`. It preserves hook, route, MCP, settings, and field-widget manifest metadata, supports content fixtures, and exposes KV and declared storage for assertions. Its `invokeHook()` and `invokeRoute()` methods test the transport. They do not prove that a host action emits the hook or applies route authentication, permissions, CSRF, and response caching.
 
-Use `createPluginRuntimeTestHost()` when the test must exercise content, plugin activation, media, comments, scheduled tasks, restart, authorization, CSRF, or cache behavior. Its API separates `transport`, `fixtures`, `actions`, `inspect`, `scheduled`, `restart()`, and `dispose()`. Fixtures write initial state without firing hooks, including bylines and taxonomy terms. Actions call production runtime and handler boundaries. Content inspectors can read byline credits and taxonomy assignments without invoking plugin code. Restart preserves D1, plugin storage, media storage, and plugin state while discarding runtime and isolate memory.
+Use `createPluginRuntimeTestHost()` when the test must exercise content, plugin activation, generated settings, media, comments, scheduled tasks, restart, authorization, CSRF, or cache behavior. Its API separates `transport`, `fixtures`, `actions`, `inspect`, `scheduled`, `restart()`, and `dispose()`. Fixtures write initial state without firing hooks, including bylines and taxonomy terms. Actions call production runtime and handler boundaries. Use `actions.plugin.updateSettings()` with `inspect.settings.raw()` to prove that a generated secret-setting save persists an encrypted envelope. Content inspectors can read byline credits and taxonomy assignments without invoking plugin code. Restart preserves D1, plugin storage, media storage, and plugin state while discarding runtime and isolate memory.
 
 Redirect capability tests can establish host state with `host.fixtures.redirect()` and inspect persisted rules with `host.inspect.redirects()`. Trigger the plugin route through `host.actions.routes.request()` when the test must prove authorization and the real host-to-isolate redirect bridge.
 

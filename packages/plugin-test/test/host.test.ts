@@ -17,6 +17,8 @@ let host: PluginTestHost | undefined;
 afterEach(async () => {
 	await host?.dispose();
 	host = undefined;
+	vi.unstubAllEnvs();
+	vi.restoreAllMocks();
 });
 
 describe("runtime plugin test host", () => {
@@ -362,6 +364,57 @@ describe("runtime plugin test host", () => {
 		});
 		expect(allowed.status).toBe(200);
 		await expect(allowed.json()).resolves.toMatchObject({ data: { userId: user.id } });
+	});
+
+	it("updates generated secret settings through the runtime host without storing plaintext", async () => {
+		const oldKey = "emdash_enc_v1_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+		const newKey = "emdash_enc_v1_EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE";
+		vi.stubEnv("EMDASH_ENCRYPTION_KEY", oldKey);
+		runtimeHost = await createPluginRuntimeTestHost();
+		const updated = await runtimeHost.actions.plugin.updateSettings({
+			apiKey: "old-runtime-host-secret",
+		});
+		expect(updated).toMatchObject({
+			success: true,
+			data: { secretsSet: { apiKey: true } },
+		});
+		const oldEnvelope = await runtimeHost.inspect.settings.raw<{ kid: string }>("apiKey");
+		expect(oldEnvelope).toMatchObject({ v: 1, kid: expect.any(String) });
+		expect(JSON.stringify(oldEnvelope)).not.toContain("old-runtime-host-secret");
+
+		vi.stubEnv("EMDASH_ENCRYPTION_KEY", `${newKey},${oldKey}`);
+		await runtimeHost.restart();
+		await expect(runtimeHost.transport.invokeRoute("secret-value")).resolves.toEqual({
+			viaSettings: "old-runtime-host-secret",
+			viaCompatibilityAlias: "old-runtime-host-secret",
+		});
+
+		await runtimeHost.actions.plugin.updateSettings({ apiKey: "rotated-runtime-host-secret" });
+		const newEnvelope = await runtimeHost.inspect.settings.raw<{
+			v: 1;
+			kid: string;
+			iv: string;
+			ciphertext: string;
+		}>("apiKey");
+		expect(newEnvelope?.kid).not.toBe(oldEnvelope?.kid);
+		expect(JSON.stringify(newEnvelope)).not.toContain("rotated-runtime-host-secret");
+
+		vi.stubEnv("EMDASH_ENCRYPTION_KEY", newKey);
+		await runtimeHost.restart();
+		await expect(runtimeHost.transport.invokeRoute("secret-value")).resolves.toEqual({
+			viaSettings: "rotated-runtime-host-secret",
+			viaCompatibilityAlias: "rotated-runtime-host-secret",
+		});
+
+		await runtimeHost.fixtures.plugin.setting("apiKey", {
+			...newEnvelope,
+			ciphertext: `${newEnvelope?.ciphertext[0] === "A" ? "B" : "A"}${newEnvelope?.ciphertext.slice(1)}`,
+		});
+		const tamperedRead = await runtimeHost.transport
+			.invokeRoute("secret-value")
+			.catch((error: unknown) => error);
+		expect(String(tamperedRead)).toContain("could not be decrypted");
+		expect(String(tamperedRead)).not.toContain("rotated-runtime-host-secret");
 	});
 
 	it("manages redirects through the runtime, Worker Loader, and plugin bridge", async () => {
@@ -985,6 +1038,10 @@ describe("plugin test host", () => {
 	});
 
 	it("makes auto-generated admin settings visible inside the Worker Loader isolate", async () => {
+		vi.stubEnv(
+			"EMDASH_ENCRYPTION_KEY",
+			"emdash_enc_v1_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+		);
 		host = await createPluginTestHost();
 		const db = new Kysely<Database>({
 			dialect: createDialect({ binding: "DB", session: "disabled" }),
@@ -998,6 +1055,39 @@ describe("plugin test host", () => {
 			await expect(
 				new OptionsRepository(db).get(`plugin:${host.manifest.id}:settings:enabled`),
 			).resolves.toBe(true);
+		} finally {
+			await db.destroy();
+		}
+	});
+
+	it("encrypts generated secrets before a Worker Loader plugin reads them", async () => {
+		vi.stubEnv(
+			"EMDASH_ENCRYPTION_KEY",
+			"emdash_enc_v1_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+		);
+		host = await createPluginTestHost();
+		const db = new Kysely<Database>({
+			dialect: createDialect({ binding: "DB", session: "disabled" }),
+		});
+		try {
+			await new OptionsRepository(db).set(
+				`plugin:${host.manifest.id}:settings:apiKey`,
+				"legacy-secret",
+			);
+			await expect(host.invokeRoute("secret-value")).resolves.toEqual({
+				viaSettings: "legacy-secret",
+				viaCompatibilityAlias: "legacy-secret",
+			});
+			await expect(
+				host.invokeRoute("secret-save", { apiKey: "encrypted-secret" }),
+			).resolves.toEqual({ saved: true });
+			const raw = await new OptionsRepository(db).get(`plugin:${host.manifest.id}:settings:apiKey`);
+			expect(raw).toMatchObject({ v: 1, kid: expect.any(String) });
+			expect(JSON.stringify(raw)).not.toContain("encrypted-secret");
+			await expect(host.invokeRoute("secret-value")).resolves.toEqual({
+				viaSettings: "encrypted-secret",
+				viaCompatibilityAlias: "encrypted-secret",
+			});
 		} finally {
 			await db.destroy();
 		}

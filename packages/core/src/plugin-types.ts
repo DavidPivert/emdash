@@ -309,6 +309,7 @@ export type {
 	VersionedValue,
 	ConditionalWriteResult,
 	ConditionalDeleteResult,
+	SettingsAccess,
 	RedirectAccess,
 	RedirectAccessWithWrite,
 	RedirectCreateInput,

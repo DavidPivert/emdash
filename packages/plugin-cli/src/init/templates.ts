@@ -436,7 +436,8 @@ Read \`emdash-plugin.jsonc\` and \`src/plugin.ts\` before editing. The manifest 
 - Use \`content:read\` for content identity fields, translations, and published public URLs. Public URL resolution never returns previews. Revision history requires the separate \`content:revisions:read\` capability and excludes revision author identity.
 - Create a translation with \`ctx.content.create(collection, data, { locale, translationOf })\`. The source must be an active row in the same collection. EmDash preserves its non-translatable fields, byline credits, taxonomy assignments, validation, and save hooks, and permits one active row per locale in the group.
 - With \`taxonomies:write\`, pass a taxonomy name and term fields to \`createTerm()\`. The method rejects \`parentId\` for a non-hierarchical taxonomy instead of ignoring it. Pass term IDs to \`addEntryTerms()\` and \`removeEntryTerms()\`; assignment methods apply deltas and do not replace existing terms.
-- Use \`ctx.storage\` for queryable records and \`ctx.kv\` for key-value state.
+- Use \`ctx.storage\` for queryable records, \`ctx.settings\` for user configuration, and \`ctx.kv\` for internal key-value state.
+- Declare credentials as \`secret\` fields in \`admin.settingsSchema\`. The host encrypts them with \`EMDASH_ENCRYPTION_KEY\`; keep that key with operational backups.
 - Use Block Kit for sandboxed admin UI. Do not ship browser React components.
 - Treat public routes as internet-facing and validate their inputs.
 
@@ -446,9 +447,13 @@ Use the package scripts in this repository. The default test script builds the p
 
 Use \`createPluginTestHost()\` for direct transport tests of hooks, routes, capability enforcement, KV, and declared storage. Use \`createPluginRuntimeTestHost()\` when a test must trigger real content, plugin activation, media, comment, scheduler, restart, authorization, CSRF, or cache behavior. Runtime fixtures do not fire hooks; runtime actions call production boundaries; inspectors read observable state.
 
+For generated secret settings, call \`actions.plugin.updateSettings()\` and verify \`inspect.settings.raw()\` contains an envelope without the plaintext.
+
 For redirect capability tests, use \`host.fixtures.redirect()\` to establish redirect state and \`host.inspect.redirects()\` to assert persisted rules. Invoke the plugin through \`host.actions.routes.request()\` when the test must cover the authorized host route and sandbox bridge.
 
 Dispose either host after each test so its bindings reset. Keep Node/workerd parity opt-in unless the plugin depends on runner-sensitive behavior.
+
+Read generated settings with \`ctx.settings.get("<key>")\`. Existing \`ctx.kv.get("settings:<key>")\` reads remain compatible through EmDash 0.x, but new code should use \`ctx.settings\`.
 
 Before handing off a change, run validation, typecheck, tests, and build. A release also requires a version bump in \`package.json\` when runtime behavior or the trust contract changes.
 

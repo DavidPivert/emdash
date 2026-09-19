@@ -329,6 +329,11 @@ describe("agent guidance", () => {
 		expect(skill).toContain("Use the package scripts");
 		expect(skill).toContain("createPluginTestHost()");
 		expect(skill).toContain("createPluginRuntimeTestHost()");
+		expect(skill).toContain("actions.plugin.updateSettings()");
+		expect(skill).toContain("inspect.settings.raw()");
+		expect(skill).toContain('ctx.settings.get("<key>")');
+		expect(skill).toContain('ctx.kv.get("settings:<key>")');
+		expect(skill).toContain("EMDASH_ENCRYPTION_KEY");
 		expect(skill).toContain("media:bytes:read");
 		expect(skill).toContain("media:metadata:write");
 		expect(skill).toContain("redirects:read");

@@ -300,6 +300,16 @@ function createContext(originHook) {
 		list: (prefix) => bridgeCall("kv/list", { prefix }),
 	};
 
+	const settings = {
+		get: (key) => bridgeCall("settings/get", { key }),
+		set: (key, value) => bridgeCall("settings/set", { key, value }),
+		getVersioned: (key) => bridgeCall("settings/getVersioned", { key }),
+		compareAndSet: (key, expectedRevision, value) => bridgeCall("settings/compareAndSet", { key, expectedRevision, value }),
+		compareAndDelete: (key, expectedRevision) => bridgeCall("settings/compareAndDelete", { key, expectedRevision }),
+		delete: (key) => bridgeCall("settings/delete", { key }),
+		list: (prefix) => bridgeCall("settings/list", { prefix }),
+	};
+
 	function createStorageCollection(collectionName) {
 		return {
 			get: (id) => bridgeCall("storage/get", { collection: collectionName, id }),
@@ -607,6 +617,7 @@ function createContext(originHook) {
 		},
 		storage,
 		kv,
+		settings,
 		content,
 		schema,
 		taxonomies,

@@ -43,6 +43,13 @@ function createTestDb() {
 
 async function setupTables(db: Kysely<any>) {
 	await db.schema
+		.createTable("options")
+		.addColumn("name", "text", (col) => col.primaryKey())
+		.addColumn("value", "text", (col) => col.notNull())
+		.addColumn("revision", "text", (col) => col.notNull())
+		.execute();
+
+	await db.schema
 		.createTable("_plugin_storage")
 		.addColumn("plugin_id", "text", (col) => col.notNull())
 		.addColumn("collection", "text", (col) => col.notNull())
@@ -212,6 +219,22 @@ export default {
 	routes: {
 		"write": {
 			handler: async (_routeCtx, ctx) => ctx.content.create("posts", { slug: "blocked" })
+		}
+	}
+};
+`;
+
+const SETTINGS_PLUGIN = `
+export default {
+	routes: {
+		"save": {
+			handler: async (route, ctx) => {
+				await ctx.settings.set("apiKey", route.input.value);
+				return {
+					settings: await ctx.settings.get("apiKey"),
+					alias: await ctx.kv.get("settings:apiKey")
+				};
+			}
 		}
 	}
 };
@@ -907,6 +930,42 @@ describe.skipIf(!workerdAvailable)("WorkerdSandboxRunner integration", () => {
 		expect(result.stored).toBe("hello");
 	}, 30_000);
 
+	it("encrypts settings through the production workerd process", async () => {
+		vi.stubEnv(
+			"EMDASH_ENCRYPTION_KEY",
+			"emdash_enc_v1_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+		);
+		const plugin = await runner.load(
+			{
+				id: "test-settings",
+				version: "1.0.0",
+				capabilities: [],
+				allowedHosts: [],
+				storage: {},
+				admin: { settingsSchema: { apiKey: { type: "secret", label: "API key" } } },
+			},
+			SETTINGS_PLUGIN,
+		);
+
+		await expect(
+			plugin.invokeRoute(
+				"save",
+				{ value: "workerd-process-secret" },
+				{ method: "POST", url: "/api/settings", headers: {} },
+			),
+		).resolves.toEqual({
+			settings: "workerd-process-secret",
+			alias: "workerd-process-secret",
+		});
+		const row = await db
+			.selectFrom("options" as any)
+			.select("value" as any)
+			.where("name" as any, "=", "plugin:test-settings:settings:apiKey")
+			.executeTakeFirst();
+		expect(row?.value).not.toContain("workerd-process-secret");
+		expect(JSON.parse(row!.value)).toMatchObject({ v: 1, kid: expect.any(String) });
+	}, 30_000);
+
 	it("provides plugin-scoped cron through the production workerd bridge", async () => {
 		const plugin = await runner.load(
 			{
@@ -1041,7 +1100,11 @@ describe.skipIf(!workerdAvailable)("WorkerdSandboxRunner integration", () => {
 		});
 	}, 30_000);
 
-	it("handles plugin unload and reload", async () => {
+	it("reloads the updated settings schema with a new plugin version", async () => {
+		vi.stubEnv(
+			"EMDASH_ENCRYPTION_KEY",
+			"emdash_enc_v1_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+		);
 		const plugin1 = await runner.load(
 			{
 				id: "test-reload",
@@ -1076,20 +1139,28 @@ describe.skipIf(!workerdAvailable)("WorkerdSandboxRunner integration", () => {
 				capabilities: [],
 				allowedHosts: [],
 				storage: {},
+				admin: { settingsSchema: { apiKey: { type: "secret", label: "API key" } } },
 			},
-			ECHO_PLUGIN,
+			SETTINGS_PLUGIN,
 		);
 
 		const result2 = (await plugin2.invokeRoute(
-			"echo",
-			{ v: 2 },
+			"save",
+			{ value: "updated-schema-secret" },
 			{
 				method: "POST",
 				url: "/api/test",
 				headers: {},
 			},
 		)) as any;
-		expect(result2.input.v).toBe(2);
+		expect(result2.settings).toBe("updated-schema-secret");
+		const stored = await db
+			.selectFrom("options" as any)
+			.select("value" as any)
+			.where("name" as any, "=", "plugin:test-reload:settings:apiKey")
+			.executeTakeFirst();
+		expect(stored?.value).not.toContain("updated-schema-secret");
+		expect(JSON.parse(stored!.value)).toMatchObject({ v: 1, kid: expect.any(String) });
 	}, 60_000);
 
 	it("enforces wall-time limit", async () => {
