@@ -14,6 +14,8 @@
 		"redirects:write",
 		"schema:read",
 		"media:read",
+		"media:bytes:read",
+		"media:metadata:write",
 		"media:write",
 		"users:read",
 		"email:send",

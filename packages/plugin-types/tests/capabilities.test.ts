@@ -133,6 +133,16 @@ describe("declaredAccess facet mapping", () => {
 		expect(new Set(parsed.capabilities)).toEqual(new Set(["redirects:read", "redirects:write"]));
 	});
 
+	it("keeps media metadata, bytes, and metadata mutation as independent authority", () => {
+		expect(capabilitiesToDeclaredAccess(["media:bytes:read", "media:metadata:write"], [])).toEqual({
+			media: { bytesRead: {}, metadataWrite: {} },
+		});
+		expect(declaredAccessToCapabilities({ media: { bytesRead: {}, metadataWrite: {} } })).toEqual({
+			capabilities: ["media:bytes:read", "media:metadata:write"],
+			allowedHosts: [],
+		});
+	});
+
 	it("maps each hook-registration capability to its participation facet", () => {
 		expect(capabilitiesToDeclaredAccess(["hooks.email-transport:register"], [])).toEqual({
 			email: { transport: {} },
@@ -236,7 +246,20 @@ describe("declaredAccess <-> capabilities round-trip (total over the vocabulary)
 		["content:read", "content:revisions:read"],
 		["content:read", "content:write", "content:revisions:read"],
 	];
-	const mediaChoices = [[], ["media:read"], ["media:read", "media:write"]];
+	const mediaChoices = [
+		[],
+		["media:read"],
+		["media:read", "media:write"],
+		["media:bytes:read"],
+		["media:read", "media:bytes:read"],
+		["media:read", "media:write", "media:bytes:read"],
+		["media:metadata:write"],
+		["media:read", "media:metadata:write"],
+		["media:read", "media:write", "media:metadata:write"],
+		["media:bytes:read", "media:metadata:write"],
+		["media:read", "media:bytes:read", "media:metadata:write"],
+		["media:read", "media:write", "media:bytes:read", "media:metadata:write"],
+	];
 	const commentChoices = [[], ["comments:read"], ["comments:read", "comments:moderate"]];
 	const taxonomyChoices = [[], ["taxonomies:read"], ["taxonomies:read", "taxonomies:write"]];
 	const redirectChoices = [[], ["redirects:read"], ["redirects:read", "redirects:write"]];
@@ -294,11 +317,22 @@ describe("declaredAccess <-> capabilities round-trip (total over the vocabulary)
 			const back = declaredAccessToCapabilities(
 				capabilitiesToDeclaredAccess(input.capabilities, input.allowedHosts),
 			);
-			expect(new Set(back.capabilities)).toEqual(new Set(input.capabilities));
-			expect(new Set(back.allowedHosts)).toEqual(new Set(input.allowedHosts));
+			const returnedCapabilities: readonly string[] = back.capabilities;
+			if (
+				returnedCapabilities.length !== input.capabilities.length ||
+				input.capabilities.some((capability) => !returnedCapabilities.includes(capability))
+			) {
+				throw new Error(`Capability round-trip mismatch: ${JSON.stringify({ input, back })}`);
+			}
+			if (
+				back.allowedHosts.length !== input.allowedHosts.length ||
+				input.allowedHosts.some((host) => !back.allowedHosts.includes(host))
+			) {
+				throw new Error(`Allowed-host round-trip mismatch: ${JSON.stringify({ input, back })}`);
+			}
 			count++;
 		}
-		// 5 content x 3 comments x 3 media x 3 taxonomy x 3 redirects x 5 network x 2^6 singleton subsets.
-		expect(count).toBe(129_600);
+		// 5 content x 3 comments x 12 media x 3 taxonomy x 3 redirects x 5 network x 2^6 singleton subsets.
+		expect(count).toBe(518_400);
 	});
 });

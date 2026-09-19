@@ -28,10 +28,12 @@ import type {
 	PluginContentItem,
 	SandboxContentCreateCallback,
 	SandboxEmailSendCallback,
+	Storage,
 	TaxonomyAccessWithWrite,
 	VersionedRedirect,
 	VersionedValue,
 } from "emdash";
+import type { MediaBytes, MediaItem as PluginMediaItem, MediaMetadataPatch } from "emdash/plugin";
 import type {
 	ContentItem,
 	ContentListOptions,
@@ -95,6 +97,7 @@ const TAXONOMY_WRITE_CALLBACKS_KEY = Symbol.for("emdash:sandbox-taxonomy-write-c
 let cronRescheduleCallback: (() => void) | null = null;
 let cronNowCallback: (() => Date) | null = null;
 let commentModerateCallback: SandboxCommentModerateCallback | null = null;
+let mediaStorageCallback: Pick<Storage, "download"> | null = null;
 
 function contentCreateCallbacks(): Map<string, SandboxContentCreateCallback> {
 	const store = globalThis as Record<symbol, unknown>;
@@ -146,6 +149,10 @@ export function setCronNowCallback(callback: (() => Date) | null): void {
 
 export function setCommentModerateCallback(callback: SandboxCommentModerateCallback | null): void {
 	commentModerateCallback = callback;
+}
+
+export function setMediaStorageCallback(storage: Pick<Storage, "download"> | null): void {
+	mediaStorageCallback = storage;
 }
 
 export function setTaxonomyWriteCallback(
@@ -1284,99 +1291,51 @@ export class PluginBridge extends WorkerEntrypoint<PluginBridgeEnv, PluginBridge
 	// Media Operations - capability-gated
 	// =========================================================================
 
-	async mediaGet(id: string): Promise<{
-		id: string;
-		filename: string;
-		mimeType: string;
-		size: number | null;
-		url: string;
-		createdAt: string;
-	} | null> {
+	async mediaGet(id: string): Promise<PluginMediaItem | null> {
 		const { capabilities } = this.ctx.props;
 		if (!capabilities.includes("media:read")) {
 			throw new Error("Missing capability: media:read");
 		}
-		const result = await this.env.DB.prepare("SELECT * FROM media WHERE id = ?").bind(id).first<{
-			id: string;
-			filename: string;
-			mime_type: string;
-			size: number | null;
-			storage_key: string;
-			created_at: string;
-		}>();
-		if (!result) return null;
-		return {
-			id: result.id,
-			filename: result.filename,
-			mimeType: result.mime_type,
-			size: result.size,
-			url: `/_emdash/api/media/file/${result.storage_key}`,
-			createdAt: result.created_at,
-		};
+		const { createMediaAccess, D1Dialect, Kysely } = await loadBridgeRuntime();
+		const db = new Kysely<Database>({ dialect: new D1Dialect({ database: this.env.DB }) });
+		return createMediaAccess(db).get(id);
 	}
 
-	async mediaList(opts: { limit?: number; cursor?: string; mimeType?: string } = {}): Promise<{
-		items: Array<{
-			id: string;
-			filename: string;
-			mimeType: string;
-			size: number | null;
-			url: string;
-			createdAt: string;
-		}>;
-		cursor?: string;
-		hasMore: boolean;
-	}> {
+	async mediaList(
+		opts: { limit?: number; cursor?: string; mimeType?: string } = {},
+	): Promise<{ items: PluginMediaItem[]; cursor?: string; hasMore: boolean }> {
 		const { capabilities } = this.ctx.props;
 		if (!capabilities.includes("media:read")) {
 			throw new Error("Missing capability: media:read");
 		}
-		const limit = Math.min(opts.limit ?? 50, 100);
-		// Only return ready items (matching core's MediaRepository.findMany default)
-		let sql = "SELECT * FROM media WHERE status = 'ready'";
-		const params: unknown[] = [];
+		const { createMediaAccess, D1Dialect, Kysely } = await loadBridgeRuntime();
+		const db = new Kysely<Database>({ dialect: new D1Dialect({ database: this.env.DB }) });
+		return createMediaAccess(db).list(opts);
+	}
 
-		if (opts.mimeType) {
-			sql += " AND mime_type LIKE ?";
-			params.push(opts.mimeType + "%");
+	async mediaReadBytes(id: string, maxBytes?: number): Promise<MediaBytes> {
+		const { capabilities } = this.ctx.props;
+		if (!capabilities.includes("media:bytes:read")) {
+			throw new Error("Missing capability: media:bytes:read");
 		}
-
-		if (opts.cursor) {
-			sql += " AND id < ?";
-			params.push(opts.cursor);
+		if (maxBytes !== undefined && typeof maxBytes !== "number") {
+			throw new TypeError("media/readBytes: maxBytes must be a number");
 		}
+		const { D1Dialect, Kysely, readPluginMediaBytes } = await loadBridgeRuntime();
+		const db = new Kysely<Database>({ dialect: new D1Dialect({ database: this.env.DB }) });
+		return readPluginMediaBytes(db, mediaStorageCallback ?? undefined, id, { maxBytes });
+	}
 
-		sql += " ORDER BY id DESC LIMIT ?";
-		params.push(limit + 1);
-
-		const results = await this.env.DB.prepare(sql)
-			.bind(...params)
-			.all<{
-				id: string;
-				filename: string;
-				mime_type: string;
-				size: number | null;
-				storage_key: string;
-				created_at: string;
-			}>();
-
-		const rows = results.results ?? [];
-		const pageRows = rows.slice(0, limit);
-		const items = pageRows.map((row) => ({
-			id: row.id,
-			filename: row.filename,
-			mimeType: row.mime_type,
-			size: row.size,
-			url: `/_emdash/api/media/file/${row.storage_key}`,
-			createdAt: row.created_at,
-		}));
-		const hasMore = rows.length > limit;
-
-		return {
-			items,
-			cursor: hasMore && items.length > 0 ? items.at(-1)!.id : undefined,
-			hasMore,
-		};
+	async mediaUpdateMetadata(id: string, patch: unknown): Promise<PluginMediaItem> {
+		const { capabilities } = this.ctx.props;
+		if (!capabilities.includes("media:metadata:write")) {
+			throw new Error("Missing capability: media:metadata:write");
+		}
+		const { D1Dialect, Kysely, parsePluginMediaMetadataPatch, updatePluginMediaMetadata } =
+			await loadBridgeRuntime();
+		const parsed: MediaMetadataPatch = parsePluginMediaMetadataPatch(patch);
+		const db = new Kysely<Database>({ dialect: new D1Dialect({ database: this.env.DB }) });
+		return updatePluginMediaMetadata(db, id, parsed);
 	}
 
 	/**

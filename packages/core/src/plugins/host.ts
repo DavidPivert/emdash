@@ -4,10 +4,23 @@ export { PluginStorageRepository } from "../database/repositories/plugin-storage
 export { resolveContentCreateLocale } from "../i18n/config.js";
 export { createCommentAccess } from "./context.js";
 export { createContentAccess } from "./content-access.js";
+export { createMediaAccess } from "./context.js";
 export { createRedirectAccess, RedirectAccessError } from "./context.js";
 export { createSchemaAccess } from "./context.js";
 export { CronAccessImpl } from "./cron.js";
+export {
+	parsePluginMediaMetadataPatch,
+	readPluginMediaBytes,
+	updatePluginMediaMetadata,
+} from "./media.js";
 export { createSandboxRouteError, getSandboxRouteErrorDetails } from "./sandbox/types.js";
 export { StorageSerializationError } from "./storage-query.js";
-export type { ContentItem, ContentListOptions, PaginatedResult } from "./types.js";
+export type {
+	ContentItem,
+	ContentListOptions,
+	MediaBytes,
+	MediaItem,
+	MediaMetadataPatch,
+	PaginatedResult,
+} from "./types.js";
 export { ulid } from "ulidx";

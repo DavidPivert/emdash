@@ -289,6 +289,13 @@ export {
 	createRedirectAccess,
 	RedirectAccessError,
 	createSchemaAccess,
+	createMediaAccess,
+	DEFAULT_PLUGIN_MEDIA_READ_BYTES,
+	MAX_PLUGIN_MEDIA_READ_BYTES,
+	parsePluginMediaMetadataPatch,
+	readPluginMediaBytes,
+	toPluginMediaItem,
+	updatePluginMediaMetadata,
 	CronAccessImpl,
 } from "./plugins/index.js";
 export type {
@@ -317,6 +324,8 @@ export type {
 	ContentListOptions,
 	CronTaskInfo,
 	MediaAccess,
+	MediaBytes,
+	MediaMetadataPatch,
 	HttpAccess,
 	LogAccess,
 	SiteInfo,

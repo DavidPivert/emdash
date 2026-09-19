@@ -62,6 +62,8 @@ export type PluginCapability =
 	| "redirects:write"
 	// Media
 	| "media:read"
+	| "media:bytes:read"
+	| "media:metadata:write"
 	| "media:write"
 	// Users
 	| "users:read"
@@ -201,7 +203,12 @@ export interface DeclaredAccess {
 	schema?: { read?: AccessConstraints };
 	taxonomies?: { read?: AccessConstraints; write?: AccessConstraints };
 	redirects?: { read?: AccessConstraints; write?: AccessConstraints };
-	media?: { read?: AccessConstraints; write?: AccessConstraints };
+	media?: {
+		read?: AccessConstraints;
+		bytesRead?: AccessConstraints;
+		metadataWrite?: AccessConstraints;
+		write?: AccessConstraints;
+	};
 	network?: { request?: { allowedHosts?: string[] } };
 	email?: { send?: AccessConstraints; events?: AccessConstraints; transport?: AccessConstraints };
 	page?: { fragments?: AccessConstraints };
@@ -251,6 +258,8 @@ export function capabilitiesToDeclaredAccess(
 		out.media = { read: {} };
 		if (caps.has("media:write")) out.media.write = {};
 	}
+	if (caps.has("media:bytes:read")) (out.media ??= {}).bytesRead = {};
+	if (caps.has("media:metadata:write")) (out.media ??= {}).metadataWrite = {};
 	if (caps.has("network:request:unrestricted")) {
 		// Unrestricted: omit allowedHosts entirely (its absence is what the
 		// lexicon and the decoder read as "no host restriction").
@@ -310,6 +319,8 @@ export function declaredAccessToCapabilities(declaredAccess: DeclaredAccess): {
 		caps.add("redirects:read");
 	}
 	if (declaredAccess.media?.read) caps.add("media:read");
+	if (declaredAccess.media?.bytesRead) caps.add("media:bytes:read");
+	if (declaredAccess.media?.metadataWrite) caps.add("media:metadata:write");
 	if (declaredAccess.media?.write) {
 		caps.add("media:write");
 		caps.add("media:read");

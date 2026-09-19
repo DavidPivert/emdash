@@ -329,6 +329,8 @@ describe("agent guidance", () => {
 		expect(skill).toContain("Use the package scripts");
 		expect(skill).toContain("createPluginTestHost()");
 		expect(skill).toContain("createPluginRuntimeTestHost()");
+		expect(skill).toContain("media:bytes:read");
+		expect(skill).toContain("media:metadata:write");
 		expect(skill).toContain("redirects:read");
 		expect(skill).toContain("redirects:write");
 		expect(skill).toContain("visitor destinations");

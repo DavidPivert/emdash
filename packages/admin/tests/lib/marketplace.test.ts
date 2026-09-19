@@ -397,6 +397,8 @@ describe("CAPABILITY_LABELS", () => {
 			"redirects:read",
 			"redirects:write",
 			"media:read",
+			"media:bytes:read",
+			"media:metadata:write",
 			"media:write",
 			"users:read",
 			"network:request",

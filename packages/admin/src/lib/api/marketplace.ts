@@ -391,6 +391,8 @@ export const CAPABILITY_LABELS: Record<string, MessageDescriptor> = {
 	"redirects:read": msg`Read redirect rules`,
 	"redirects:write": msg`Change where visitors are sent`,
 	"media:read": msg`Access your media library`,
+	"media:bytes:read": msg`Read media file contents`,
+	"media:metadata:write": msg`Edit media alt text, captions, and focal points`,
 	"media:write": msg`Upload and manage media`,
 	"users:read": msg`Read user accounts`,
 	"network:request": msg`Make network requests`,

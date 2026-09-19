@@ -80,6 +80,8 @@ describe("CapabilitySchema", () => {
 		expect(CapabilitySchema.parse("email:send")).toBe("email:send");
 		expect(CapabilitySchema.parse("comments:read")).toBe("comments:read");
 		expect(CapabilitySchema.parse("comments:moderate")).toBe("comments:moderate");
+		expect(CapabilitySchema.parse("media:bytes:read")).toBe("media:bytes:read");
+		expect(CapabilitySchema.parse("media:metadata:write")).toBe("media:metadata:write");
 		expect(CapabilitySchema.parse("redirects:read")).toBe("redirects:read");
 		expect(CapabilitySchema.parse("redirects:write")).toBe("redirects:write");
 	});

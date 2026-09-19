@@ -31,6 +31,8 @@ export interface CanonicalDeclaredAccess {
 		transport?: CanonicalAccessConstraints;
 	}>;
 	readonly media?: Readonly<{
+		bytesRead?: CanonicalAccessConstraints;
+		metadataWrite?: CanonicalAccessConstraints;
 		read?: CanonicalAccessConstraints;
 		write?: CanonicalAccessConstraints;
 	}>;

@@ -115,12 +115,16 @@ export interface SandboxOptions {
 	emailSend?: SandboxEmailSendCallback;
 	commentModerate?: SandboxCommentModerateCallback;
 	/**
-	 * Media storage adapter for sandboxed plugin uploads and deletes.
-	 * When provided, plugins with write:media can upload and delete files
-	 * via ctx.media.upload() and ctx.media.delete().
+	 * Media storage adapter for sandboxed plugin byte reads, uploads, and deletes.
+	 * Each operation remains gated by its own media capability.
 	 */
 	mediaStorage?: {
 		upload(options: { key: string; body: Uint8Array; contentType: string }): Promise<unknown>;
+		download(key: string): Promise<{
+			body: ReadableStream<Uint8Array>;
+			contentType: string;
+			size: number;
+		}>;
 		delete(key: string): Promise<unknown>;
 	};
 	/** Worker Loader name suffix. The plugin's logical ID remains unchanged. */

@@ -35,6 +35,7 @@ import {
 	setCronNowCallback,
 	setCronRescheduleCallback,
 	setEmailSendCallback,
+	setMediaStorageCallback,
 	setTaxonomyWriteCallback,
 } from "./bridge.js";
 import type { WorkerLoader, WorkerStub, PluginBridgeBinding, WorkerLoaderLimits } from "./types.js";
@@ -141,6 +142,7 @@ export class CloudflareSandboxRunner implements SandboxRunner {
 		// Wire email send callback if provided at construction time
 		setEmailSendCallback(options.emailSend ?? null);
 		setCronNowCallback(options.now ?? null);
+		setMediaStorageCallback(options.mediaStorage ?? null);
 		setCommentModerateCallback(options.commentModerate ?? null);
 		setTaxonomyWriteCallback(this.taxonomyWriteRuntimeId, options.taxonomyWrite ?? null);
 	}

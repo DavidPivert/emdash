@@ -429,6 +429,7 @@ Read \`emdash-plugin.jsonc\` and \`src/plugin.ts\` before editing. The manifest 
 - Assign the runtime definition to a \`SandboxedPlugin\`-typed constant and export it as default from \`src/plugin.ts\`.
 - Use Web APIs. Do not import Node.js built-ins into plugin runtime code.
 - Declare every runtime API in \`capabilities\` and every network destination in \`allowedHosts\`.
+- Keep media authority narrow: \`media:read\` exposes safe ready-media metadata and an authenticated ID-based asset URL, \`media:bytes:read\` exposes bounded bytes and content hashes through \`ctx.media.readBytes()\`, and \`media:metadata:write\` changes only alt text, captions, and focal points through \`ctx.media.updateMetadata()\`. These declarations do not imply one another. Byte reads default to 10 MiB, cannot request more than 16 MiB, and are checked while the host consumes the storage stream.
 - Treat \`comments:read\` as personal-data access. It exposes author email, body, pseudonymous IP hash, user agent, and moderation metadata. Use \`comments:moderate\` for expected-status moderation; it implies read.
 - Use \`redirects:read\` for paginated redirect inspection. Add \`redirects:write\` only when the plugin must change visitor destinations, and pass redirect \`_rev\` values back unchanged for updates and deletes.
 - Use \`schema:read\` for \`ctx.schema.listCollections()\` and \`getCollection()\`.

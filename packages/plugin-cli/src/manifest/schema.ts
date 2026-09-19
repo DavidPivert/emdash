@@ -356,6 +356,8 @@ const CURRENT_CAPABILITIES = new Set<string>([
 	"redirects:read",
 	"redirects:write",
 	"media:read",
+	"media:bytes:read",
+	"media:metadata:write",
 	"media:write",
 	"users:read",
 	"email:send",

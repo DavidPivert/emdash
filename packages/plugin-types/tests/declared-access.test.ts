@@ -192,6 +192,30 @@ describe("canonicalizeDeclaredAccess", () => {
 		).toBe(true);
 	});
 
+	it("preserves independent media byte and metadata-write access", () => {
+		const canonical = canonicalizeDeclaredAccess({
+			media: { bytesRead: {}, metadataWrite: {} },
+		});
+
+		expect(canonical.media?.bytesRead).toEqual({});
+		expect(canonical.media?.metadataWrite).toEqual({});
+		expect(
+			diffDeclaredAccess(
+				{ media: { bytesRead: {} } },
+				{ media: { bytesRead: {}, metadataWrite: {} } },
+			),
+		).toMatchObject({
+			escalation: true,
+			changes: [
+				{
+					category: "media",
+					operation: "metadataWrite",
+					kind: "operation-added",
+				},
+			],
+		});
+	});
+
 	it("sorts keys recursively and host sets while preserving other array order", () => {
 		const first = {
 			network: {

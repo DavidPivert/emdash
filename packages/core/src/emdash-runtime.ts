@@ -83,6 +83,7 @@ import type {
 	ActorInfo,
 	ResolvedPlugin,
 	MediaItem,
+	MediaMetadataPatch,
 	PluginManifest,
 	PluginCapability,
 	PluginStorageConfig,
@@ -225,6 +226,7 @@ import {
 } from "./plugins/hooks.js";
 import { disableRuntimePlugin, enableRuntimePlugin } from "./plugins/lifecycle.js";
 import { HOOK_NAMES, normalizeManifestRoute } from "./plugins/manifest-schema.js";
+import { updatePluginMediaMetadata } from "./plugins/media.js";
 import { extractRequestMeta, sanitizeHeadersForSandbox } from "./plugins/request-meta.js";
 import {
 	buildRouteMeta,
@@ -2232,6 +2234,7 @@ export class EmDashRuntime {
 											body: opts.body,
 											contentType: opts.contentType,
 										}),
+									download: (key) => mediaStorage.download(key),
 									delete: (key) => mediaStorage.delete(key),
 								}
 							: undefined,
@@ -2385,6 +2388,7 @@ export class EmDashRuntime {
 									body: opts.body,
 									contentType: opts.contentType,
 								}),
+							download: (key) => storage.download(key),
 							delete: (key) => storage.delete(key),
 						},
 					},
@@ -3708,6 +3712,10 @@ export class EmDashRuntime {
 			invalidateSiteSettingsCache();
 		}
 		return result;
+	}
+
+	async handlePluginMediaMetadataUpdate(id: string, patch: MediaMetadataPatch) {
+		return updatePluginMediaMetadata(this.db, id, patch);
 	}
 
 	async handleMediaReplaceMetadata(

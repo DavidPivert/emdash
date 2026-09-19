@@ -182,6 +182,16 @@ interface BridgeMediaItem {
 	size: number | null;
 	url: string;
 	createdAt: string;
+	width?: number | null;
+	height?: number | null;
+	alt?: string | null;
+	caption?: string | null;
+	focalX?: number | null;
+	focalY?: number | null;
+	blurhash?: string | null;
+	dominantColor?: string | null;
+	folderId?: string | null;
+	status?: "ready";
 }
 
 export interface StorageSerializationFailureDetails {
@@ -364,6 +374,17 @@ export interface PluginBridgeBinding {
 		cursor?: string;
 		mimeType?: string;
 	}): Promise<{ items: BridgeMediaItem[]; cursor?: string; hasMore: boolean }>;
+	mediaReadBytes(
+		id: string,
+		maxBytes?: number,
+	): Promise<{
+		bytes: Uint8Array;
+		filename: string;
+		mimeType: string;
+		size: number;
+		contentHash?: string;
+	}>;
+	mediaUpdateMetadata(id: string, patch: unknown): Promise<BridgeMediaItem>;
 	mediaUpload(
 		filename: string,
 		contentType: string,

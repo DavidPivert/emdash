@@ -6,6 +6,7 @@ import { env } from "cloudflare:workers";
 import {
 	CommentRepository,
 	ContentRepository,
+	MediaRepository,
 	OptionsRepository,
 	RevisionRepository,
 	SchemaRegistry,
@@ -58,6 +59,23 @@ export interface PluginRuntimeRouteRequest extends PluginTestRequest {
 	tokenScopes?: string[];
 }
 
+export interface PluginRuntimeMediaFixture {
+	filename: string;
+	mimeType: string;
+	bytes: Uint8Array;
+	status?: "pending" | "ready" | "failed";
+	reportedSize?: number;
+	width?: number;
+	height?: number;
+	alt?: string;
+	caption?: string;
+	contentHash?: string;
+	blurhash?: string;
+	dominantColor?: string;
+	authorId?: string;
+	folderId?: string | null;
+}
+
 export interface PluginRuntimeTestHost {
 	readonly manifest: PluginManifest;
 	transport: {
@@ -79,6 +97,7 @@ export interface PluginRuntimeTestHost {
 			emailVerified?: boolean;
 		}): Promise<UserInfo>;
 		content(collection: string, input: Omit<CreateContentInput, "type">): Promise<ContentItem>;
+		media(input: PluginRuntimeMediaFixture): Promise<{ id: string }>;
 		comment(input: {
 			collection: string;
 			contentId: string;
@@ -185,6 +204,7 @@ export interface PluginRuntimeTestHost {
 		pluginState(): Promise<Record<string, unknown> | null>;
 		scheduledTasks(): Promise<Array<Record<string, unknown>>>;
 		media(id: string): ReturnType<EmDashRuntime["handleMediaGet"]>;
+		mediaBytes(id: string): Promise<Uint8Array | null>;
 		comments(): Promise<Array<Record<string, unknown>>>;
 		redirects(): Promise<RedirectInfo[]>;
 		email(): Promise<Array<Record<string, unknown>>>;
@@ -488,6 +508,34 @@ export async function createPluginRuntimeTestHost(
 				assertActive();
 				return new ContentRepository(runtime.db).create({ ...input, type: collection });
 			},
+			async media(input) {
+				assertActive();
+				const extensionIndex = input.filename.lastIndexOf(".");
+				const extension = extensionIndex > 0 ? input.filename.slice(extensionIndex) : "";
+				const storageKey = `plugin-test/${crypto.randomUUID()}${extension}`;
+				await storage.upload({
+					key: storageKey,
+					body: input.bytes,
+					contentType: input.mimeType,
+				});
+				const item = await new MediaRepository(runtime.db).create({
+					filename: input.filename,
+					mimeType: input.mimeType,
+					size: input.reportedSize ?? input.bytes.byteLength,
+					storageKey,
+					status: input.status ?? "ready",
+					width: input.width,
+					height: input.height,
+					alt: input.alt,
+					caption: input.caption,
+					contentHash: input.contentHash,
+					blurhash: input.blurhash,
+					dominantColor: input.dominantColor,
+					authorId: input.authorId,
+					folderId: input.folderId,
+				});
+				return { id: item.id };
+			},
 			async comment(input) {
 				assertActive();
 				const comment = await new CommentRepository(runtime.db).create(input);
@@ -699,6 +747,12 @@ export async function createPluginRuntimeTestHost(
 					.execute();
 			},
 			media: (id) => runtime.handleMediaGet(id),
+			async mediaBytes(id) {
+				const item = await new MediaRepository(runtime.db).findById(id);
+				if (!item) return null;
+				const downloaded = await storage.download(item.storageKey);
+				return new Uint8Array(await new Response(downloaded.body).arrayBuffer());
+			},
 			async comments() {
 				const rows = await bound.DB.prepare(
 					"SELECT id, collection, content_id AS contentId, body, status FROM _emdash_comments ORDER BY created_at ASC",
