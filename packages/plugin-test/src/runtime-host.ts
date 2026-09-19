@@ -77,6 +77,14 @@ export interface PluginRuntimeTestHost {
 			role?: "subscriber" | "contributor" | "author" | "editor" | "admin";
 		}): Promise<UserInfo>;
 		content(collection: string, input: Omit<CreateContentInput, "type">): Promise<ContentItem>;
+		taxonomyDefinition(input: {
+			name: string;
+			label: string;
+			labelSingular?: string;
+			hierarchical?: boolean;
+			collections: string[];
+			locale?: string;
+		}): Promise<{ id: string; name: string }>;
 		redirect(input: {
 			source: string;
 			destination?: string;
@@ -452,6 +460,39 @@ export async function createPluginRuntimeTestHost(
 			content(collection, input) {
 				assertActive();
 				return new ContentRepository(runtime.db).create({ ...input, type: collection });
+			},
+			async taxonomyDefinition(input) {
+				assertActive();
+				const locale = input.locale ?? "en";
+				const existing = await runtime.db
+					.selectFrom("_emdash_taxonomy_defs")
+					.select("id")
+					.where("name", "=", input.name)
+					.where("locale", "=", locale)
+					.executeTakeFirst();
+				const id = existing?.id ?? crypto.randomUUID();
+				await runtime.db
+					.insertInto("_emdash_taxonomy_defs")
+					.values({
+						id,
+						name: input.name,
+						label: input.label,
+						label_singular: input.labelSingular ?? null,
+						hierarchical: input.hierarchical ? 1 : 0,
+						collections: JSON.stringify(input.collections),
+						locale,
+						translation_group: id,
+					})
+					.onConflict((conflict) =>
+						conflict.columns(["name", "locale"]).doUpdateSet({
+							label: input.label,
+							label_singular: input.labelSingular ?? null,
+							hierarchical: input.hierarchical ? 1 : 0,
+							collections: JSON.stringify(input.collections),
+						}),
+					)
+					.execute();
+				return { id, name: input.name };
 			},
 			async redirect(input) {
 				assertActive();

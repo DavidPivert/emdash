@@ -33,6 +33,7 @@ import {
 	setCronNowCallback,
 	setCronRescheduleCallback,
 	setEmailSendCallback,
+	setTaxonomyWriteCallback,
 } from "./bridge.js";
 import type { WorkerLoader, WorkerStub, PluginBridgeBinding, WorkerLoaderLimits } from "./types.js";
 import { generatePluginWrapper } from "./wrapper.js";
@@ -60,6 +61,7 @@ export interface PluginBridgeProps {
 	allowedHosts: string[];
 	storageCollections: string[];
 	contentCreateRuntimeId?: string;
+	taxonomyWriteRuntimeId?: string;
 	i18nConfig?: I18nConfig | null;
 	siteInfo?: {
 		name: string;
@@ -121,6 +123,7 @@ export class CloudflareSandboxRunner implements SandboxRunner {
 	private options: SandboxOptions;
 	private resolvedLimits: ResolvedLimits;
 	private readonly contentCreateRuntimeId = crypto.randomUUID();
+	private readonly taxonomyWriteRuntimeId = crypto.randomUUID();
 	private siteInfo?: {
 		name: string;
 		url: string;
@@ -136,6 +139,7 @@ export class CloudflareSandboxRunner implements SandboxRunner {
 		// Wire email send callback if provided at construction time
 		setEmailSendCallback(options.emailSend ?? null);
 		setCronNowCallback(options.now ?? null);
+		setTaxonomyWriteCallback(this.taxonomyWriteRuntimeId, options.taxonomyWrite ?? null);
 	}
 
 	/**
@@ -213,6 +217,7 @@ export class CloudflareSandboxRunner implements SandboxRunner {
 			this.siteInfo,
 			this.options.isolateKey,
 			this.contentCreateRuntimeId,
+			this.taxonomyWriteRuntimeId,
 		);
 
 		this.plugins.set(pluginId, plugin);
@@ -228,6 +233,7 @@ export class CloudflareSandboxRunner implements SandboxRunner {
 		}
 		this.plugins.clear();
 		setContentCreateCallback(this.contentCreateRuntimeId, null);
+		setTaxonomyWriteCallback(this.taxonomyWriteRuntimeId, null);
 	}
 }
 
@@ -268,6 +274,7 @@ class CloudflareSandboxedPlugin implements SandboxedPluginInstance {
 		},
 		isolateKey?: string,
 		private contentCreateRuntimeId?: string,
+		private taxonomyWriteRuntimeId?: string,
 	) {
 		this.id = `${manifest.id}:${manifest.version}`;
 		this.workerName = isolateKey ? `${this.id}:${isolateKey}` : this.id;
@@ -312,6 +319,7 @@ class CloudflareSandboxedPlugin implements SandboxedPluginInstance {
 				allowedHosts: this.manifest.allowedHosts || [],
 				storageCollections: Object.keys(this.manifest.storage || {}),
 				contentCreateRuntimeId: this.contentCreateRuntimeId,
+				taxonomyWriteRuntimeId: this.taxonomyWriteRuntimeId,
 				i18nConfig: getI18nConfig(),
 				siteInfo: this.siteInfo,
 				storageConfig: this.manifest.storage,

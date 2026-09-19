@@ -96,6 +96,24 @@ describe("declaredAccess facet mapping", () => {
 				admin: {},
 			}).success,
 		).toBe(true);
+		const writer = pluginManifestSchema.safeParse({
+			id: "taxonomy-writer",
+			version: "1.0.0",
+			declaredAccess: { taxonomies: { read: {}, write: {} } },
+			capabilities: ["taxonomies:read", "taxonomies:write"],
+			allowedHosts: [],
+			storage: {},
+			hooks: [],
+			routes: [],
+			admin: {},
+		});
+		expect(writer.success).toBe(true);
+		if (!writer.success) return;
+		expect(writer.data.declaredAccess?.taxonomies?.write).toEqual({});
+		expect(reconcileManifestAccess(writer.data).capabilities).toEqual([
+			"taxonomies:read",
+			"taxonomies:write",
+		]);
 	});
 
 	it("validates redirect write access and derives its read implication", () => {
@@ -129,6 +147,13 @@ describe("declaredAccess facet mapping", () => {
 		expect(capabilitiesToDeclaredAccess(["taxonomies:read"], [])).toEqual({
 			taxonomies: { read: {} },
 		});
+		expect(capabilitiesToDeclaredAccess(["taxonomies:write"], [])).toEqual({
+			taxonomies: { read: {}, write: {} },
+		});
+		expect(declaredAccessToCapabilities({ taxonomies: { write: {} } }).capabilities).toEqual([
+			"taxonomies:write",
+			"taxonomies:read",
+		]);
 		expect(capabilitiesToDeclaredAccess(["redirects:write"], [])).toEqual({
 			redirects: { read: {}, write: {} },
 		});
@@ -202,6 +227,7 @@ describe("declaredAccess <-> capabilities round-trip (total over the vocabulary)
 		["content:read", "content:write", "content:revisions:read"],
 	];
 	const mediaChoices = [[], ["media:read"], ["media:read", "media:write"]];
+	const taxonomyChoices = [[], ["taxonomies:read"], ["taxonomies:read", "taxonomies:write"]];
 	const redirectChoices = [[], ["redirects:read"], ["redirects:read", "redirects:write"]];
 	const networkChoices: { caps: string[]; hosts: string[] }[] = [
 		{ caps: [], hosts: [] },
@@ -218,21 +244,29 @@ describe("declaredAccess <-> capabilities round-trip (total over the vocabulary)
 		"hooks.email-transport:register",
 		"hooks.page-fragments:register",
 		"users:read",
-		"taxonomies:read",
 		"schema:read",
 	];
 
 	function* states() {
 		for (const content of contentChoices) {
 			for (const media of mediaChoices) {
-				for (const redirects of redirectChoices) {
-					for (const network of networkChoices) {
-						for (let mask = 0; mask < 1 << singletonFacets.length; mask++) {
-							const extra = singletonFacets.filter((_, i) => mask & (1 << i));
-							yield {
-								capabilities: [...content, ...media, ...redirects, ...network.caps, ...extra],
-								allowedHosts: network.hosts,
-							};
+				for (const taxonomies of taxonomyChoices) {
+					for (const redirects of redirectChoices) {
+						for (const network of networkChoices) {
+							for (let mask = 0; mask < 1 << singletonFacets.length; mask++) {
+								const extra = singletonFacets.filter((_, i) => mask & (1 << i));
+								yield {
+									capabilities: [
+										...content,
+										...media,
+										...taxonomies,
+										...redirects,
+										...network.caps,
+										...extra,
+									],
+									allowedHosts: network.hosts,
+								};
+							}
 						}
 					}
 				}
@@ -250,7 +284,7 @@ describe("declaredAccess <-> capabilities round-trip (total over the vocabulary)
 			expect(new Set(back.allowedHosts)).toEqual(new Set(input.allowedHosts));
 			count++;
 		}
-		// 5 content x 3 media x 3 redirects x 5 network x 2^7 singleton subsets.
-		expect(count).toBe(28_800);
+		// 5 content x 3 media x 3 taxonomy x 3 redirects x 5 network x 2^6 singleton subsets.
+		expect(count).toBe(43_200);
 	});
 });

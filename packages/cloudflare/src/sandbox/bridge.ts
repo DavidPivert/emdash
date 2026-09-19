@@ -23,6 +23,7 @@ import type {
 	PluginContentItem,
 	SandboxContentCreateCallback,
 	SandboxEmailSendCallback,
+	TaxonomyAccessWithWrite,
 	VersionedRedirect,
 	VersionedValue,
 } from "emdash";
@@ -80,6 +81,7 @@ const FILE_EXT_REGEX = /^\.[a-z0-9]{1,10}$/i;
  */
 let emailSendCallback: SandboxEmailSendCallback | null = null;
 const CONTENT_CREATE_CALLBACKS_KEY = Symbol.for("emdash:sandbox-content-create-callbacks");
+const TAXONOMY_WRITE_CALLBACKS_KEY = Symbol.for("emdash:sandbox-taxonomy-write-callbacks");
 let cronRescheduleCallback: (() => void) | null = null;
 let cronNowCallback: (() => Date) | null = null;
 
@@ -92,6 +94,18 @@ function contentCreateCallbacks(): Map<string, SandboxContentCreateCallback> {
 	}
 	const callbacks = new Map<string, SandboxContentCreateCallback>();
 	store[CONTENT_CREATE_CALLBACKS_KEY] = callbacks;
+	return callbacks;
+}
+
+function taxonomyWriteCallbacks(): Map<string, TaxonomyAccessWithWrite> {
+	const store = globalThis as Record<symbol, unknown>;
+	const existing = store[TAXONOMY_WRITE_CALLBACKS_KEY];
+	if (existing instanceof Map) {
+		// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- this private Symbol stores only callback maps created below
+		return existing as Map<string, TaxonomyAccessWithWrite>;
+	}
+	const callbacks = new Map<string, TaxonomyAccessWithWrite>();
+	store[TAXONOMY_WRITE_CALLBACKS_KEY] = callbacks;
 	return callbacks;
 }
 
@@ -117,6 +131,14 @@ export function setCronRescheduleCallback(callback: (() => void) | null): void {
 
 export function setCronNowCallback(callback: (() => Date) | null): void {
 	cronNowCallback = callback;
+}
+
+export function setTaxonomyWriteCallback(
+	runtimeId: string,
+	callback: TaxonomyAccessWithWrite | null,
+): void {
+	if (callback) taxonomyWriteCallbacks().set(runtimeId, callback);
+	else taxonomyWriteCallbacks().delete(runtimeId);
 }
 
 function serializeValue(value: unknown): unknown {
@@ -254,6 +276,7 @@ export interface PluginBridgeProps {
 	allowedHosts: string[];
 	storageCollections: string[];
 	contentCreateRuntimeId?: string;
+	taxonomyWriteRuntimeId?: string;
 	i18nConfig?: I18nConfig | null;
 	siteInfo?: {
 		name: string;
@@ -949,7 +972,7 @@ export class PluginBridge extends WorkerEntrypoint<PluginBridgeEnv, PluginBridge
 	}
 
 	// =========================================================================
-	// Taxonomy Operations (read-only) - gated on taxonomies:read
+	// Taxonomy Operations - capability-gated
 	// =========================================================================
 
 	async taxonomyList(opts: { locale?: string } = {}): Promise<
@@ -1060,6 +1083,41 @@ export class PluginBridge extends WorkerEntrypoint<PluginBridgeEnv, PluginBridge
 			.bind(...params)
 			.all();
 		return (results.results ?? []).map(rowToTaxonomyTerm);
+	}
+
+	async taxonomyCreateTerm(
+		taxonomy: string,
+		input: Parameters<TaxonomyAccessWithWrite["createTerm"]>[1],
+	) {
+		return this.getTaxonomyWriteAccess().createTerm(taxonomy, input);
+	}
+
+	async taxonomyAddEntryTerms(
+		collection: string,
+		entryId: string,
+		taxonomy: string,
+		termIds: string[],
+	) {
+		return this.getTaxonomyWriteAccess().addEntryTerms(collection, entryId, taxonomy, termIds);
+	}
+
+	async taxonomyRemoveEntryTerms(
+		collection: string,
+		entryId: string,
+		taxonomy: string,
+		termIds: string[],
+	) {
+		return this.getTaxonomyWriteAccess().removeEntryTerms(collection, entryId, taxonomy, termIds);
+	}
+
+	private getTaxonomyWriteAccess(): TaxonomyAccessWithWrite {
+		if (!this.ctx.props.capabilities.includes("taxonomies:write")) {
+			throw new Error("Missing capability: taxonomies:write");
+		}
+		const runtimeId = this.ctx.props.taxonomyWriteRuntimeId;
+		const access = runtimeId ? taxonomyWriteCallbacks().get(runtimeId) : undefined;
+		if (!access) throw new Error("Taxonomy mutations are not available");
+		return access;
 	}
 
 	// =========================================================================

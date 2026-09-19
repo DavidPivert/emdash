@@ -14,6 +14,7 @@ import {
 	handleRedirectList,
 	handleRedirectUpdate,
 } from "../api/handlers/redirects.js";
+import { handleTermCreate } from "../api/handlers/taxonomies.js";
 import { createRedirectBody, updateRedirectBody } from "../api/schemas/redirects.js";
 import { ContentRepository } from "../database/repositories/content.js";
 import { EntryLockRepository } from "../database/repositories/entry-locks.js";
@@ -30,7 +31,7 @@ import { TaxonomyRepository, type Taxonomy } from "../database/repositories/taxo
 import { UserRepository } from "../database/repositories/user.js";
 import { withTransaction } from "../database/transaction.js";
 import type { Database } from "../database/types.js";
-import { resolveContentCreateLocale } from "../i18n/config.js";
+import { getI18nConfig, resolveContentCreateLocale } from "../i18n/config.js";
 import {
 	resolveAndValidateExternalUrl,
 	SsrfError,
@@ -71,8 +72,10 @@ import type {
 	QueryOptions,
 	MediaListOptions,
 	TaxonomyAccess,
+	TaxonomyAccessWithWrite,
 	TaxonomyDefInfo,
 	TaxonomyTermInfo,
+	TaxonomyTermCreateInput,
 	TaxonomyReadOptions,
 	RedirectAccess,
 	RedirectAccessWithWrite,
@@ -511,6 +514,131 @@ export function createRedirectAccess(
 			const result = await handleRedirectDelete(db, id, { expectedRevision });
 			if (!result.success) return throwRedirectResult(result.error);
 			return result.data.deleted;
+		},
+	};
+}
+
+const MAX_TAXONOMY_DELTA_TERMS = 64;
+
+function taxonomyAccessError(code: string, message: string): Error {
+	return Object.assign(new Error(message), { code });
+}
+
+async function resolveTaxonomyDelta(
+	db: Kysely<Database>,
+	collection: string,
+	entryId: string,
+	taxonomy: string,
+	termIds: string[],
+): Promise<{ repo: TaxonomyRepository; groups: string[]; locale: string }> {
+	if (termIds.length > MAX_TAXONOMY_DELTA_TERMS) {
+		throw taxonomyAccessError(
+			"VALIDATION_ERROR",
+			`A taxonomy assignment delta can contain at most ${MAX_TAXONOMY_DELTA_TERMS} term IDs`,
+		);
+	}
+	if (termIds.some((id) => typeof id !== "string" || id.length === 0)) {
+		throw taxonomyAccessError("VALIDATION_ERROR", "Taxonomy term IDs must be non-empty strings");
+	}
+
+	const defs = await db
+		.selectFrom("_emdash_taxonomy_defs")
+		.select(["collections"])
+		.where("name", "=", taxonomy)
+		.execute();
+	if (defs.length === 0) {
+		throw taxonomyAccessError("NOT_FOUND", `Taxonomy '${taxonomy}' not found`);
+	}
+	const attached = defs.some((def) => parseCollectionsColumn(def.collections).includes(collection));
+	if (!attached) {
+		throw taxonomyAccessError(
+			"VALIDATION_ERROR",
+			`Taxonomy '${taxonomy}' is not attached to collection '${collection}'`,
+		);
+	}
+
+	const entry = await new ContentRepository(db).findById(collection, entryId);
+	if (!entry) {
+		throw taxonomyAccessError(
+			"NOT_FOUND",
+			`Content entry '${entryId}' not found in '${collection}'`,
+		);
+	}
+
+	const repo = new TaxonomyRepository(db);
+	const groups: string[] = [];
+	for (const id of new Set(termIds)) {
+		const term = await repo.findByIdOrTranslationGroup(id);
+		if (!term) throw taxonomyAccessError("NOT_FOUND", `Taxonomy term '${id}' not found`);
+		if (term.name !== taxonomy) {
+			throw taxonomyAccessError(
+				"VALIDATION_ERROR",
+				`Taxonomy term '${id}' belongs to '${term.name}', not '${taxonomy}'`,
+			);
+		}
+		groups.push(term.translationGroup ?? term.id);
+	}
+
+	return { repo, groups, locale: entry.locale ?? getI18nConfig()?.defaultLocale ?? "en" };
+}
+
+async function readResolvedEntryTerms(
+	repo: TaxonomyRepository,
+	collection: string,
+	entryId: string,
+	taxonomy: string,
+	locale: string,
+): Promise<TaxonomyTermInfo[]> {
+	const defaultLocale = getI18nConfig()?.defaultLocale ?? locale;
+	const assignments = await repo.getTermAssignmentsForEntry(
+		collection,
+		entryId,
+		taxonomy,
+		locale,
+		defaultLocale,
+	);
+	return assignments.flatMap(({ term }) => (term ? [taxonomyToTermInfo(term)] : []));
+}
+
+export function createTaxonomyAccessWithWrite(db: Kysely<Database>): TaxonomyAccessWithWrite {
+	return {
+		...createTaxonomyAccess(db),
+		async createTerm(taxonomy: string, input: TaxonomyTermCreateInput) {
+			const result = await handleTermCreate(db, taxonomy, input);
+			if (!result.success) throw taxonomyAccessError(result.error.code, result.error.message);
+			const { term } = result.data;
+			return {
+				id: term.id,
+				taxonomy: term.name,
+				slug: term.slug,
+				label: term.label,
+				parentId: term.parentId,
+				data: term.description ? { description: term.description } : null,
+				locale: term.locale,
+				translationGroup: term.translationGroup,
+			};
+		},
+		async addEntryTerms(collection, entryId, taxonomy, termIds) {
+			const { repo, groups, locale } = await resolveTaxonomyDelta(
+				db,
+				collection,
+				entryId,
+				taxonomy,
+				termIds,
+			);
+			await repo.attachGroupsToEntry(collection, entryId, groups);
+			return readResolvedEntryTerms(repo, collection, entryId, taxonomy, locale);
+		},
+		async removeEntryTerms(collection, entryId, taxonomy, termIds) {
+			const { repo, groups, locale } = await resolveTaxonomyDelta(
+				db,
+				collection,
+				entryId,
+				taxonomy,
+				termIds,
+			);
+			await repo.detachGroupsFromEntry(collection, entryId, groups);
+			return readResolvedEntryTerms(repo, collection, entryId, taxonomy, locale);
 		},
 	};
 }
@@ -1322,9 +1450,11 @@ export class PluginContextFactory {
 
 		const schema = capabilities.has("schema:read") ? createSchemaAccess(db) : undefined;
 
-		// Capability-gated: taxonomies (read-only)
-		let taxonomies: TaxonomyAccess | undefined;
-		if (capabilities.has("taxonomies:read")) {
+		// Capability-gated: taxonomies
+		let taxonomies: TaxonomyAccess | TaxonomyAccessWithWrite | undefined;
+		if (capabilities.has("taxonomies:write")) {
+			taxonomies = createTaxonomyAccessWithWrite(db);
+		} else if (capabilities.has("taxonomies:read")) {
 			taxonomies = createTaxonomyAccess(db);
 		}
 

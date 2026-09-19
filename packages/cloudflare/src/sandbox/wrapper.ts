@@ -204,11 +204,14 @@ function createContext(env, originHook) {
 		getCollection: (slug) => bridge.schemaGetCollection(slug)
 	} : undefined;
 	
-	// Taxonomy access (read-only) - proxies to bridge (capability enforced by bridge)
+	// Taxonomy access - proxies to bridge (capability enforced by bridge)
 	const taxonomies = {
 		getAll: (opts) => bridge.taxonomyList(opts),
 		getTerms: (taxonomy, opts) => bridge.taxonomyTerms(taxonomy, opts),
-		getEntryTerms: (collection, entryId, opts) => bridge.taxonomyEntryTerms(collection, entryId, opts)
+		getEntryTerms: (collection, entryId, opts) => bridge.taxonomyEntryTerms(collection, entryId, opts),
+		createTerm: (taxonomy, input) => bridge.taxonomyCreateTerm(taxonomy, input),
+		addEntryTerms: (collection, entryId, taxonomy, termIds) => bridge.taxonomyAddEntryTerms(collection, entryId, taxonomy, termIds),
+		removeEntryTerms: (collection, entryId, taxonomy, termIds) => bridge.taxonomyRemoveEntryTerms(collection, entryId, taxonomy, termIds)
 	};
 
 	const redirects = ${hasRedirectRead} ? {

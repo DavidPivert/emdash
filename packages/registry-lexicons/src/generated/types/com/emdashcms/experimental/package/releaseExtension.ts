@@ -365,11 +365,24 @@ const _taxonomiesAccessSchema = /*#__PURE__*/ v.object({
 	get read() {
 		return /*#__PURE__*/ v.optional(taxonomiesReadConstraintsSchema);
 	},
+	/**
+	 * Plugin may create terms and add or remove term assignments. Implies `read`.
+	 */
+	get write() {
+		return /*#__PURE__*/ v.optional(taxonomiesWriteConstraintsSchema);
+	},
 });
 const _taxonomiesReadConstraintsSchema = /*#__PURE__*/ v.object({
 	$type: /*#__PURE__*/ v.optional(
 		/*#__PURE__*/ v.literal(
 			"com.emdashcms.experimental.package.releaseExtension#taxonomiesReadConstraints",
+		),
+	),
+});
+const _taxonomiesWriteConstraintsSchema = /*#__PURE__*/ v.object({
+	$type: /*#__PURE__*/ v.optional(
+		/*#__PURE__*/ v.literal(
+			"com.emdashcms.experimental.package.releaseExtension#taxonomiesWriteConstraints",
 		),
 	),
 });
@@ -426,6 +439,8 @@ type schemaReadConstraints$schematype = typeof _schemaReadConstraintsSchema;
 type taxonomiesAccess$schematype = typeof _taxonomiesAccessSchema;
 type taxonomiesReadConstraints$schematype =
 	typeof _taxonomiesReadConstraintsSchema;
+type taxonomiesWriteConstraints$schematype =
+	typeof _taxonomiesWriteConstraintsSchema;
 type usersAccess$schematype = typeof _usersAccessSchema;
 type usersReadConstraints$schematype = typeof _usersReadConstraintsSchema;
 
@@ -454,6 +469,7 @@ export interface schemaAccessSchema extends schemaAccess$schematype {}
 export interface schemaReadConstraintsSchema extends schemaReadConstraints$schematype {}
 export interface taxonomiesAccessSchema extends taxonomiesAccess$schematype {}
 export interface taxonomiesReadConstraintsSchema extends taxonomiesReadConstraints$schematype {}
+export interface taxonomiesWriteConstraintsSchema extends taxonomiesWriteConstraints$schematype {}
 export interface usersAccessSchema extends usersAccess$schematype {}
 export interface usersReadConstraintsSchema extends usersReadConstraints$schematype {}
 
@@ -499,6 +515,8 @@ export const taxonomiesAccessSchema =
 	_taxonomiesAccessSchema as taxonomiesAccessSchema;
 export const taxonomiesReadConstraintsSchema =
 	_taxonomiesReadConstraintsSchema as taxonomiesReadConstraintsSchema;
+export const taxonomiesWriteConstraintsSchema =
+	_taxonomiesWriteConstraintsSchema as taxonomiesWriteConstraintsSchema;
 export const usersAccessSchema = _usersAccessSchema as usersAccessSchema;
 export const usersReadConstraintsSchema =
 	_usersReadConstraintsSchema as usersReadConstraintsSchema;
@@ -565,6 +583,9 @@ export interface TaxonomiesAccess extends v.InferInput<
 > {}
 export interface TaxonomiesReadConstraints extends v.InferInput<
 	typeof taxonomiesReadConstraintsSchema
+> {}
+export interface TaxonomiesWriteConstraints extends v.InferInput<
+	typeof taxonomiesWriteConstraintsSchema
 > {}
 export interface UsersAccess extends v.InferInput<typeof usersAccessSchema> {}
 export interface UsersReadConstraints extends v.InferInput<

@@ -286,13 +286,36 @@ export interface PluginBridgeBinding {
 	): Promise<ContentRevisionInfo | null>;
 	schemaListCollections(): Promise<CollectionSchemaInfo[]>;
 	schemaGetCollection(slug: string): Promise<CollectionSchemaInfo | null>;
-	// Taxonomies (read-only, gated on taxonomies:read)
+	// Taxonomies
 	taxonomyList(opts?: { locale?: string }): Promise<BridgeTaxonomyDef[]>;
 	taxonomyTerms(taxonomy: string, opts?: { locale?: string }): Promise<BridgeTaxonomyTerm[]>;
 	taxonomyEntryTerms(
 		collection: string,
 		entryId: string,
 		opts?: { taxonomy?: string; locale?: string },
+	): Promise<BridgeTaxonomyTerm[]>;
+	taxonomyCreateTerm(
+		taxonomy: string,
+		input: {
+			label: string;
+			slug?: string;
+			parentId?: string | null;
+			description?: string;
+			locale?: string;
+			translationOf?: string;
+		},
+	): Promise<BridgeTaxonomyTerm>;
+	taxonomyAddEntryTerms(
+		collection: string,
+		entryId: string,
+		taxonomy: string,
+		termIds: string[],
+	): Promise<BridgeTaxonomyTerm[]>;
+	taxonomyRemoveEntryTerms(
+		collection: string,
+		entryId: string,
+		taxonomy: string,
+		termIds: string[],
 	): Promise<BridgeTaxonomyTerm[]>;
 	// Redirects
 	redirectList(

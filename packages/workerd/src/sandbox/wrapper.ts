@@ -337,11 +337,14 @@ function createContext(originHook) {
 		getCollection: (slug) => bridgeCall("schema/getCollection", { slug }),
 	} : undefined;
 
-	// Taxonomy access (read-only) - capability enforced by the bridge
+	// Taxonomy access - capability enforced by the bridge
 	const taxonomies = {
 		getAll: (opts) => bridgeCall("taxonomy/list", { ...opts }),
 		getTerms: (taxonomy, opts) => bridgeCall("taxonomy/terms", { taxonomy, ...opts }),
 		getEntryTerms: (collection, entryId, opts) => bridgeCall("taxonomy/entryTerms", { collection, entryId, ...opts }),
+		createTerm: (taxonomy, input) => bridgeCall("taxonomy/createTerm", { taxonomy, input }),
+		addEntryTerms: (collection, entryId, taxonomy, termIds) => bridgeCall("taxonomy/addEntryTerms", { collection, entryId, taxonomy, termIds }),
+		removeEntryTerms: (collection, entryId, taxonomy, termIds) => bridgeCall("taxonomy/removeEntryTerms", { collection, entryId, taxonomy, termIds }),
 	};
 
 	const redirects = ${hasRedirectRead} ? {

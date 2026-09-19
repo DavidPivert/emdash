@@ -16,6 +16,7 @@ import type {
 	ContentWriteInput,
 	PluginManifest,
 	RequestMeta,
+	TaxonomyAccessWithWrite,
 	UserInfo,
 } from "../types.js";
 
@@ -88,6 +89,8 @@ export interface SandboxOptions {
 	db: Kysely<Database>;
 	/** Called immediately before a sandboxed plugin content mutation. */
 	beforeContentWrite?: () => Promise<void>;
+	/** Runtime-owned taxonomy mutation surface used by sandbox bridges. */
+	taxonomyWrite?: TaxonomyAccessWithWrite;
 	/** Clock used to calculate recurring plugin task schedules. */
 	now?: () => Date;
 	/** Default resource limits */

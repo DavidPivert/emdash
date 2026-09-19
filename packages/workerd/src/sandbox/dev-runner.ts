@@ -190,6 +190,7 @@ export class MiniflareDevRunner implements SandboxRunner {
 				db: this.options.db,
 				beforeContentWrite: this.options.beforeContentWrite,
 				contentCreateProvider: () => this.contentCreateCallback,
+				taxonomyWrite: this.options.taxonomyWrite,
 				emailSend: () => this.emailSendCallback,
 				cronReschedule: () => this.cronRescheduleCallback?.(),
 				now: this.options.now,

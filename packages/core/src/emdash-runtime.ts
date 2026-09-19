@@ -63,6 +63,7 @@ import {
 	refreshContentMediaUsageAfterWrite,
 } from "./media/usage/content-refresh.js";
 import { processMediaUsageWorkAfterWrite } from "./media/usage/work-processor.js";
+import { createTaxonomyAccessWithWrite } from "./plugins/context.js";
 import {
 	createSandboxedPluginProxy,
 	getSandboxSaveRejectionDetails,
@@ -2176,6 +2177,7 @@ export class EmDashRuntime {
 					{
 						db,
 						beforeContentWrite: () => assertMediaUsageActivationWriteAllowed(db),
+						taxonomyWrite: createTaxonomyAccessWithWrite(db),
 						now: deps.now,
 						mediaStorage: mediaStorage
 							? {
@@ -2329,6 +2331,7 @@ export class EmDashRuntime {
 					{
 						db,
 						beforeContentWrite: () => assertMediaUsageActivationWriteAllowed(db),
+						taxonomyWrite: createTaxonomyAccessWithWrite(db),
 						now: deps.now,
 						mediaStorage: {
 							upload: (opts) =>
