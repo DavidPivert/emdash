@@ -49,7 +49,7 @@ msgstr ""
 msgid "\"{0}\" will be permanently deleted."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:596
+#: packages/admin/src/components/RegistryPluginDetail.tsx:597
 msgid "(pre-release)"
 msgstr "(發佈前版本)"
 
@@ -57,7 +57,7 @@ msgstr "(發佈前版本)"
 msgid "(synced)"
 msgstr "(已同步)"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:599
+#: packages/admin/src/components/RegistryPluginDetail.tsx:600
 msgid "(too new)"
 msgstr "(太新)"
 
@@ -138,7 +138,7 @@ msgid "{0, plural, one {# item} other {# items}}"
 msgstr "{0, plural, one {# 個項目} other {# 個項目}}"
 
 #. placeholder {0}: mcpTools.length
-#: packages/admin/src/components/PluginManager.tsx:481
+#: packages/admin/src/components/PluginManager.tsx:478
 msgid "{0, plural, one {# MCP tool} other {# MCP tools}}"
 msgstr "{0, plural, one {# 個 MCP 工具} other {# 個 MCP 工具}}"
 
@@ -164,7 +164,7 @@ msgstr "{0, plural, one {將匯入 # 個選單} other {將匯入 # 個選單}}"
 
 #. placeholder {0}: plugin.capabilities.length
 #: packages/admin/src/components/MarketplaceBrowse.tsx:290
-#: packages/admin/src/components/PluginManager.tsx:495
+#: packages/admin/src/components/PluginManager.tsx:492
 msgid "{0, plural, one {# permission} other {# permissions}}"
 msgstr "{0, plural, one {# 項權限} other {# 項權限}}"
 
@@ -261,7 +261,7 @@ msgstr "{0, plural, one {使用者} other {使用者}}"
 #. placeholder {0}: envLabel(m.key)
 #. placeholder {1}: m.required
 #. placeholder {2}: m.host
-#: packages/admin/src/components/RegistryPluginDetail.tsx:702
+#: packages/admin/src/components/RegistryPluginDetail.tsx:703
 msgid "{0} {1} required — you have {2}."
 msgstr "需要 {0} {1} — 您有 {2}。"
 
@@ -277,7 +277,7 @@ msgid "{0} added to this post."
 msgstr ""
 
 #. placeholder {0}: displayName ?? slug
-#: packages/admin/src/components/RegistryPluginDetail.tsx:506
+#: packages/admin/src/components/RegistryPluginDetail.tsx:507
 msgid "{0} banner"
 msgstr "{0} 橫幅"
 
@@ -302,17 +302,17 @@ msgid "{0} has been deactivated"
 msgstr "{0} 已停用"
 
 #. placeholder {0}: plugin.name
-#: packages/admin/src/components/PluginManager.tsx:376
+#: packages/admin/src/components/PluginManager.tsx:373
 msgid "{0} has been removed"
 msgstr "{0} 已移除"
 
 #. placeholder {0}: displayName ?? slug
-#: packages/admin/src/components/RegistryPluginDetail.tsx:518
+#: packages/admin/src/components/RegistryPluginDetail.tsx:519
 msgid "{0} icon"
 msgstr "{0} 圖示"
 
 #. placeholder {0}: plugin.installCount.toLocaleString()
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:213
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:223
 msgid "{0} installs"
 msgstr "{0} 次安裝"
 
@@ -390,7 +390,7 @@ msgid "{0}/160 characters"
 msgstr "{0}/160 個字元"
 
 #. placeholder {0}: allowedHosts.join(", ")
-#: packages/admin/src/lib/api/marketplace.ts:429
+#: packages/admin/src/lib/api/marketplace.ts:463
 msgid "{base} to: {0}"
 msgstr "{base} 至: {0}"
 
@@ -493,11 +493,11 @@ msgstr ""
 msgid "{overflowCount, plural, one {# file was not added because the upload list is full.} other {# files were not added because the upload list is full.}}"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:98
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:100
 msgid "{pluginName} is requesting additional permissions:"
 msgstr "{pluginName} 要求下列額外權限:"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:99
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:101
 msgid "{pluginName} requires the following permissions:"
 msgstr "{pluginName} 需要下列權限:"
 
@@ -751,11 +751,11 @@ msgstr ""
 msgid "About inferred bylines"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:273
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:277
 msgid "Accept & Install"
 msgstr "接受並安裝"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:272
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:276
 msgid "Accept & Update"
 msgstr "接受並更新"
 
@@ -772,8 +772,8 @@ msgstr "存取遭拒"
 msgid "Access Denied"
 msgstr "存取遭拒"
 
-#: packages/admin/src/lib/api/marketplace.ts:396
-#: packages/admin/src/lib/api/marketplace.ts:406
+#: packages/admin/src/lib/api/marketplace.ts:430
+#: packages/admin/src/lib/api/marketplace.ts:440
 msgid "Access your media library"
 msgstr "存取您的媒體庫"
 
@@ -1026,16 +1026,16 @@ msgstr ""
 msgid "After send:"
 msgstr "傳送後:"
 
-#: packages/admin/src/components/PluginManager.tsx:590
+#: packages/admin/src/components/PluginManager.tsx:587
 msgid "Agent access"
 msgstr "Agent 存取權"
 
 #. placeholder {0}: plugin.name
-#: packages/admin/src/components/PluginManager.tsx:387
+#: packages/admin/src/components/PluginManager.tsx:384
 msgid "Agent access for {0} has been updated"
 msgstr "已更新 {0} 的代理程式存取權"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:211
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:215
 msgid "Agent-callable MCP tools"
 msgstr "Agent 可呼叫的 MCP 工具"
 
@@ -1114,7 +1114,7 @@ msgstr "所有類型"
 msgid "All uploads finished"
 msgstr ""
 
-#: packages/admin/src/components/PluginManager.tsx:592
+#: packages/admin/src/components/PluginManager.tsx:589
 msgid "Allow MCP tokens with plugin-tool scope to invoke these routes."
 msgstr "允許具有 plugin-tool 權限範圍的 MCP 權杖呼叫這些路由。"
 
@@ -1139,7 +1139,7 @@ msgstr "允許的類型"
 msgid "Already have an account?"
 msgstr "已經有帳號了嗎？"
 
-#: packages/admin/src/components/PluginManager.tsx:787
+#: packages/admin/src/components/PluginManager.tsx:784
 msgid "Also delete plugin storage data"
 msgstr "同時刪除外掛儲存資料"
 
@@ -1298,7 +1298,7 @@ msgstr "套用連結"
 msgid "Approve"
 msgstr "核准"
 
-#: packages/admin/src/lib/api/marketplace.ts:389
+#: packages/admin/src/lib/api/marketplace.ts:423
 msgid "Approve comments and mark them as pending or spam"
 msgstr ""
 
@@ -1432,7 +1432,7 @@ msgstr "授權"
 msgid "Authorize Device"
 msgstr "授權裝置"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:150
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:152
 msgid "Authorized approvers"
 msgstr ""
 
@@ -1440,7 +1440,7 @@ msgstr ""
 msgid "Authorizing..."
 msgstr "正在授權…"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:751
+#: packages/admin/src/components/RegistryPluginDetail.tsx:752
 msgid "Authors"
 msgstr "作者"
 
@@ -1533,13 +1533,13 @@ msgstr "返回登入頁面"
 msgid "Back to Main library"
 msgstr ""
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:126
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:404
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:136
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:416
 msgid "Back to marketplace"
 msgstr "返回市集"
 
 #: packages/admin/src/components/PluginSettings.tsx:118
-#: packages/admin/src/components/RegistryPluginDetail.tsx:891
+#: packages/admin/src/components/RegistryPluginDetail.tsx:893
 msgid "Back to plugins"
 msgstr "返回外掛"
 
@@ -1717,7 +1717,7 @@ msgstr "可以檢視內容"
 
 #: packages/admin/src/components/BylineCreditsEditor.tsx:1012
 #: packages/admin/src/components/BylineFieldEditor.tsx:315
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:264
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:268
 #: packages/admin/src/components/ConfirmDialog.tsx:102
 #: packages/admin/src/components/ContentList.tsx:545
 #: packages/admin/src/components/ContentList.tsx:1378
@@ -1739,7 +1739,7 @@ msgstr "可以檢視內容"
 #: packages/admin/src/components/MenuEditor.tsx:438
 #: packages/admin/src/components/MenuEditor.tsx:623
 #: packages/admin/src/components/MenuList.tsx:175
-#: packages/admin/src/components/PluginManager.tsx:793
+#: packages/admin/src/components/PluginManager.tsx:790
 #: packages/admin/src/components/PortableTextEditor.tsx:4688
 #: packages/admin/src/components/PublishingDateTimeEditor.tsx:367
 #: packages/admin/src/components/Redirects.tsx:183
@@ -1783,11 +1783,11 @@ msgstr "無法刪除佈景主題區段"
 msgid "Canonical URL"
 msgstr "標準網址"
 
-#: packages/admin/src/components/PluginManager.tsx:566
+#: packages/admin/src/components/PluginManager.tsx:563
 msgid "Capabilities"
 msgstr "權限"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:76
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:78
 msgid "Capability consent"
 msgstr "權限同意"
 
@@ -1875,11 +1875,11 @@ msgstr ""
 msgid "Change schedule"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:395
+#: packages/admin/src/lib/api/marketplace.ts:429
 msgid "Change where visitors are sent"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:879
+#: packages/admin/src/components/RegistryPluginDetail.tsx:881
 msgid "Changelog"
 msgstr "變更記錄"
 
@@ -2077,7 +2077,7 @@ msgstr "按一下電子郵件中的連結以登入。"
 #: packages/admin/src/components/FieldEditor.tsx:381
 #: packages/admin/src/components/FieldEditor.tsx:387
 #: packages/admin/src/components/FieldEditor.tsx:391
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:449
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:461
 #: packages/admin/src/components/MediaDetailPanel.tsx:1116
 #: packages/admin/src/components/MediaDetailPanel.tsx:1835
 #: packages/admin/src/components/MediaPickerModal.tsx:1001
@@ -2165,8 +2165,8 @@ msgstr "程式碼區塊"
 msgid "Code block actions"
 msgstr ""
 
-#: packages/admin/src/components/PluginManager.tsx:549
-#: packages/admin/src/components/PluginManager.tsx:554
+#: packages/admin/src/components/PluginManager.tsx:546
+#: packages/admin/src/components/PluginManager.tsx:551
 msgid "Collapse details"
 msgstr "收合詳細資料"
 
@@ -2294,13 +2294,13 @@ msgstr "連線並分析"
 msgid "Connect to {0}"
 msgstr "連線至 {0}"
 
-#: packages/admin/src/lib/api/marketplace.ts:402
-#: packages/admin/src/lib/api/marketplace.ts:410
+#: packages/admin/src/lib/api/marketplace.ts:436
+#: packages/admin/src/lib/api/marketplace.ts:444
 msgid "Connect to any network host and load external plugin admin images (unrestricted)"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:401
-#: packages/admin/src/lib/api/marketplace.ts:409
+#: packages/admin/src/lib/api/marketplace.ts:435
+#: packages/admin/src/lib/api/marketplace.ts:443
 msgid "Connect to network hosts and load external plugin admin images"
 msgstr ""
 
@@ -2685,7 +2685,7 @@ msgstr "請先在區段庫中建立區段，才能在這裡使用"
 msgid "Create Taxonomy"
 msgstr "建立分類法"
 
-#: packages/admin/src/lib/api/marketplace.ts:393
+#: packages/admin/src/lib/api/marketplace.ts:427
 msgid "Create taxonomy terms and change content classifications"
 msgstr ""
 
@@ -2718,8 +2718,8 @@ msgstr "建立第一個項目"
 msgid "Create your first reusable content section to get started."
 msgstr "建立第一個可重複使用的內容區段即可開始。"
 
-#: packages/admin/src/lib/api/marketplace.ts:385
-#: packages/admin/src/lib/api/marketplace.ts:405
+#: packages/admin/src/lib/api/marketplace.ts:419
+#: packages/admin/src/lib/api/marketplace.ts:439
 msgid "Create, update, and delete content"
 msgstr "建立、更新及刪除內容"
 
@@ -2892,7 +2892,7 @@ msgstr ""
 msgid "Decimal number"
 msgstr "小數"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:816
+#: packages/admin/src/components/RegistryPluginDetail.tsx:817
 msgid "Declared permissions"
 msgstr "宣告的權限"
 
@@ -3178,7 +3178,7 @@ msgid "Describe what this section is for..."
 msgstr "說明此區段的用途…"
 
 #: packages/admin/src/components/ContentTypeEditor.tsx:424
-#: packages/admin/src/components/RegistryPluginDetail.tsx:876
+#: packages/admin/src/components/RegistryPluginDetail.tsx:878
 #: packages/admin/src/components/SectionEditor.tsx:295
 #: packages/admin/src/components/Sections.tsx:200
 #: packages/admin/src/components/Widgets.tsx:438
@@ -3197,8 +3197,8 @@ msgstr "目的地"
 msgid "Destination path"
 msgstr "目的地路徑"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:225
-#: packages/admin/src/components/PluginManager.tsx:611
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:229
+#: packages/admin/src/components/PluginManager.tsx:608
 msgid "Destructive"
 msgstr "破壞性操作"
 
@@ -3239,11 +3239,11 @@ msgstr "尺寸:"
 msgid "Disable"
 msgstr "停用"
 
-#: packages/admin/src/components/PluginManager.tsx:543
+#: packages/admin/src/components/PluginManager.tsx:540
 msgid "Disable plugin"
 msgstr "停用外掛"
 
-#: packages/admin/src/components/PluginManager.tsx:601
+#: packages/admin/src/components/PluginManager.tsx:598
 msgid "Disable plugin MCP tools"
 msgstr "停用外掛 MCP 工具"
 
@@ -3259,14 +3259,14 @@ msgstr "停用使用者"
 msgid "Disable User?"
 msgstr "要停用使用者嗎？"
 
-#: packages/admin/src/components/PluginManager.tsx:436
+#: packages/admin/src/components/PluginManager.tsx:433
 #: packages/admin/src/components/Redirects.tsx:426
 #: packages/admin/src/components/users/UserDetail.tsx:201
 #: packages/admin/src/components/users/UserList.tsx:205
 msgid "Disabled"
 msgstr "已停用"
 
-#: packages/admin/src/components/PluginManager.tsx:661
+#: packages/admin/src/components/PluginManager.tsx:658
 msgid "Disabled:"
 msgstr "已停用:"
 
@@ -3431,7 +3431,7 @@ msgstr "下載備份"
 msgid "Download backups and schedule automatic backups to storage"
 msgstr "下載備份，並排程將備份自動儲存至儲存空間"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:559
+#: packages/admin/src/components/RegistryPluginDetail.tsx:560
 msgid "Download SBOM"
 msgstr "下載 SBOM"
 
@@ -3643,7 +3643,7 @@ msgstr "編輯連結"
 msgid "Edit locking"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:398
+#: packages/admin/src/lib/api/marketplace.ts:432
 msgid "Edit media alt text, captions, and focal points"
 msgstr ""
 
@@ -3815,11 +3815,11 @@ msgstr "啟用留言"
 msgid "Enable full-text search on this collection"
 msgstr "啟用此內容集合的全文搜尋"
 
-#: packages/admin/src/components/PluginManager.tsx:543
+#: packages/admin/src/components/PluginManager.tsx:540
 msgid "Enable plugin"
 msgstr "啟用外掛"
 
-#: packages/admin/src/components/PluginManager.tsx:602
+#: packages/admin/src/components/PluginManager.tsx:599
 msgid "Enable plugin MCP tools"
 msgstr "啟用外掛 MCP 工具"
 
@@ -3936,7 +3936,7 @@ msgstr ""
 msgid "Every place using this image will update to the selected version."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:662
+#: packages/admin/src/components/RegistryPluginDetail.tsx:663
 msgid "Every published release of this plugin has been withdrawn or could not be verified. Check back later, or contact the publisher."
 msgstr "此外掛所有已發佈版本都已撤回或無法驗證。請稍後再回來查看，或聯絡發佈者。"
 
@@ -3965,8 +3965,8 @@ msgstr "結束專注模式"
 msgid "Exit distraction-free mode (⌘⇧\\)"
 msgstr ""
 
-#: packages/admin/src/components/PluginManager.tsx:549
-#: packages/admin/src/components/PluginManager.tsx:554
+#: packages/admin/src/components/PluginManager.tsx:546
+#: packages/admin/src/components/PluginManager.tsx:551
 msgid "Expand details"
 msgstr "展開詳細資料"
 
@@ -3995,7 +3995,7 @@ msgstr "失敗"
 msgid "Failed"
 msgstr "失敗"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:199
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:209
 msgid "Failed security audit"
 msgstr "安全性稽核失敗"
 
@@ -4321,8 +4321,8 @@ msgstr "無法從 WordPress 匯入"
 msgid "Failed to import media"
 msgstr "匯入媒體失敗"
 
-#: packages/admin/src/lib/api/marketplace.ts:310
-#: packages/admin/src/lib/api/registry.ts:795
+#: packages/admin/src/lib/api/marketplace.ts:344
+#: packages/admin/src/lib/api/registry.ts:797
 msgid "Failed to install plugin"
 msgstr "安裝外掛失敗"
 
@@ -4361,7 +4361,7 @@ msgstr "無法載入圖片"
 msgid "Failed to load passkeys"
 msgstr "無法載入通行金鑰"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:121
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:131
 msgid "Failed to load plugin"
 msgstr "無法載入外掛"
 
@@ -4534,8 +4534,8 @@ msgstr "傳送驗證電子郵件失敗"
 msgid "Failed to set entry terms"
 msgstr "無法設定內容項目的分類項目"
 
-#: packages/admin/src/lib/api/marketplace.ts:353
-#: packages/admin/src/lib/api/registry.ts:1009
+#: packages/admin/src/lib/api/marketplace.ts:387
+#: packages/admin/src/lib/api/registry.ts:1011
 msgid "Failed to uninstall plugin"
 msgstr "無法解除安裝外掛"
 
@@ -4573,8 +4573,8 @@ msgid "Failed to update media"
 msgstr "更新媒體失敗"
 
 #: packages/admin/src/components/PluginManager.tsx:314
-#: packages/admin/src/lib/api/marketplace.ts:336
-#: packages/admin/src/lib/api/registry.ts:884
+#: packages/admin/src/lib/api/marketplace.ts:370
+#: packages/admin/src/lib/api/registry.ts:886
 msgid "Failed to update plugin"
 msgstr "無法更新外掛"
 
@@ -4614,7 +4614,7 @@ msgstr "無法上傳至服務提供者"
 msgid "Failed to verify authentication"
 msgstr "無法驗證身分"
 
-#: packages/admin/src/lib/api/registry.ts:767
+#: packages/admin/src/lib/api/registry.ts:769
 msgid "Failed to verify plugin"
 msgstr ""
 
@@ -4622,7 +4622,7 @@ msgstr ""
 msgid "Failed to verify registration"
 msgstr "無法驗證註冊"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:878
+#: packages/admin/src/components/RegistryPluginDetail.tsx:880
 msgid "FAQ"
 msgstr "常見問題"
 
@@ -5086,7 +5086,7 @@ msgstr "首頁"
 msgid "Homepage"
 msgstr "首頁"
 
-#: packages/admin/src/components/PluginManager.tsx:475
+#: packages/admin/src/components/PluginManager.tsx:472
 msgid "Hooks"
 msgstr "Hooks"
 
@@ -5140,7 +5140,7 @@ msgid "I've set it up — check again"
 msgstr ""
 
 #: packages/admin/src/components/MarketplaceBrowse.tsx:243
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:153
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:163
 msgid "Icon blurred due to image audit"
 msgstr "由於圖片稽核，圖示已模糊處理"
 
@@ -5336,7 +5336,7 @@ msgstr "不相容"
 msgid "Increase column width"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:115
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:117
 msgid "Independent verification"
 msgstr ""
 
@@ -5345,7 +5345,7 @@ msgid "Index existing content and keep Used in results up to date."
 msgstr ""
 
 #: packages/admin/src/components/FieldEditor.tsx:491
-#: packages/admin/src/components/RegistryPluginDetail.tsx:573
+#: packages/admin/src/components/RegistryPluginDetail.tsx:574
 msgid "Indexed"
 msgstr "已建立索引"
 
@@ -5453,8 +5453,8 @@ msgstr ""
 msgid "Instagram"
 msgstr "Instagram"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:203
-#: packages/admin/src/components/RegistryPluginDetail.tsx:624
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:213
+#: packages/admin/src/components/RegistryPluginDetail.tsx:625
 msgid "Install"
 msgstr "安裝"
 
@@ -5462,7 +5462,7 @@ msgstr "安裝"
 msgid "Install and activate an email provider plugin to enable email features like invitations, magic links, and password recovery."
 msgstr "安裝並啟用電子郵件服務提供者外掛，以使用邀請、快速登入連結及密碼復原等電子郵件功能。"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:197
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:207
 msgid "Install blocked"
 msgstr "安裝遭到封鎖"
 
@@ -5470,7 +5470,7 @@ msgstr "安裝遭到封鎖"
 msgid "Install the EmDash Exporter plugin on your WordPress site and generate a key under Tools → EmDash Migration."
 msgstr "在您的 WordPress 網站安裝 EmDash Exporter 外掛，然後前往 [工具] → [EmDash Migration] 產生金鑰。"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:877
+#: packages/admin/src/components/RegistryPluginDetail.tsx:879
 msgid "Installation"
 msgstr "安裝"
 
@@ -5479,22 +5479,22 @@ msgid "Installation is unavailable."
 msgstr ""
 
 #: packages/admin/src/components/MarketplaceBrowse.tsx:263
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:184
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:194
 #: packages/admin/src/components/RegistryBrowse.tsx:234
-#: packages/admin/src/components/RegistryPluginDetail.tsx:609
+#: packages/admin/src/components/RegistryPluginDetail.tsx:610
 msgid "Installed"
 msgstr "已安裝"
 
 #. placeholder {0}: plugin.marketplaceVersion || plugin.version
-#: packages/admin/src/components/PluginManager.tsx:630
+#: packages/admin/src/components/PluginManager.tsx:627
 msgid "Installed from marketplace (v{0})"
 msgstr "已從市集安裝 (v{0})"
 
-#: packages/admin/src/components/PluginManager.tsx:649
+#: packages/admin/src/components/PluginManager.tsx:646
 msgid "Installed:"
 msgstr "已安裝:"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:270
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:274
 msgid "Installing..."
 msgstr "正在安裝..."
 
@@ -5575,7 +5575,7 @@ msgstr "項目已刪除"
 msgid "Item updated"
 msgstr "項目已更新"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:477
+#: packages/admin/src/components/RegistryPluginDetail.tsx:478
 msgid "Its listing has not been approved for display. Check back later."
 msgstr ""
 
@@ -5635,7 +5635,7 @@ msgstr "請保持此分頁開啟。匯入作業會分成數個小步驟執行，
 msgid "Keep typing to narrow the list."
 msgstr ""
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:304
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:314
 #: packages/admin/src/components/SectionEditor.tsx:304
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:189
 msgid "Keywords"
@@ -5681,7 +5681,7 @@ msgstr "語言"
 msgid "Large section heading"
 msgstr "大型區段標題"
 
-#: packages/admin/src/components/PluginManager.tsx:655
+#: packages/admin/src/components/PluginManager.tsx:652
 msgid "Last enabled:"
 msgstr "上次啟用時間:"
 
@@ -6096,7 +6096,7 @@ msgid "Markdown"
 msgstr "Markdown"
 
 #: packages/admin/src/components/MarketplaceBrowse.tsx:87
-#: packages/admin/src/components/PluginManager.tsx:437
+#: packages/admin/src/components/PluginManager.tsx:434
 msgid "Marketplace"
 msgstr "市集"
 
@@ -6562,7 +6562,7 @@ msgstr "新增"
 msgid "New"
 msgstr "新增"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:183
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:185
 msgid "NEW"
 msgstr "新增"
 
@@ -6600,7 +6600,7 @@ msgstr ""
 msgid "New plugin discovery uses the registry. Existing marketplace plugins can still be updated or uninstalled while you switch over."
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:194
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:196
 msgid "New public routes"
 msgstr "新增公開路由"
 
@@ -6652,7 +6652,7 @@ msgstr "下一個"
 msgid "Next page"
 msgstr "下一頁"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:476
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:488
 msgid "Next screenshot"
 msgstr "下一張螢幕擷取畫面"
 
@@ -6769,7 +6769,7 @@ msgstr "尚無內容類型。"
 msgid "No custom fields yet"
 msgstr "尚無自訂欄位"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:275
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:285
 msgid "No detailed description available."
 msgstr "沒有可用的詳細說明。"
 
@@ -6813,7 +6813,7 @@ msgstr "內容中沒有標題"
 msgid "No images in this gallery yet."
 msgstr "此圖庫中尚無圖片。"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:660
+#: packages/admin/src/components/RegistryPluginDetail.tsx:661
 msgid "No installable releases"
 msgstr "沒有可安裝的發行版本"
 
@@ -6915,7 +6915,7 @@ msgstr "找不到符合「{debouncedQuery}」的外掛。"
 msgid "No preview"
 msgstr "沒有預覽"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:119
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:121
 msgid "No provenance was supplied; the signed publisher policy permits this."
 msgstr ""
 
@@ -7009,7 +7009,7 @@ msgstr "無"
 msgid "None (top level)"
 msgstr "無 (最上層)"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:695
+#: packages/admin/src/components/RegistryPluginDetail.tsx:696
 msgid "Not compatible with this environment"
 msgstr "與這個環境不相容"
 
@@ -7223,7 +7223,7 @@ msgstr "取代搜尋引擎結果中的頁面標題"
 msgid "Ownership"
 msgstr "所有權"
 
-#: packages/admin/src/components/PluginManager.tsx:639
+#: packages/admin/src/components/PluginManager.tsx:636
 msgid "Package"
 msgstr "套件"
 
@@ -7241,7 +7241,7 @@ msgstr ""
 msgid "Page size"
 msgstr ""
 
-#: packages/admin/src/components/PluginManager.tsx:463
+#: packages/admin/src/components/PluginManager.tsx:460
 #: packages/admin/src/components/WordPressImport.tsx:1344
 msgid "Pages"
 msgstr "頁面"
@@ -7403,7 +7403,7 @@ msgstr "要永久刪除「{title}」嗎？此操作無法復原。"
 msgid "Permanently delete {title}"
 msgstr "永久刪除 {title}"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:284
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:294
 msgid "Permissions"
 msgstr "權限"
 
@@ -7465,7 +7465,7 @@ msgstr ""
 msgid "Plugin column unavailable"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:828
+#: packages/admin/src/components/RegistryPluginDetail.tsx:829
 msgid "Plugin details"
 msgstr "外掛詳細資料"
 
@@ -7486,7 +7486,11 @@ msgstr "外掛錯誤"
 msgid "Plugin error ({0})"
 msgstr "外掛錯誤 ({0})"
 
-#: packages/admin/src/components/PluginManager.tsx:386
+#: packages/admin/src/lib/api/marketplace.ts:120
+msgid "Plugin installation requires explicit consent"
+msgstr ""
+
+#: packages/admin/src/components/PluginManager.tsx:383
 msgid "Plugin MCP access updated"
 msgstr "外掛 MCP 存取權已更新"
 
@@ -7494,19 +7498,19 @@ msgstr "外掛 MCP 存取權已更新"
 msgid "Plugin MCP Tools"
 msgstr "外掛 MCP 工具"
 
-#: packages/admin/src/lib/api/marketplace.ts:108
+#: packages/admin/src/lib/api/marketplace.ts:109
 msgid "Plugin MCP tools require explicit consent"
 msgstr "外掛 MCP 工具需要明確同意"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:123
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:133
 msgid "Plugin not found"
 msgstr "找不到外掛"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:492
+#: packages/admin/src/components/RegistryPluginDetail.tsx:493
 msgid "Plugin not found. The publisher or slug may be incorrect."
 msgstr ""
 
-#: packages/admin/src/components/PluginManager.tsx:532
+#: packages/admin/src/components/PluginManager.tsx:529
 msgid "Plugin pages"
 msgstr "外掛頁面"
 
@@ -7515,7 +7519,7 @@ msgstr "外掛頁面"
 msgid "Plugin panel unavailable."
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:92
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:94
 msgid "Plugin Permissions"
 msgstr "外掛權限"
 
@@ -7544,12 +7548,12 @@ msgstr "外掛回應 {0}: {text}"
 msgid "Plugin tools: {0}"
 msgstr "外掛工具: {0}"
 
-#: packages/admin/src/components/PluginManager.tsx:375
+#: packages/admin/src/components/PluginManager.tsx:372
 msgid "Plugin uninstalled"
 msgstr "已解除安裝外掛"
 
-#: packages/admin/src/lib/api/marketplace.ts:198
-#: packages/admin/src/lib/api/registry.ts:924
+#: packages/admin/src/lib/api/marketplace.ts:232
+#: packages/admin/src/lib/api/registry.ts:926
 msgid "Plugin update requires re-consent"
 msgstr "外掛更新需要重新同意授權"
 
@@ -7599,7 +7603,7 @@ msgstr "文章與頁面"
 msgid "Posts Per Page"
 msgstr "每頁文章數"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:545
+#: packages/admin/src/components/RegistryPluginDetail.tsx:546
 msgid "Pre-release"
 msgstr "發行前版本"
 
@@ -7646,7 +7650,7 @@ msgstr "上一個"
 msgid "Previous page"
 msgstr "上一頁"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:458
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:470
 msgid "Previous screenshot"
 msgstr "上一張螢幕擷取畫面"
 
@@ -7658,25 +7662,29 @@ msgstr "主要導覽"
 msgid "Private"
 msgstr "私密"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:125
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:127
 msgid "Profile CID"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:118
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:120
 msgid "Provenance is verified against the signed release and artifact."
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:141
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:143
 msgid "Provenance optional"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:140
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:142
 msgid "Provenance required"
 msgstr ""
 
 #: packages/admin/src/components/settings/EmailSettings.tsx:167
 msgid "Provider:"
 msgstr "服務提供者:"
+
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:196
+msgid "Public routes"
+msgstr ""
 
 #: packages/admin/src/components/ContentSettingsPanel.tsx:964
 #: packages/admin/src/components/ContentSettingsPanel.tsx:969
@@ -7719,7 +7727,7 @@ msgstr ""
 msgid "Publish now"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:386
+#: packages/admin/src/lib/api/marketplace.ts:420
 msgid "Publish, unpublish, schedule, and unschedule content"
 msgstr ""
 
@@ -7732,7 +7740,7 @@ msgid "Published"
 msgstr "已發佈"
 
 #. placeholder {0}: new Date(latest.publishedAt).toLocaleDateString()
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:337
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:347
 msgid "Published {0}"
 msgstr "發佈於 {0}"
 
@@ -7744,23 +7752,23 @@ msgstr "已發佈 {total} 個項目"
 msgid "Published At"
 msgstr "發佈時間"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:537
+#: packages/admin/src/components/RegistryPluginDetail.tsx:538
 msgid "Published by <0/>"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:144
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:146
 msgid "Publisher approval required for every delegated release"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:145
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:147
 msgid "Publisher approval required only for permission escalation"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:645
+#: packages/admin/src/components/RegistryPluginDetail.tsx:646
 msgid "Publisher handle verification failed"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:137
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:139
 msgid "Publisher release policy"
 msgstr ""
 
@@ -7796,11 +7804,11 @@ msgstr "引用"
 msgid "Raw meta"
 msgstr "原始中繼資料"
 
-#: packages/admin/src/lib/api/marketplace.ts:387
+#: packages/admin/src/lib/api/marketplace.ts:421
 msgid "Read and restore trashed content"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:390
+#: packages/admin/src/lib/api/marketplace.ts:424
 msgid "Read collection and field definitions"
 msgstr ""
 
@@ -7808,7 +7816,7 @@ msgstr ""
 msgid "Read collection schemas"
 msgstr "讀取內容集合結構描述"
 
-#: packages/admin/src/lib/api/marketplace.ts:388
+#: packages/admin/src/lib/api/marketplace.ts:422
 msgid "Read comment bodies, author email addresses, pseudonymous IP hashes, user agents, and moderation metadata"
 msgstr ""
 
@@ -7816,7 +7824,7 @@ msgstr ""
 msgid "Read content entries"
 msgstr "讀取內容項目"
 
-#: packages/admin/src/lib/api/marketplace.ts:397
+#: packages/admin/src/lib/api/marketplace.ts:431
 msgid "Read media file contents"
 msgstr ""
 
@@ -7824,11 +7832,11 @@ msgstr ""
 msgid "Read media files"
 msgstr "讀取媒體檔案"
 
-#: packages/admin/src/lib/api/marketplace.ts:394
+#: packages/admin/src/lib/api/marketplace.ts:428
 msgid "Read redirect rules"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:384
+#: packages/admin/src/lib/api/marketplace.ts:418
 msgid "Read retained content revision history"
 msgstr ""
 
@@ -7836,17 +7844,17 @@ msgstr ""
 msgid "Read site settings"
 msgstr "讀取網站設定"
 
-#: packages/admin/src/lib/api/marketplace.ts:400
-#: packages/admin/src/lib/api/marketplace.ts:408
+#: packages/admin/src/lib/api/marketplace.ts:434
+#: packages/admin/src/lib/api/marketplace.ts:442
 msgid "Read user accounts"
 msgstr "讀取使用者帳號"
 
-#: packages/admin/src/lib/api/marketplace.ts:383
-#: packages/admin/src/lib/api/marketplace.ts:404
+#: packages/admin/src/lib/api/marketplace.ts:417
+#: packages/admin/src/lib/api/marketplace.ts:438
 msgid "Read your content"
 msgstr "讀取您的內容"
 
-#: packages/admin/src/lib/api/marketplace.ts:392
+#: packages/admin/src/lib/api/marketplace.ts:426
 msgid "Read your taxonomies and terms"
 msgstr "讀取您的分類法及分類項目"
 
@@ -7955,16 +7963,16 @@ msgid "Registration was cancelled or timed out. Please try again."
 msgstr "註冊已取消或逾時。請再試一次。"
 
 #: packages/admin/src/components/PluginManager.tsx:194
-#: packages/admin/src/components/PluginManager.tsx:438
+#: packages/admin/src/components/PluginManager.tsx:435
 #: packages/admin/src/components/Sidebar.tsx:472
 msgid "Registry"
 msgstr "外掛庫"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:131
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:133
 msgid "Release CID"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:676
+#: packages/admin/src/components/RegistryPluginDetail.tsx:677
 msgid "Release is too new to install"
 msgstr "版本太新，無法安裝"
 
@@ -8219,7 +8227,7 @@ msgid "Required for accessibility. Describes the image for screen readers."
 msgstr "無障礙功能所需。用來向螢幕閱讀器描述圖片。"
 
 #. placeholder {0}: latest.minEmDashVersion
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:335
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:345
 msgid "Requires EmDash {0}"
 msgstr "需要 EmDash {0}"
 
@@ -8383,23 +8391,23 @@ msgstr "已還原至已發佈版本"
 msgid "Review"
 msgstr "審閱"
 
-#: packages/admin/src/lib/api/marketplace.ts:391
+#: packages/admin/src/lib/api/marketplace.ts:425
 msgid "Review and block publishing, scheduling, and unpublishing content"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:91
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:93
 msgid "Review New Permissions"
 msgstr "檢閱新權限"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:96
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:98
 msgid "Review the independently verified release evidence and permissions for {pluginName} before continuing."
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:89
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:91
 msgid "Review Verified Plugin"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:88
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:90
 msgid "Review Verified Update"
 msgstr ""
 
@@ -8449,7 +8457,7 @@ msgid "Right"
 msgstr "靠右"
 
 #. placeholder {0}: latest.audit.riskScore
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:322
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:332
 msgid "Risk score: {0}/100"
 msgstr "風險分數: {0}/100"
 
@@ -8484,8 +8492,8 @@ msgstr ""
 
 #. placeholder {0}: tool.route
 #. placeholder {1}: tool.permission
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:221
-#: packages/admin/src/components/PluginManager.tsx:615
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:225
+#: packages/admin/src/components/PluginManager.tsx:612
 msgid "Route: {0} · Permission: {1}"
 msgstr "路由: {0} · 權限: {1}"
 
@@ -8610,12 +8618,12 @@ msgstr "正在儲存…"
 msgid "Saving…"
 msgstr "正在儲存…"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:549
+#: packages/admin/src/components/RegistryPluginDetail.tsx:550
 msgid "SBOM"
 msgstr "SBOM"
 
 #. placeholder {0}: sbom.format
-#: packages/admin/src/components/RegistryPluginDetail.tsx:547
+#: packages/admin/src/components/RegistryPluginDetail.tsx:548
 msgid "SBOM · {0}"
 msgstr "SBOM · {0}"
 
@@ -8690,8 +8698,8 @@ msgstr "權限範圍"
 
 #. placeholder {0}: i + 1
 #. placeholder {0}: index + 1
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:254
-#: packages/admin/src/components/RegistryPluginDetail.tsx:721
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:264
+#: packages/admin/src/components/RegistryPluginDetail.tsx:722
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:174
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:293
 msgid "Screenshot {0}"
@@ -8699,20 +8707,20 @@ msgstr "螢幕擷取畫面 {0}"
 
 #. placeholder {0}: index + 1
 #. placeholder {1}: screenshots.length
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:466
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:478
 msgid "Screenshot {0} of {1}"
 msgstr "第 {0} 張螢幕擷取畫面，共 {1} 張"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:257
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:267
 msgid "Screenshot blurred due to image audit"
 msgstr "因圖片稽核而將螢幕擷取畫面模糊化"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:444
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:456
 msgid "Screenshot viewer"
 msgstr "螢幕擷取畫面檢視器"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:244
-#: packages/admin/src/components/RegistryPluginDetail.tsx:715
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:254
+#: packages/admin/src/components/RegistryPluginDetail.tsx:716
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:164
 msgid "Screenshots"
 msgstr "螢幕擷取畫面"
@@ -8892,12 +8900,12 @@ msgstr "區段"
 msgid "Secure your account"
 msgstr "保護您的帳號"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:880
+#: packages/admin/src/components/RegistryPluginDetail.tsx:882
 #: packages/admin/src/components/Settings.tsx:85
 msgid "Security"
 msgstr "安全性"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:318
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:328
 msgid "Security Audit"
 msgstr "安全稽核"
 
@@ -8909,11 +8917,11 @@ msgstr "安全稽核失敗"
 msgid "Security audit flagged concerns"
 msgstr "安全性稽核發現疑慮"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:251
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:255
 msgid "Security audit flagged potential concerns with this plugin."
 msgstr "安全稽核指出此外掛可能有疑慮。"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:252
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:256
 msgid "Security audit flagged this plugin as potentially unsafe."
 msgstr "安全性稽核將此外掛標示為可能不安全。"
 
@@ -8921,7 +8929,7 @@ msgstr "安全性稽核將此外掛標示為可能不安全。"
 msgid "Security audit passed"
 msgstr "通過安全稽核"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:784
+#: packages/admin/src/components/RegistryPluginDetail.tsx:785
 msgid "Security contacts"
 msgstr "安全性聯絡人"
 
@@ -9206,7 +9214,7 @@ msgstr "正在設定…"
 #: packages/admin/src/components/ContentEditor.tsx:1496
 #: packages/admin/src/components/ContentTypeEditor.tsx:392
 #: packages/admin/src/components/Header.tsx:102
-#: packages/admin/src/components/PluginManager.tsx:521
+#: packages/admin/src/components/PluginManager.tsx:518
 #: packages/admin/src/components/Settings.tsx:44
 #: packages/admin/src/components/Sidebar.tsx:485
 #: packages/admin/src/components/WordPressImport.tsx:1827
@@ -9484,8 +9492,8 @@ msgstr "排序佈景主題"
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:496
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:500
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:704
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:225
-#: packages/admin/src/components/PluginManager.tsx:627
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:235
+#: packages/admin/src/components/PluginManager.tsx:624
 #: packages/admin/src/components/Redirects.tsx:475
 #: packages/admin/src/components/SectionEditor.tsx:315
 msgid "Source"
@@ -9823,7 +9831,7 @@ msgid "The public URL of your site (used for canonical links and sitemaps)"
 msgstr "網站的公開網址 (用於標準網址與網站地圖)"
 
 #: packages/admin/src/components/RegistryBrowse.tsx:219
-#: packages/admin/src/components/RegistryPluginDetail.tsx:531
+#: packages/admin/src/components/RegistryPluginDetail.tsx:532
 msgid "The publisher identity cannot be verified."
 msgstr ""
 
@@ -9876,7 +9884,7 @@ msgstr "無法刪除佈景主題提供的區段。請編輯該區段以建立自
 msgid "Themes"
 msgstr "佈景主題"
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:213
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:217
 msgid "These tools remain disabled after installation until you explicitly enable agent access."
 msgstr "安裝後這些工具會維持停用狀態，直到您明確啟用 Agent 存取權為止。"
 
@@ -9982,23 +9990,27 @@ msgstr ""
 msgid "This permanently deletes {0} from storage."
 msgstr "這會從儲存空間永久刪除 {0}。"
 
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:201
+msgid "This plugin exposes the following routes without authentication:"
+msgstr ""
+
 #: packages/admin/src/components/PluginSettings.tsx:177
 msgid "This plugin has no configurable settings."
 msgstr "此外掛不提供可調整的設定。"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:475
+#: packages/admin/src/components/RegistryPluginDetail.tsx:476
 msgid "This plugin is not available yet"
 msgstr ""
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:287
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:297
 msgid "This plugin requires no special permissions."
 msgstr "此外掛不需要特殊權限。"
 
-#: packages/admin/src/components/PluginManager.tsx:448
+#: packages/admin/src/components/PluginManager.tsx:445
 msgid "This publisher identity no longer resolves."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:647
+#: packages/admin/src/components/RegistryPluginDetail.tsx:648
 msgid "This publisher's handle does not resolve back to its identity. Installation is disabled until the publisher fixes their handle."
 msgstr ""
 
@@ -10006,7 +10018,7 @@ msgstr ""
 msgid "This redirect rule will be permanently removed."
 msgstr "此重新導向規則將永久移除。"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:697
+#: packages/admin/src/components/RegistryPluginDetail.tsx:698
 msgid "This release requires a newer environment than your site currently runs. Upgrade before installing."
 msgstr "此版本需要比網站目前執行環境更新的環境。請先升級再安裝。"
 
@@ -10043,7 +10055,7 @@ msgstr ""
 msgid "This table has unsupported cell formatting, merged cells, or column widths. Paste it as plain text or simplify the table and try again."
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:197
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:200
 msgid "This update exposes the following routes without authentication:"
 msgstr "此更新會開放下列路由，無須驗證即可存取:"
 
@@ -10077,7 +10089,7 @@ msgstr "這會永久刪除「{0}」。此動作無法復原。"
 msgid "This will permanently delete this comment. This action cannot be undone."
 msgstr "這會永久刪除這則留言。此動作無法復原。"
 
-#: packages/admin/src/components/PluginManager.tsx:782
+#: packages/admin/src/components/PluginManager.tsx:779
 msgid "This will remove the plugin and its bundle from your site."
 msgstr "這會從您的網站移除此外掛及其套件組合。"
 
@@ -10341,21 +10353,21 @@ msgstr "底線"
 msgid "Undo"
 msgstr "復原"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:191
-#: packages/admin/src/components/PluginManager.tsx:677
-#: packages/admin/src/components/PluginManager.tsx:796
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:201
+#: packages/admin/src/components/PluginManager.tsx:674
+#: packages/admin/src/components/PluginManager.tsx:793
 msgid "Uninstall"
 msgstr "解除安裝"
 
-#: packages/admin/src/components/PluginManager.tsx:780
+#: packages/admin/src/components/PluginManager.tsx:777
 msgid "Uninstall {pluginName}?"
 msgstr "要解除安裝 {pluginName} 嗎？"
 
-#: packages/admin/src/components/PluginManager.tsx:775
+#: packages/admin/src/components/PluginManager.tsx:772
 msgid "Uninstall confirmation"
 msgstr "解除安裝確認"
 
-#: packages/admin/src/components/PluginManager.tsx:796
+#: packages/admin/src/components/PluginManager.tsx:793
 msgid "Uninstalling..."
 msgstr "正在解除安裝…"
 
@@ -10462,13 +10474,13 @@ msgid "Update this redirect rule."
 msgstr "更新此重新導向規則。"
 
 #. placeholder {0}: updateInfo.latest
-#: packages/admin/src/components/PluginManager.tsx:513
+#: packages/admin/src/components/PluginManager.tsx:510
 msgid "Update to v{0}"
 msgstr "更新至 v{0}"
 
 #: packages/admin/src/components/ContentList.tsx:869
 #: packages/admin/src/components/ContentSettingsPanel.tsx:1029
-#: packages/admin/src/components/RegistryPluginDetail.tsx:568
+#: packages/admin/src/components/RegistryPluginDetail.tsx:569
 msgid "Updated"
 msgstr "已更新"
 
@@ -10484,8 +10496,8 @@ msgstr "正在更新內容網址..."
 msgid "Updating usage"
 msgstr ""
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:269
-#: packages/admin/src/components/PluginManager.tsx:513
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:273
+#: packages/admin/src/components/PluginManager.tsx:510
 msgid "Updating..."
 msgstr "正在更新..."
 
@@ -10509,8 +10521,8 @@ msgstr "上傳圖片即可開始使用"
 msgid "Upload and delete media"
 msgstr "上傳及刪除媒體"
 
-#: packages/admin/src/lib/api/marketplace.ts:399
-#: packages/admin/src/lib/api/marketplace.ts:407
+#: packages/admin/src/lib/api/marketplace.ts:433
+#: packages/admin/src/lib/api/marketplace.ts:441
 msgid "Upload and manage media"
 msgstr "上傳及管理媒體"
 
@@ -10740,7 +10752,7 @@ msgid "Users with email addresses from these domains can sign up without an invi
 msgstr "電子郵件地址屬於這些網域的使用者，不需邀請即可註冊。系統會自動指派指定角色。"
 
 #. placeholder {0}: updateInfo.latest
-#: packages/admin/src/components/PluginManager.tsx:441
+#: packages/admin/src/components/PluginManager.tsx:438
 msgid "v{0} available"
 msgstr "已有 v{0} 可用"
 
@@ -10767,18 +10779,18 @@ msgstr "正在驗證您的連結…"
 
 #: packages/admin/src/components/auth/PasskeyLogin.tsx:212
 #: packages/admin/src/components/auth/PasskeyRegistration.tsx:372
-#: packages/admin/src/components/RegistryPluginDetail.tsx:624
+#: packages/admin/src/components/RegistryPluginDetail.tsx:625
 msgid "Verifying..."
 msgstr "正在驗證..."
 
-#: packages/admin/src/components/CapabilityConsentDialog.tsx:103
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:331
-#: packages/admin/src/components/RegistryPluginDetail.tsx:582
+#: packages/admin/src/components/CapabilityConsentDialog.tsx:105
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:341
+#: packages/admin/src/components/RegistryPluginDetail.tsx:583
 msgid "Version"
 msgstr "版本"
 
 #. placeholder {0}: release.version
-#: packages/admin/src/components/RegistryPluginDetail.tsx:544
+#: packages/admin/src/components/RegistryPluginDetail.tsx:545
 msgid "Version {0}"
 msgstr "版本 {0}"
 
@@ -10810,11 +10822,11 @@ msgstr ""
 msgid "View Site"
 msgstr "檢視網站"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:742
+#: packages/admin/src/components/RegistryPluginDetail.tsx:743
 msgid "View source"
 msgstr "檢視原始碼"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:983
+#: packages/admin/src/components/RegistryPluginDetail.tsx:985
 msgid "View the {license} license on spdx.org"
 msgstr "在 spdx.org 檢視 {license} 授權條款"
 
@@ -10882,8 +10894,8 @@ msgstr "網址"
 msgid "WebAuthn is not supported in this browser"
 msgstr "此瀏覽器不支援 WebAuthn"
 
-#: packages/admin/src/components/MarketplacePluginDetail.tsx:236
-#: packages/admin/src/components/RegistryPluginDetail.tsx:767
+#: packages/admin/src/components/MarketplacePluginDetail.tsx:246
+#: packages/admin/src/components/RegistryPluginDetail.tsx:768
 msgid "Website"
 msgstr "網站"
 
@@ -11013,7 +11025,7 @@ msgid "Widget updated"
 msgstr "已更新小工具"
 
 #: packages/admin/src/components/AdminCommandPalette.tsx:169
-#: packages/admin/src/components/PluginManager.tsx:469
+#: packages/admin/src/components/PluginManager.tsx:466
 #: packages/admin/src/components/Sidebar.tsx:427
 #: packages/admin/src/components/Widgets.tsx:388
 #: packages/admin/src/components/WordPressImport.tsx:1175
@@ -11275,7 +11287,7 @@ msgid "Your Role"
 msgstr "您的角色"
 
 #. placeholder {0}: formatHoldback(config.policy?.minimumReleaseAgeSeconds ?? 0)
-#: packages/admin/src/components/RegistryPluginDetail.tsx:678
+#: packages/admin/src/components/RegistryPluginDetail.tsx:679
 msgid "Your site requires releases to be at least {0} old before they can be installed. This release will become installable later."
 msgstr "您的網站要求發行版本至少已有 {0} 的時間才能安裝。這個版本稍後才能安裝。"
 
