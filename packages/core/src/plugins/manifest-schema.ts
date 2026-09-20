@@ -12,6 +12,10 @@ import { Permissions } from "@emdash-cms/auth";
 import {
 	capabilitiesToDeclaredAccess,
 	declaredAccessToCapabilities,
+	isJsonPostRouteContract,
+	manifestRouteEntrySchema as sharedManifestRouteEntrySchema,
+	normalizeManifestRoute as normalizeSharedManifestRoute,
+	routeNameSchema,
 } from "@emdash-cms/plugin-types";
 import { z } from "zod";
 
@@ -149,17 +153,11 @@ const manifestHookEntrySchema = z.object({
  * Both plain strings and objects are accepted; strings are normalized
  * to `{ name }` objects via `normalizeManifestRoute()`.
  */
-/** Route names must be safe path segments — alphanumeric, hyphens, underscores, forward slashes */
-const routeNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9_\-/]*$/;
-
-const manifestRouteEntrySchema = z.object({
-	name: z.string().min(1).regex(routeNamePattern, "Route name must be a safe path segment"),
-	public: z.boolean().optional(),
+const manifestRouteEntrySchema = sharedManifestRouteEntrySchema.safeExtend({
 	permission: z
 		.string()
 		.refine((permission) => Object.hasOwn(Permissions, permission))
 		.optional(),
-	cacheControl: z.string().min(1).optional(),
 });
 
 const pluginJsonSchema = z.record(z.string(), z.unknown());
@@ -169,7 +167,7 @@ const pluginMcpConfigSchema = z.object({
 		z.object({
 			name: z.string().min(1).max(64).regex(mcpToolNamePattern, "Invalid MCP tool name"),
 			description: z.string().min(1),
-			route: z.string().min(1).regex(routeNamePattern, "Route name must be a safe path segment"),
+			route: routeNameSchema,
 			permission: z.string().refine((permission) => Object.hasOwn(Permissions, permission)),
 			destructive: z.boolean(),
 			inputSchema: pluginJsonSchema,
@@ -252,11 +250,7 @@ const editorCollectionsSchema = z
 const editorPanelSchema = z.object({
 	id: z.string().min(1).max(64).regex(editorExtensionIdPattern, "Invalid editor panel id"),
 	title: z.string().min(1).max(128),
-	route: z
-		.string()
-		.min(1)
-		.max(128)
-		.regex(routeNamePattern, "Route name must be a safe path segment"),
+	route: routeNameSchema.max(128),
 	collections: editorCollectionsSchema.optional(),
 	order: z.number().int().min(-1_000).max(1_000).optional(),
 });
@@ -271,11 +265,7 @@ const editorActionSchema = z
 	.object({
 		id: z.string().min(1).max(64).regex(editorExtensionIdPattern, "Invalid editor action id"),
 		label: z.string().min(1).max(128),
-		route: z
-			.string()
-			.min(1)
-			.max(128)
-			.regex(routeNamePattern, "Route name must be a safe path segment"),
+		route: routeNameSchema.max(128),
 		placement: z.enum(["toolbar", "overflow"]),
 		collections: editorCollectionsSchema.optional(),
 		style: z.enum(["default", "danger"]).optional(),
@@ -424,12 +414,7 @@ export const pluginManifestBaseSchema = z.object({
 	 * structured objects with public metadata.
 	 * Plain strings are normalized to `{ name }` objects after parsing.
 	 */
-	routes: z.array(
-		z.union([
-			z.string().min(1).regex(routeNamePattern, "Route name must be a safe path segment"),
-			manifestRouteEntrySchema,
-		]),
-	),
+	routes: z.array(z.union([routeNameSchema, manifestRouteEntrySchema])),
 	mcp: pluginMcpConfigSchema.optional(),
 	admin: pluginAdminConfigSchema,
 });
@@ -466,13 +451,87 @@ function validateEditorExtensionRoutes(
 					path: ["admin", kind, index, "route"],
 				});
 			}
+			if (typeof route !== "string" && !isJsonPostRouteContract(route)) {
+				ctx.addIssue({
+					code: "custom",
+					message: "Editor extension routes must accept POST JSON requests and return JSON",
+					path: ["admin", kind, index, "route"],
+				});
+			}
 		}
 	}
 }
 
-export const pluginManifestSchema = pluginManifestBaseSchema.superRefine(
-	validateEditorExtensionRoutes,
-);
+function validateUniqueRoutes(
+	manifest: z.infer<typeof pluginManifestBaseSchema>,
+	ctx: z.RefinementCtx,
+): void {
+	const seen = new Set<string>();
+	for (const [index, route] of manifest.routes.entries()) {
+		const name = typeof route === "string" ? route : route.name;
+		if (seen.has(name)) {
+			ctx.addIssue({
+				code: "custom",
+				message: `Route "${name}" must be declared exactly once`,
+				path: ["routes", index],
+			});
+		}
+		seen.add(name);
+	}
+}
+
+function validateMcpToolRoutes(
+	manifest: z.infer<typeof pluginManifestBaseSchema>,
+	ctx: z.RefinementCtx,
+): void {
+	for (const [index, tool] of (manifest.mcp?.tools ?? []).entries()) {
+		const route = manifest.routes.find(
+			(candidate) => (typeof candidate === "string" ? candidate : candidate.name) === tool.route,
+		);
+		if (
+			typeof route === "string" ||
+			route === undefined ||
+			route.public === true ||
+			route.permission !== tool.permission ||
+			!isJsonPostRouteContract(route)
+		) {
+			ctx.addIssue({
+				code: "custom",
+				message: "MCP tools must reference a private POST-compatible JSON route",
+				path: ["mcp", "tools", index, "route"],
+			});
+		}
+	}
+}
+
+function validateBlockKitAdminRoute(
+	manifest: z.infer<typeof pluginManifestBaseSchema>,
+	ctx: z.RefinementCtx,
+): void {
+	if ((manifest.admin.pages?.length ?? 0) === 0 && (manifest.admin.widgets?.length ?? 0) === 0) {
+		return;
+	}
+	const routeIndex = manifest.routes.findIndex(
+		(route) => (typeof route === "string" ? route : route.name) === "admin",
+	);
+	if (routeIndex < 0) return;
+	const route = manifest.routes[routeIndex];
+	if (!route) return;
+	if (typeof route !== "string" && (route.public === true || !isJsonPostRouteContract(route))) {
+		ctx.addIssue({
+			code: "custom",
+			message: "Block Kit admin routes must be private POST-compatible JSON routes",
+			path: ["routes", routeIndex],
+		});
+	}
+}
+
+export const pluginManifestSchema = pluginManifestBaseSchema.superRefine((manifest, ctx) => {
+	validateUniqueRoutes(manifest, ctx);
+	validateEditorExtensionRoutes(manifest, ctx);
+	validateMcpToolRoutes(manifest, ctx);
+	validateBlockKitAdminRoute(manifest, ctx);
+});
 
 export type ValidatedPluginManifest = z.infer<typeof pluginManifestSchema>;
 
@@ -529,16 +588,6 @@ export function normalizeManifestHook(
 /**
  * Normalize a manifest route entry — plain strings become `{ name }` objects.
  */
-export function normalizeManifestRoute(
-	entry: string | { name: string; public?: boolean; permission?: string; cacheControl?: string },
-): {
-	name: string;
-	public?: boolean;
-	permission?: string;
-	cacheControl?: string;
-} {
-	if (typeof entry === "string") {
-		return { name: entry };
-	}
-	return entry;
+export function normalizeManifestRoute(entry: PluginManifest["routes"][number]) {
+	return normalizeSharedManifestRoute(entry);
 }

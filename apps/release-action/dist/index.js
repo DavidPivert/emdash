@@ -7864,6 +7864,83 @@ const meta = meta$1;
 
 //#endregion
 //#region ../../packages/plugin-types/dist/index.js
+const PLUGIN_ROUTE_MAX_BODY_BYTES = 8 * 1024 * 1024;
+const PLUGIN_ROUTE_DEFAULT_BODY_BYTES = 1024 * 1024;
+const PLUGIN_ROUTE_MAX_MULTIPART_PART_BYTES = 1024 * 1024;
+const PLUGIN_ROUTE_MAX_DECLARED_HEADERS = 32;
+const PLUGIN_ROUTE_METHODS = [
+	"GET",
+	"HEAD",
+	"POST",
+	"PUT",
+	"PATCH",
+	"DELETE"
+];
+const PLUGIN_ROUTE_BODY_MODES = [
+	"none",
+	"json",
+	"text",
+	"bytes",
+	"form-data"
+];
+const PLUGIN_ROUTE_RESPONSE_MODES = ["json", "raw"];
+const HEADER_NAME_PATTERN = /^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/;
+const FORBIDDEN_REQUEST_HEADERS = new Set([
+	"authorization",
+	"cookie",
+	"cf-access-client-id",
+	"cf-access-client-secret",
+	"cf-access-jwt-assertion",
+	"proxy-authorization",
+	"set-cookie",
+	"x-emdash-request"
+]);
+const declaredHeadersSchema = array(string().min(1).max(128).regex(HEADER_NAME_PATTERN, "Invalid HTTP header name")).max(PLUGIN_ROUTE_MAX_DECLARED_HEADERS).superRefine((headers, ctx) => {
+	const seen = /* @__PURE__ */ new Set();
+	for (const [index, header] of headers.entries()) {
+		const normalized = header.toLowerCase();
+		if (FORBIDDEN_REQUEST_HEADERS.has(normalized) || normalized.startsWith("cf-access-")) ctx.addIssue({
+			code: "custom",
+			message: `Header "${header}" cannot be exposed to a sandboxed route`,
+			path: [index]
+		});
+		if (seen.has(normalized)) ctx.addIssue({
+			code: "custom",
+			message: `Header "${header}" is declared more than once`,
+			path: [index]
+		});
+		seen.add(normalized);
+	}
+});
+const pluginRouteRequestSchema = object({
+	body: _enum(PLUGIN_ROUTE_BODY_MODES),
+	maxBytes: number().int().positive().max(PLUGIN_ROUTE_MAX_BODY_BYTES).optional(),
+	headers: declaredHeadersSchema.optional()
+}).superRefine((request, ctx) => {
+	if (request.body === "none" && request.maxBytes !== void 0) ctx.addIssue({
+		code: "custom",
+		message: "maxBytes cannot be set when request.body is none",
+		path: ["maxBytes"]
+	});
+});
+const routeOptionsSchema = object({
+	methods: array(_enum(PLUGIN_ROUTE_METHODS)).min(1).max(PLUGIN_ROUTE_METHODS.length).optional(),
+	request: pluginRouteRequestSchema.optional(),
+	response: _enum(PLUGIN_ROUTE_RESPONSE_MODES).optional(),
+	public: boolean().optional(),
+	permission: string().min(1).optional(),
+	cacheControl: string().min(1).optional()
+}).superRefine((route, ctx) => {
+	if (route.methods && new Set(route.methods).size !== route.methods.length) ctx.addIssue({
+		code: "custom",
+		message: "Route methods must not contain duplicates"
+	});
+});
+const routeNameSchema = string().min(1).regex(/^[a-zA-Z0-9][a-zA-Z0-9_\-/]*$/, "Route name must be a safe path segment");
+const manifestRouteEntrySchema = routeOptionsSchema.extend({ name: routeNameSchema });
+function isJsonPostRouteContract(route) {
+	return route.response !== "raw" && (route.methods === void 0 || route.methods.includes("POST")) && (route.request === void 0 || route.request.body === "json");
+}
 /**
 * Zod schema for PluginManifest validation
 *
@@ -7994,14 +8071,6 @@ const manifestHookEntrySchema = object({
 * Both plain strings and objects are accepted; strings are normalized
 * to `{ name }` objects via `normalizeManifestRoute()`.
 */
-/** Route names must be safe path segments — alphanumeric, hyphens, underscores, forward slashes */
-const routeNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9_\-/]*$/;
-const manifestRouteEntrySchema = object({
-	name: string().min(1).regex(routeNamePattern, "Route name must be a safe path segment"),
-	public: boolean().optional(),
-	permission: string().min(1).optional(),
-	cacheControl: string().min(1).optional()
-});
 const pluginJsonSchema = record(string(), unknown());
 const pluginMcpConfigSchema = object({ tools: array(object({
 	name: string().min(1),
@@ -8086,7 +8155,7 @@ const editorCollectionsSchema = array(string().max(63).regex(/^[a-z][a-z0-9_]*$/
 const editorPanelSchema = object({
 	id: string().min(1).max(64).regex(editorExtensionIdPattern, "Invalid editor panel id"),
 	title: string().min(1).max(128),
-	route: string().min(1).max(128).regex(routeNamePattern, "Route name must be a safe path segment"),
+	route: routeNameSchema.max(128),
 	collections: editorCollectionsSchema.optional(),
 	order: number().int().min(-1e3).max(1e3).optional()
 });
@@ -8100,7 +8169,7 @@ const editorActionConfirmSchema = object({
 const editorActionSchema = object({
 	id: string().min(1).max(64).regex(editorExtensionIdPattern, "Invalid editor action id"),
 	label: string().min(1).max(128),
-	route: string().min(1).max(128).regex(routeNamePattern, "Route name must be a safe path segment"),
+	route: routeNameSchema.max(128),
 	placement: _enum(["toolbar", "overflow"]),
 	collections: editorCollectionsSchema.optional(),
 	style: _enum(["default", "danger"]).optional(),
@@ -8211,7 +8280,7 @@ const pluginManifestBaseSchema = object({
 	allowedHosts: array(string()),
 	storage: record(string(), storageCollectionSchema),
 	hooks: array(union([_enum(HOOK_NAMES), manifestHookEntrySchema])),
-	routes: array(union([string().min(1).regex(routeNamePattern, "Route name must be a safe path segment"), manifestRouteEntrySchema])),
+	routes: array(union([routeNameSchema, manifestRouteEntrySchema])),
 	mcp: pluginMcpConfigSchema.optional(),
 	admin: pluginAdminConfigSchema
 });
@@ -8243,9 +8312,63 @@ function validateEditorExtensionRoutes(manifest, ctx) {
 				"route"
 			]
 		});
+		if (typeof route !== "string" && !isJsonPostRouteContract(route)) ctx.addIssue({
+			code: "custom",
+			message: "Editor extension routes must accept POST JSON requests and return JSON",
+			path: [
+				"admin",
+				kind,
+				index,
+				"route"
+			]
+		});
 	}
 }
-const pluginManifestSchema = pluginManifestBaseSchema.superRefine(validateEditorExtensionRoutes);
+function validateUniqueRoutes(manifest, ctx) {
+	const seen = /* @__PURE__ */ new Set();
+	for (const [index, route] of manifest.routes.entries()) {
+		const name = typeof route === "string" ? route : route.name;
+		if (seen.has(name)) ctx.addIssue({
+			code: "custom",
+			message: `Route "${name}" must be declared exactly once`,
+			path: ["routes", index]
+		});
+		seen.add(name);
+	}
+}
+function validateMcpToolRoutes(manifest, ctx) {
+	for (const [index, tool] of (manifest.mcp?.tools ?? []).entries()) {
+		const route = manifest.routes.find((candidate) => (typeof candidate === "string" ? candidate : candidate.name) === tool.route);
+		if (typeof route === "string" || route === void 0 || route.public === true || route.permission !== tool.permission || !isJsonPostRouteContract(route)) ctx.addIssue({
+			code: "custom",
+			message: "MCP tools must reference a private POST-compatible JSON route",
+			path: [
+				"mcp",
+				"tools",
+				index,
+				"route"
+			]
+		});
+	}
+}
+function validateBlockKitAdminRoute(manifest, ctx) {
+	if ((manifest.admin.pages?.length ?? 0) === 0 && (manifest.admin.widgets?.length ?? 0) === 0) return;
+	const routeIndex = manifest.routes.findIndex((route) => (typeof route === "string" ? route : route.name) === "admin");
+	if (routeIndex < 0) return;
+	const route = manifest.routes[routeIndex];
+	if (!route) return;
+	if (typeof route !== "string" && (route.public === true || !isJsonPostRouteContract(route))) ctx.addIssue({
+		code: "custom",
+		message: "Block Kit admin routes must be private POST-compatible JSON routes",
+		path: ["routes", routeIndex]
+	});
+}
+const pluginManifestSchema = pluginManifestBaseSchema.superRefine((manifest, ctx) => {
+	validateUniqueRoutes(manifest, ctx);
+	validateEditorExtensionRoutes(manifest, ctx);
+	validateMcpToolRoutes(manifest, ctx);
+	validateBlockKitAdminRoute(manifest, ctx);
+});
 /**
 * Reconcile a parsed manifest's trust contract with its enforcement currency.
 * `declaredAccess` is authoritative: when present, `capabilities`/`allowedHosts`
