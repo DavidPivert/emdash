@@ -43,7 +43,7 @@ export {
 	createSiteInfo,
 } from "./context.js";
 export { createContentAccess } from "./content-access.js";
-export type { PluginContextFactoryOptions } from "./context.js";
+export type { ContentActionCallbacks, PluginContextFactoryOptions } from "./context.js";
 export { CronAccessImpl } from "./cron.js";
 export {
 	DEFAULT_PLUGIN_MEDIA_READ_BYTES,
@@ -108,6 +108,7 @@ export {
 export type {
 	SandboxRunner,
 	SandboxedPluginInstance,
+	SandboxInvocationOptions,
 	SandboxRunnerFactory,
 	SandboxOptions,
 	SandboxEmailMessage,
@@ -163,6 +164,9 @@ export type {
 	SettingsAccess,
 	ContentAccess,
 	ContentAccessWithWrite,
+	ContentPublicationAccess,
+	ContentRestoreAccess,
+	VersionedContentItem,
 	MediaAccess,
 	MediaAccessWithWrite,
 	MediaBytes,

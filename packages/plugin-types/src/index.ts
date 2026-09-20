@@ -49,6 +49,8 @@ export type PluginCapability =
 	| "content:read"
 	| "content:revisions:read"
 	| "content:write"
+	| "content:publish"
+	| "content:restore"
 	// Comments
 	| "comments:read"
 	| "comments:moderate"
@@ -160,6 +162,8 @@ export function normalizeCapability(cap: string): string {
  * `network:fetch` and `network:request` should resolve to a single
  * `network:request`).
  */
+export function normalizeCapabilities(caps: readonly PluginCapability[]): PluginCapability[];
+export function normalizeCapabilities(caps: readonly string[]): string[];
 export function normalizeCapabilities(caps: readonly string[]): string[] {
 	const seen = new Set<string>();
 	const out: string[] = [];
@@ -199,6 +203,8 @@ export interface DeclaredAccess {
 		read?: AccessConstraints;
 		revisionsRead?: AccessConstraints;
 		write?: AccessConstraints;
+		publish?: AccessConstraints;
+		restore?: AccessConstraints;
 		policy?: AccessConstraints;
 	};
 	comments?: { read?: AccessConstraints; moderate?: AccessConstraints };
@@ -238,10 +244,17 @@ export function capabilitiesToDeclaredAccess(
 	const caps = new Set(capabilities.map((c) => normalizeCapability(c)));
 	const out: DeclaredAccess = {};
 
-	if (caps.has("content:read") || caps.has("content:revisions:read") || caps.has("content:write")) {
+	if (
+		caps.has("content:read") ||
+		caps.has("content:revisions:read") ||
+		caps.has("content:write") ||
+		caps.has("content:publish")
+	) {
 		out.content = { read: {} };
 		if (caps.has("content:write")) out.content.write = {};
 	}
+	if (caps.has("content:publish")) (out.content ??= {}).publish = {};
+	if (caps.has("content:restore")) (out.content ??= {}).restore = {};
 	if (caps.has("comments:read") || caps.has("comments:moderate")) {
 		out.comments = { read: {} };
 		if (caps.has("comments:moderate")) out.comments.moderate = {};
@@ -305,6 +318,11 @@ export function declaredAccessToCapabilities(declaredAccess: DeclaredAccess): {
 		caps.add("content:write");
 		caps.add("content:read");
 	}
+	if (declaredAccess.content?.publish) {
+		caps.add("content:publish");
+		caps.add("content:read");
+	}
+	if (declaredAccess.content?.restore) caps.add("content:restore");
 	if (declaredAccess.comments?.read) caps.add("comments:read");
 	if (declaredAccess.comments?.moderate) {
 		caps.add("comments:moderate");

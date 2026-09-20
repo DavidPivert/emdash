@@ -40,6 +40,7 @@ import {
 	updatePluginMediaMetadata,
 } from "emdash";
 import type {
+	ContentActionCallbacks,
 	ContentFieldFilters,
 	ContentListOptions,
 	Database,
@@ -73,6 +74,17 @@ function contentCreateErrorDetails(error: unknown): { code: string; message: str
 		? { code, message: error.message }
 		: null;
 }
+
+const CONTENT_ACTION_ERROR_CODE_REGEX = /^[A-Z][A-Z0-9_]*$/;
+const CONTENT_ACTION_METHODS = new Set([
+	"content/getVersioned",
+	"content/publish",
+	"content/unpublish",
+	"content/schedule",
+	"content/unschedule",
+	"content/getTrashedVersioned",
+	"content/restore",
+]);
 
 /**
  * Schema view of a content table (ec_${collection}) for kysely. The standard
@@ -170,6 +182,7 @@ export interface BridgeHandlerOptions {
 	contentCreate?: SandboxContentCreateCallback;
 	contentCreateProvider?: () => SandboxContentCreateCallback | null;
 	taxonomyWrite?: TaxonomyAccessWithWrite;
+	contentActions?: () => ContentActionCallbacks | null;
 	emailSend: () => SandboxEmailSendCallback | null;
 	commentModerate?: () => SandboxCommentModerateCallback | null;
 	cronReschedule?: () => void;
@@ -210,9 +223,10 @@ export function createBridgeHandler(
 		secretRedactor: opts.secretRedactor ?? createPluginSecretRedactor(),
 	};
 	return async (request: Request): Promise<Response> => {
+		let method = "";
 		try {
 			const url = new URL(request.url);
-			const method = url.pathname.slice(1);
+			method = url.pathname.slice(1);
 
 			let body: Record<string, unknown> = {};
 			if (request.method === "POST") {
@@ -273,7 +287,9 @@ export function createBridgeHandler(
 					{ status: 503 },
 				);
 			}
-			const contentCreateError = contentCreateErrorDetails(error);
+			const contentCreateError = CONTENT_ACTION_METHODS.has(method)
+				? null
+				: contentCreateErrorDetails(error);
 			if (contentCreateError) {
 				const status =
 					contentCreateError.code === "NOT_FOUND"
@@ -285,6 +301,20 @@ export function createBridgeHandler(
 					{ error: { name: contentCreateError.code, ...contentCreateError } },
 					{ status },
 				);
+			}
+			if (
+				CONTENT_ACTION_METHODS.has(method) &&
+				error instanceof Error &&
+				"code" in error &&
+				typeof error.code === "string" &&
+				CONTENT_ACTION_ERROR_CODE_REGEX.test(error.code)
+			) {
+				return Response.json({
+					result: {
+						__emdashContentActionError: true,
+						error: { code: error.code, message: error.message },
+					},
+				});
 			}
 			const message = error instanceof Error ? error.message : "Internal error";
 			return new Response(JSON.stringify({ error: message }), {
@@ -517,6 +547,68 @@ async function dispatch(
 			requireCapability(opts, "content:write");
 			await opts.beforeContentWrite?.();
 			return contentDelete(db, requireString(body, "collection"), requireString(body, "id"));
+		case "content/getVersioned":
+			requireCapability(opts, "content:publish");
+			return requireContentActions(opts).getVersioned(
+				pluginId,
+				requireString(body, "collection"),
+				requireString(body, "id"),
+			);
+		case "content/publish":
+			requireCapability(opts, "content:publish");
+			return requireContentActions(opts).publish(
+				pluginId,
+				requireString(body, "collection"),
+				requireString(body, "id"),
+				{ _rev: requireString(body, "revision") },
+				optionalString(body, "invocationId"),
+			);
+		case "content/unpublish":
+			requireCapability(opts, "content:publish");
+			return requireContentActions(opts).unpublish(
+				pluginId,
+				requireString(body, "collection"),
+				requireString(body, "id"),
+				{ _rev: requireString(body, "revision") },
+				optionalString(body, "invocationId"),
+			);
+		case "content/schedule":
+			requireCapability(opts, "content:publish");
+			return requireContentActions(opts).schedule(
+				pluginId,
+				requireString(body, "collection"),
+				requireString(body, "id"),
+				{
+					scheduledAt: requireString(body, "scheduledAt"),
+					_rev: requireString(body, "revision"),
+				},
+				optionalString(body, "invocationId"),
+			);
+		case "content/unschedule":
+			requireCapability(opts, "content:publish");
+			return requireContentActions(opts).unschedule(
+				pluginId,
+				requireString(body, "collection"),
+				requireString(body, "id"),
+				{ _rev: requireString(body, "revision") },
+				optionalString(body, "invocationId"),
+			);
+		case "content/getTrashedVersioned":
+			requireCapability(opts, "content:restore");
+			return requireContentActions(opts).getTrashedVersioned(
+				pluginId,
+				requireString(body, "collection"),
+				requireString(body, "id"),
+			);
+		case "content/restore":
+			requireCapability(opts, "content:restore");
+			return requireContentActions(opts).restore(
+				pluginId,
+				requireString(body, "collection"),
+				requireString(body, "id"),
+				{ _rev: requireString(body, "revision") },
+				optionalString(body, "invocationId"),
+			);
 		case "content/createMany":
 			requireCapability(opts, "content:write");
 			const createManyLocale = resolveContentCreateLocale(undefined, opts.i18nConfig ?? null);
@@ -1163,6 +1255,12 @@ function requireCapability(opts: BridgeHandlerOptions, capability: string): void
 		// Error message matches Cloudflare PluginBridge format
 		throw new Error(`Missing capability: ${capability}`);
 	}
+}
+
+function requireContentActions(opts: BridgeHandlerOptions): ContentActionCallbacks {
+	const actions = opts.contentActions?.();
+	if (!actions) throw new Error("Content actions are not configured");
+	return actions;
 }
 
 function validateStorageCollection(opts: BridgeHandlerOptions, collection: string): void {

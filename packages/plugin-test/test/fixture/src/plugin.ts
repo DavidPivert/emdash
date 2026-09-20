@@ -113,6 +113,14 @@ function policyActor(event: ContentPolicyEvent) {
 	return { origin: event.origin, actor: event.actor };
 }
 
+async function recordContentAction(ctx: PluginContext, action: string, contentId: string) {
+	await ctx.storage.events!.put(`action:${action}:${contentId}`, {
+		type: "content-action",
+		action,
+		contentId,
+	});
+}
+
 const plugin: SandboxedPlugin = {
 	hooks: {
 		"plugin:install": async (_event, ctx) => record(ctx, "lifecycle", "install"),
@@ -150,6 +158,28 @@ const plugin: SandboxedPlugin = {
 				...policyActor(event),
 			});
 			const reason = await ctx.kv.get("policy:content:beforePublish");
+			if (await ctx.kv.get("policy:reenter-publish")) {
+				const current = await ctx.content!.getVersioned!(
+					event.collection,
+					String(event.content.id),
+				);
+				try {
+					await ctx.content!.publish!(event.collection, String(event.content.id), {
+						_rev: current!._rev,
+					});
+				} catch (error) {
+					await record(ctx, "events", "content-action-rejected", {
+						code:
+							typeof error === "object" &&
+							error !== null &&
+							"code" in error &&
+							typeof error.code === "string"
+								? error.code
+								: "UNKNOWN",
+					});
+					return { cancel: true, reason: "Nested publication was blocked." };
+				}
+			}
 			if (reason === "__invalid__") return { cancel: true, reason: "" };
 			return typeof reason === "string" ? { cancel: true, reason } : undefined;
 		},
@@ -170,6 +200,16 @@ const plugin: SandboxedPlugin = {
 			const reason = await ctx.kv.get("policy:content:beforeUnpublish");
 			return typeof reason === "string" ? { cancel: true, reason } : undefined;
 		},
+		"content:afterPublish": (event, ctx) =>
+			recordContentAction(ctx, "publish", String(event.content.id)),
+		"content:afterUnpublish": (event, ctx) =>
+			recordContentAction(ctx, "unpublish", String(event.content.id)),
+		"content:afterSchedule": (event, ctx) =>
+			recordContentAction(ctx, "schedule", String(event.content.id)),
+		"content:afterUnschedule": (event, ctx) =>
+			recordContentAction(ctx, "unschedule", String(event.content.id)),
+		"content:afterRestore": (event, ctx) =>
+			recordContentAction(ctx, "restore", String(event.content.id)),
 		"media:beforeUpload": async (event) => ({
 			...event.file,
 			name: `checked-${event.file.name}`,
@@ -503,7 +543,7 @@ const plugin: SandboxedPlugin = {
 				};
 				return ctx.content.create(
 					"posts",
-					// eslint-disable-next-line typescript/no-unsafe-type-assertion -- narrowed to a non-null record above
+					// oxlint-disable-next-line typescript/no-unsafe-type-assertion -- narrowed to a non-null record above
 					route.input.data as Record<string, unknown>,
 					options,
 				);
@@ -585,6 +625,69 @@ const plugin: SandboxedPlugin = {
 					list: await ctx.content!.listRevisions!("posts", route.input.id),
 					item: await ctx.content!.getRevision!("posts", route.input.id, route.input.revisionId),
 				};
+			},
+		},
+		"content-action": {
+			handler: async (route, ctx) => {
+				if (typeof route.input !== "object" || route.input === null) {
+					throw new Error("Expected content action input");
+				}
+				const input = route.input;
+				if (!("action" in input) || !("collection" in input) || !("id" in input)) {
+					throw new Error("Expected action, collection, and id");
+				}
+				const action = input.action;
+				const collection = input.collection;
+				const id = input.id;
+				if (
+					typeof action !== "string" ||
+					typeof collection !== "string" ||
+					typeof id !== "string"
+				) {
+					throw new Error("Expected action, collection, and id");
+				}
+				if (action === "getTrashedVersioned") {
+					return ctx.content!.getTrashedVersioned!(collection, id);
+				}
+				if (action === "getVersioned") return ctx.content!.getVersioned!(collection, id);
+				if (!("_rev" in input) || typeof input._rev !== "string") {
+					throw new Error("Expected _rev");
+				}
+				if (action === "publish") {
+					try {
+						return await ctx.content!.publish!(collection, id, { _rev: input._rev });
+					} catch (error) {
+						return {
+							actionError: {
+								code:
+									typeof error === "object" &&
+									error !== null &&
+									"code" in error &&
+									typeof error.code === "string"
+										? error.code
+										: "UNKNOWN",
+							},
+						};
+					}
+				}
+				if (action === "unpublish") {
+					return ctx.content!.unpublish!(collection, id, { _rev: input._rev });
+				}
+				if (action === "schedule") {
+					if (!("scheduledAt" in input) || typeof input.scheduledAt !== "string") {
+						throw new Error("Expected scheduledAt");
+					}
+					return ctx.content!.schedule!(collection, id, {
+						scheduledAt: input.scheduledAt,
+						_rev: input._rev,
+					});
+				}
+				if (action === "unschedule") {
+					return ctx.content!.unschedule!(collection, id, { _rev: input._rev });
+				}
+				if (action === "restore")
+					return ctx.content!.restore!(collection, id, { _rev: input._rev });
+				throw new Error(`Unknown content action: ${action}`);
 			},
 		},
 		"settings-value": {

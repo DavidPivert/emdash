@@ -10,6 +10,7 @@
 import type { Kysely } from "kysely";
 
 import type { Database } from "../../database/types.js";
+import type { ContentActionCallbacks } from "../context.js";
 import type {
 	ContentCreateOptions,
 	ContentItem,
@@ -100,6 +101,7 @@ export interface SandboxOptions {
 	beforeContentWrite?: () => Promise<void>;
 	/** Runtime-owned taxonomy mutation surface used by sandbox bridges. */
 	taxonomyWrite?: TaxonomyAccessWithWrite;
+	contentActions?: ContentActionCallbacks;
 	/** Clock used to calculate recurring plugin task schedules. */
 	now?: () => Date;
 	/** Default resource limits */
@@ -159,13 +161,22 @@ export interface SandboxedPluginInstance {
 	 * @param request - Serialized request info for context
 	 * @returns Route response data
 	 */
-	invokeRoute(routeName: string, input: unknown, request: SerializedRequest): Promise<unknown>;
+	invokeRoute(
+		routeName: string,
+		input: unknown,
+		request: SerializedRequest,
+		options?: SandboxInvocationOptions,
+	): Promise<unknown>;
 
 	/**
 	 * Terminate the sandboxed plugin.
 	 * Releases resources and prevents further invocations.
 	 */
 	terminate(): Promise<void>;
+}
+
+export interface SandboxInvocationOptions {
+	invalidateContentCache?: (tags: string[]) => Promise<void>;
 }
 
 /**
@@ -301,6 +312,7 @@ export interface SandboxRunner {
 	setEmailSend(callback: SandboxEmailSendCallback | null): void;
 	setCommentModerate?(callback: SandboxCommentModerateCallback | null): void;
 	setContentCreate?(callback: SandboxContentCreateCallback | null): void;
+	setContentActions?(callback: ContentActionCallbacks | null): void;
 
 	/** Wake a long-lived scheduler after a sandboxed plugin changes its tasks. */
 	setCronReschedule?(callback: (() => void) | null): void;

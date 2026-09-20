@@ -213,6 +213,20 @@ export default {
 };
 `;
 
+const CONTENT_ACTION_HANG_PLUGIN = `
+export default {
+	hooks: {},
+	routes: {
+		"publish-hang": {
+			handler: async (_route, ctx) => {
+				await ctx.content.publish("posts", "post-1", { _rev: "revision-1" });
+				await new Promise((resolve) => setTimeout(resolve, 60000));
+			}
+		}
+	}
+};
+`;
+
 const CONTENT_WRITE_PLUGIN = `
 export default {
 	hooks: {},
@@ -313,6 +327,12 @@ export default {
 				} catch (error) {
 					return { name: error.name, code: error.code, message: error.message };
 				}
+			}
+		},
+		"publish": {
+			handler: async (route, ctx) => {
+				const current = await ctx.content.getVersioned("posts", route.input.id);
+				return ctx.content.publish("posts", route.input.id, { _rev: current._rev });
 			}
 		}
 	}
@@ -541,7 +561,7 @@ describe.skipIf(!workerdAvailable)("WorkerdSandboxRunner integration", () => {
 					version: "1.0.0",
 					options: {},
 					code: RUNTIME_HOST_PLUGIN,
-					capabilities: ["content:write"],
+					capabilities: ["content:write", "content:publish"],
 					allowedHosts: [],
 					storage: {},
 					hooks: ["content:beforeSave"],
@@ -549,6 +569,7 @@ describe.skipIf(!workerdAvailable)("WorkerdSandboxRunner integration", () => {
 						{ name: "state", public: true },
 						{ name: "translate", public: true },
 						{ name: "translate-error", public: true },
+						{ name: "publish", public: true },
 					],
 				},
 			],
@@ -625,6 +646,20 @@ describe.skipIf(!workerdAvailable)("WorkerdSandboxRunner integration", () => {
 				);
 				expect(failed).toMatchObject({ success: true, data: { name: code, code } });
 			}
+			const published = await runtime.handlePluginApiRoute(
+				"runtime-workerd",
+				"POST",
+				"/publish",
+				new Request("https://test.local/publish", {
+					method: "POST",
+					headers: { "content-type": "application/json" },
+					body: JSON.stringify({ id: created.data.item.id }),
+				}),
+			);
+			expect(published).toMatchObject({
+				success: true,
+				data: { item: { id: created.data.item.id, status: "published" } },
+			});
 			const first = await runtime.handlePluginApiRoute(
 				"runtime-workerd",
 				"GET",
@@ -1228,6 +1263,71 @@ describe.skipIf(!workerdAvailable)("WorkerdSandboxRunner integration", () => {
 			).rejects.toThrow(/exceeded wall-time limit/);
 		} finally {
 			await slowRunner.terminateAll();
+		}
+	}, 30_000);
+
+	it("releases a publication invocation that mutates and outlives the wall limit", async () => {
+		const contentActions = {
+			begin: vi.fn(),
+			flush: vi.fn().mockResolvedValue(undefined),
+			publish: vi.fn().mockResolvedValue({
+				item: {
+					id: "post-1",
+					type: "posts",
+					slug: "post-1",
+					status: "published",
+					locale: "en",
+					data: {},
+					createdAt: "2026-01-01T00:00:00.000Z",
+					updatedAt: "2026-01-01T00:00:00.000Z",
+					publishedAt: "2026-01-01T00:00:00.000Z",
+				},
+				_rev: "revision-2",
+			}),
+		};
+		const hangingRunner = new WorkerdSandboxRunner({
+			db,
+			limits: { wallTimeMs: 200 },
+			contentActions: contentActions as never,
+		});
+
+		try {
+			const plugin = await hangingRunner.load(
+				{
+					id: "test-publication-hang",
+					version: "1.0.0",
+					capabilities: ["content:publish"],
+					allowedHosts: [],
+					storage: {},
+				},
+				CONTENT_ACTION_HANG_PLUGIN,
+			);
+			const invalidateContentCache = vi.fn().mockResolvedValue(undefined);
+
+			await expect(
+				plugin.invokeRoute(
+					"publish-hang",
+					{},
+					{ method: "POST", url: "/api/test", headers: {} },
+					{ invalidateContentCache },
+				),
+			).rejects.toThrow(/exceeded wall-time limit/);
+
+			expect(contentActions.publish).toHaveBeenCalledOnce();
+			const invocationId = contentActions.begin.mock.calls[0]?.[1];
+			expect(contentActions.begin).toHaveBeenCalledWith(
+				"test-publication-hang",
+				invocationId,
+				invalidateContentCache,
+			);
+			expect(contentActions.publish.mock.calls[0]?.[4]).toBe(invocationId);
+			expect(contentActions.flush).toHaveBeenCalledWith(
+				"test-publication-hang",
+				invocationId,
+				false,
+			);
+		} finally {
+			await hangingRunner.terminateAll();
 		}
 	}, 30_000);
 

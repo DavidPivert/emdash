@@ -45,7 +45,9 @@ export function generatePluginWrapper(manifest: PluginManifest, options: Wrapper
 	const hasContentAccess =
 		capabilities.includes("content:read") ||
 		capabilities.includes("content:write") ||
-		capabilities.includes("content:revisions:read");
+		capabilities.includes("content:revisions:read") ||
+		capabilities.includes("content:publish") ||
+		capabilities.includes("content:restore");
 	const hasReadUsers = capabilities.includes("users:read");
 	const hasEmailSend = capabilities.includes("email:send");
 	const hasReadComments = capabilities.includes("comments:read");
@@ -53,9 +55,13 @@ export function generatePluginWrapper(manifest: PluginManifest, options: Wrapper
 	const hasRedirectRead = capabilities.includes("redirects:read");
 	const hasRedirectWrite = capabilities.includes("redirects:write");
 	const hasContentRead = capabilities.some((capability) =>
-		["content:read", "content:write", "content:revisions:read"].includes(capability),
+		["content:read", "content:write", "content:publish", "content:revisions:read"].includes(
+			capability,
+		),
 	);
 	const hasContentWrite = capabilities.includes("content:write");
+	const hasContentPublish = capabilities.includes("content:publish");
+	const hasContentRestore = capabilities.includes("content:restore");
 	const hasSchemaRead = capabilities.includes("schema:read");
 	const hasRevisionRead = capabilities.includes("content:revisions:read");
 
@@ -266,7 +272,7 @@ async function bridgeCall(method, body) {
 			}
 			const contentCreateDetails = contentCreateErrorDetails(payload?.error);
 			if (contentCreateDetails) {
-				throw Object.assign(new Error(contentCreateDetails.message), contentCreateDetails);
+				throw Object.assign(new Error(contentCreateDetails.message), contentCreateDetails, { name: contentCreateDetails.code });
 			}
 			const details = sandboxRouteErrorDetails(payload?.error);
 			if (details) {
@@ -293,7 +299,7 @@ async function bridgeCall(method, body) {
 // Context Factory
 // -----------------------------------------------------------------------------
 
-function createContext(originHook) {
+function createContext(originHook, invocationId) {
 	const kv = {
 		get: (key) => bridgeCall("kv/get", { key }),
 		set: (key, value) => bridgeCall("kv/set", { key, value }),
@@ -348,33 +354,49 @@ function createContext(originHook) {
 		}
 	});
 
-	const content = ${hasContentRead} ? {
+	async function contentAction(promise) {
+		const result = await promise;
+		if (result && result.__emdashContentActionError === true && result.error) {
+			throw Object.assign(new Error(result.error.message), result.error, { name: result.error.code });
+		}
+		return result;
+	}
+
+	const content = ${hasContentAccess} ? {
 		get: (collection, id) => bridgeCall("content/get", { collection, id }),
 		list: (collection, opts) => bridgeCall("content/list", { collection, ...opts }),
-		getTranslations: (collection, id) => bridgeCall("content/translations", { collection, id }),
-		getPublicUrl: (collection, id) => bridgeCall("content/publicUrl", { collection, id }),
-		...(${hasRevisionRead} ? {
-			listRevisions: (collection, id, options) => bridgeCall("content/listRevisions", { collection, id, options }),
-			getRevision: (collection, id, revisionId) => bridgeCall("content/getRevision", { collection, id, revisionId })
+		...(${hasContentRead} ? {
+			getTranslations: (collection, id) => bridgeCall("content/translations", { collection, id }),
+			getPublicUrl: (collection, id) => bridgeCall("content/publicUrl", { collection, id }),
+			...(${hasRevisionRead} ? {
+				listRevisions: (collection, id, options) => bridgeCall("content/listRevisions", { collection, id, options }),
+				getRevision: (collection, id, revisionId) => bridgeCall("content/getRevision", { collection, id, revisionId })
+			} : {})
 		} : {}),
 		...(${hasContentWrite} ? {
-			create: (collection, data, options) => bridgeCall("content/create", {
-				collection,
-				data,
-				options,
-				originHook
-			}),
+			create: (collection, data, options) => bridgeCall("content/create", { collection, data, options, originHook }),
 			update: (collection, id, data) => bridgeCall("content/update", { collection, id, data }),
 			delete: (collection, id) => bridgeCall("content/delete", { collection, id }),
 			createMany: (collection, items) => bridgeCall("content/createMany", { collection, items }),
 			updateMany: (collection, items) => bridgeCall("content/updateMany", { collection, items }),
 			deleteMany: (collection, ids) => bridgeCall("content/deleteMany", { collection, ids })
+		} : {}),
+		...(${hasContentPublish} ? {
+			getVersioned: (collection, id) => contentAction(bridgeCall("content/getVersioned", { collection, id })),
+			publish: (collection, id, options) => contentAction(bridgeCall("content/publish", { collection, id, revision: options._rev, invocationId })),
+			unpublish: (collection, id, options) => contentAction(bridgeCall("content/unpublish", { collection, id, revision: options._rev, invocationId })),
+			schedule: (collection, id, options) => contentAction(bridgeCall("content/schedule", { collection, id, scheduledAt: options.scheduledAt, revision: options._rev, invocationId })),
+			unschedule: (collection, id, options) => contentAction(bridgeCall("content/unschedule", { collection, id, revision: options._rev, invocationId }))
+		} : {}),
+		...(${hasContentRestore} ? {
+			getTrashedVersioned: (collection, id) => contentAction(bridgeCall("content/getTrashedVersioned", { collection, id })),
+			restore: (collection, id, options) => contentAction(bridgeCall("content/restore", { collection, id, revision: options._rev, invocationId }))
 		} : {})
 	} : undefined;
 
 	const schema = ${hasSchemaRead} ? {
 		listCollections: () => bridgeCall("schema/listCollections", {}),
-		getCollection: (slug) => bridgeCall("schema/getCollection", { slug }),
+		getCollection: (slug) => bridgeCall("schema/getCollection", { slug })
 	} : undefined;
 
 	// Taxonomy access - capability enforced by the bridge
@@ -678,8 +700,8 @@ export default {
 		// Hook invocation: POST /hook/{hookName}
 		if (url.pathname.startsWith("/hook/")) {
 			const hookName = url.pathname.slice(6); // Remove "/hook/"
-			const { event } = await request.json();
-			const ctx = createContext(hookName);
+			const { event, invocationId } = await request.json();
+			const ctx = createContext(hookName, invocationId);
 
 			const hookDef = hooks[hookName];
 			if (!hookDef) {
@@ -702,8 +724,8 @@ export default {
 		// Route invocation: POST /route/{routeName}
 		if (url.pathname.startsWith("/route/")) {
 			const routeName = url.pathname.slice(7); // Remove "/route/"
-			const { input, request: serializedRequest } = await request.json();
-			const ctx = createContext();
+			const { input, request: serializedRequest, invocationId } = await request.json();
+			const ctx = createContext(undefined, invocationId);
 
 			const route = routes[routeName];
 			if (!route) {

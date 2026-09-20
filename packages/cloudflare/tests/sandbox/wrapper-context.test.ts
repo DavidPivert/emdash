@@ -46,7 +46,7 @@ describe("Cloudflare generated plugin context", () => {
 		const source = generatePluginWrapper({
 			id: "content-discovery",
 			version: "1.0.0",
-			capabilities: ["schema:read", "content:read", "content:revisions:read"],
+			capabilities: ["schema:read", "content:revisions:read"],
 			allowedHosts: [],
 			storage: {},
 			hooks: ["plugin:activate"],
@@ -146,7 +146,7 @@ describe("Cloudflare generated plugin context", () => {
 		const source = generatePluginWrapper({
 			id: "context-wrapper",
 			version: "1.0.0",
-			capabilities: ["network:request", "redirects:write", "redirects:read"],
+			capabilities: ["network:request", "redirects:write", "redirects:read", "content:publish"],
 			allowedHosts: ["api.example.com"],
 			storage: {},
 			hooks: ["plugin:activate"],
@@ -171,12 +171,15 @@ describe("Cloudflare generated plugin context", () => {
 				"plugin:activate": async (_event: unknown, ctx: Record<string, any>) => {
 					await ctx.cron.schedule("daily", { schedule: "@daily" });
 					const response = await ctx.http.fetch("https://api.example.com/status");
+					const versioned = await ctx.content.getVersioned("posts", "post-1");
 					return {
 						isResponse: response instanceof Response,
 						body: await response.json(),
 						redirects: await ctx.redirects.list({ limit: 1 }),
 						canWriteRedirects: typeof ctx.redirects.create === "function",
-						content: ctx.content,
+						canReadTranslations: typeof ctx.content.getTranslations === "function",
+						canResolvePublicUrl: typeof ctx.content.getPublicUrl === "function",
+						versioned,
 					};
 				},
 			},
@@ -184,6 +187,7 @@ describe("Cloudflare generated plugin context", () => {
 		const bridge = new Proxy(
 			{
 				cronSchedule: schedule,
+				contentGetVersioned: vi.fn().mockResolvedValue({ item: { id: "post-1" }, _rev: "rev-1" }),
 				httpFetch: async () => ({
 					status: 200,
 					headers: { "content-type": "application/json" },
@@ -212,8 +216,70 @@ describe("Cloudflare generated plugin context", () => {
 			body: { ok: true },
 			redirects: { items: [{ source: "/old" }], hasMore: false },
 			canWriteRedirects: true,
-			content: undefined,
+			canReadTranslations: true,
+			canResolvePublicUrl: true,
+			versioned: { item: { id: "post-1" }, _rev: "rev-1" },
 		});
 		expect(schedule).toHaveBeenCalledWith("daily", { schedule: "@daily" });
+	});
+
+	it("uses the explicit content-create error marker", async () => {
+		const source = generatePluginWrapper({
+			id: "content-create-wrapper",
+			version: "1.0.0",
+			capabilities: ["content:write"],
+			allowedHosts: [],
+			storage: {},
+			hooks: ["plugin:activate"],
+			routes: [],
+			admin: {},
+		})
+			.replace('import { WorkerEntrypoint } from "cloudflare:workers";', "")
+			.replace('import pluginModule from "sandbox-plugin.js";', "")
+			.replace("export default class PluginEntrypoint", "return class PluginEntrypoint");
+		class WorkerEntrypoint {
+			constructor(readonly env: Record<string, unknown>) {}
+		}
+		const pluginModule = {
+			hooks: {
+				"plugin:activate": (_event: unknown, ctx: Record<string, any>) =>
+					ctx.content.create("posts", { error: "field value" }),
+			},
+		};
+		const contentCreate = vi
+			.fn()
+			.mockResolvedValueOnce({
+				id: "post-1",
+				type: "posts",
+				data: { error: "field value" },
+				error: "field value",
+			})
+			.mockResolvedValueOnce({
+				__emdashContentCreateError: true,
+				error: { code: "VALIDATION_ERROR", message: "Invalid content" },
+			});
+		const bridge = new Proxy(
+			{ contentCreate },
+			{ get: (target, key) => Reflect.get(target, key) ?? vi.fn() },
+		);
+		// eslint-disable-next-line no-implied-eval -- generated worker module is exercised in an isolated function scope
+		const factory = new Function("WorkerEntrypoint", "pluginModule", source);
+		const Entrypoint = factory(WorkerEntrypoint, pluginModule) as new (env: unknown) => {
+			invokeHook(name: string, event: unknown): Promise<unknown>;
+		};
+		const worker = new Entrypoint({
+			PLUGIN_ID: "content-create-wrapper",
+			PLUGIN_VERSION: "1.0.0",
+			BRIDGE: bridge,
+		});
+
+		await expect(worker.invokeHook("plugin:activate", {})).resolves.toMatchObject({
+			id: "post-1",
+			data: { error: "field value" },
+		});
+		await expect(worker.invokeHook("plugin:activate", {})).rejects.toMatchObject({
+			name: "VALIDATION_ERROR",
+			message: "Invalid content",
+		});
 	});
 });

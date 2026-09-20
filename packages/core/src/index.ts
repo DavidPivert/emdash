@@ -323,8 +323,10 @@ export type {
 	UpdateIfArgs,
 	UpdateIfResult,
 	VersionedValue,
+	VersionedContentItem,
 	ConditionalWriteResult,
 	ConditionalDeleteResult,
+	ContentActionCallbacks,
 	KVAccess,
 	SettingsAccess,
 	SettingField,
@@ -411,6 +413,7 @@ export type {
 	// Sandbox runtime types
 	SandboxRunner,
 	SandboxedPluginInstance,
+	SandboxInvocationOptions,
 	SandboxRunnerFactory,
 	SandboxOptions,
 	SandboxEmailMessage,

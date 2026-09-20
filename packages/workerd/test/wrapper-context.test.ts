@@ -35,7 +35,7 @@ describe("Workerd generated plugin context", () => {
 			{
 				id: "content-discovery",
 				version: "1.0.0",
-				capabilities: ["schema:read", "content:read", "content:revisions:read"],
+				capabilities: ["schema:read", "content:revisions:read"],
 				allowedHosts: [],
 				storage: {},
 				hooks: [],
@@ -121,7 +121,7 @@ describe("Workerd generated plugin context", () => {
 			{
 				id: "context-wrapper",
 				version: "1.0.0",
-				capabilities: ["users:read", "network:request", "redirects:read"],
+				capabilities: ["users:read", "network:request", "redirects:read", "content:publish"],
 				allowedHosts: ["api.example.com"],
 				storage: {},
 				hooks: [],
@@ -145,6 +145,9 @@ describe("Workerd generated plugin context", () => {
 					result: { ok: true, value: { items: [{ source: "/old" }], hasMore: false } },
 				});
 			}
+			if (url.endsWith("/content/getVersioned")) {
+				return Response.json({ result: { item: { id: "post-1" }, _rev: "rev-1" } });
+			}
 			return Response.json({
 				result: {
 					status: 200,
@@ -157,14 +160,23 @@ describe("Workerd generated plugin context", () => {
 		// eslint-disable-next-line no-implied-eval -- generated worker context is exercised with a local bridge
 		const factory = new Function("fetch", "pluginModule", `${source}\nreturn createContext();`);
 		const context = factory(fetch, {}) as {
-			content?: unknown;
+			content: {
+				getVersioned(collection: string, id: string): Promise<unknown>;
+				getTranslations?: unknown;
+				getPublicUrl?: unknown;
+			};
 			users: { get(id: string): Promise<{ id: string }> };
 			cron: { list(): Promise<unknown[]> };
 			redirects: { list(): Promise<{ items: Array<{ source: string }> }>; create?: unknown };
 			http: { fetch(url: string): Promise<Response> };
 		};
 
-		expect(context.content).toBeUndefined();
+		await expect(context.content.getVersioned("posts", "post-1")).resolves.toEqual({
+			item: { id: "post-1" },
+			_rev: "rev-1",
+		});
+		expect(context.content.getTranslations).toBeTypeOf("function");
+		expect(context.content.getPublicUrl).toBeTypeOf("function");
 		await expect(context.users.get("user-1")).resolves.toEqual({ id: "user-1" });
 		await expect(context.cron.list()).resolves.toEqual([]);
 		await expect(context.redirects.list()).resolves.toEqual({
@@ -176,6 +188,7 @@ describe("Workerd generated plugin context", () => {
 		expect(response).toBeInstanceOf(Response);
 		await expect(response.json()).resolves.toEqual({ ok: true });
 		expect(calls).toEqual([
+			"http://bridge/content/getVersioned",
 			"http://bridge/users/get",
 			"http://bridge/cron/list",
 			"http://bridge/redirect/list",
