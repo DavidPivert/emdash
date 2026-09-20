@@ -171,7 +171,7 @@ Do not treat `userAgent`, `referer`, or geographic values as authenticated ident
 
 With `content:read`, both sandbox runners match the trusted read contract. `ctx.content.get()` and `ctx.content.list()` return content identity, slug, status, locale, data, created/updated/published/scheduled timestamps, and SEO metadata when enabled.
 
-`list()` accepts `limit`, `cursor`, `where`, and `orderBy`. Field filters, status filters, ordering, and cursor pagination reach the host repository on both runners; they are not evaluated inside the plugin isolate. Read only the fields the returned `ContentItem` exposes. Translation discovery and schema listing are separate missing APIs, described in [Sandbox boundaries](./sandbox-boundaries.md).
+`list()` accepts `limit`, `cursor`, `where`, and `orderBy`. Field filters, status filters, ordering, and cursor pagination reach the host repository on both runners; they are not evaluated inside the plugin isolate. `getTranslations()` and `getPublicUrl()` use the same `content:read` authority. Collection discovery uses `ctx.schema` with `schema:read`. Read [Content, schema, translations, and publication](./content.md) for the complete contract.
 
 ## Publication actions
 
