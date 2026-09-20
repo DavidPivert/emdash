@@ -103,6 +103,89 @@ describe("Cloudflare sandbox route errors", () => {
 		await expect(plugin.invokeHook("content:beforeSave", {})).resolves.toEqual(rejection);
 	});
 
+	it("passes implied capabilities to the bridge binding", async () => {
+		mocks.invokeRoute.mockResolvedValue(undefined);
+		const runner = new CloudflareSandboxRunner({ db: null as never });
+		const plugin = await runner.load(
+			{
+				id: "redirect-writer",
+				version: "1.0.0",
+				capabilities: ["redirects:write"],
+				allowedHosts: [],
+				storage: {},
+				hooks: [],
+				routes: ["redirects"],
+				admin: {},
+			},
+			"export default {}",
+		);
+
+		await plugin.invokeRoute(
+			"redirects",
+			{},
+			{
+				url: "https://example.com/_emdash/api/plugins/redirect-writer/redirects",
+				method: "POST",
+				headers: {},
+				meta: { ip: null, userAgent: null, referer: null, geo: null },
+			},
+		);
+
+		expect(mocks.bridge).toHaveBeenCalledWith({
+			props: expect.objectContaining({
+				capabilities: expect.arrayContaining(["redirects:write", "redirects:read"]),
+			}),
+		});
+	});
+
+	it.each(["hook", "route"] as const)(
+		"releases queued action work when %s setup throws",
+		async (kind) => {
+			mocks.loader.get.mockImplementationOnce(() => {
+				throw new Error("loader setup failed");
+			});
+			const contentActions = {
+				begin: vi.fn(),
+				flush: vi.fn().mockResolvedValue(undefined),
+			};
+			const runner = new CloudflareSandboxRunner({
+				db: null as never,
+				contentActions: contentActions as never,
+			});
+			const plugin = await runner.load(
+				{
+					id: "setup-error",
+					version: "1.0.0",
+					capabilities: ["content:publish"],
+					allowedHosts: [],
+					storage: {},
+					hooks: ["content:beforeSave"],
+					routes: [],
+					admin: {},
+				},
+				"export default {}",
+			);
+
+			const invocation =
+				kind === "hook"
+					? plugin.invokeHook("content:beforeSave", {})
+					: plugin.invokeRoute(
+							"publish",
+							{},
+							{
+								url: "https://example.com/_emdash/api/plugins/setup-error/publish",
+								method: "POST",
+								headers: {},
+								meta: { ip: null, userAgent: null, referer: null, geo: null },
+							},
+						);
+
+			await expect(invocation).rejects.toThrow("loader setup failed");
+			expect(contentActions.begin).toHaveBeenCalledOnce();
+			expect(contentActions.flush).toHaveBeenCalledWith("setup-error", expect.any(String), true);
+		},
+	);
+
 	it("releases queued action work when a plugin never settles", async () => {
 		vi.useFakeTimers();
 		mocks.invokeRoute.mockImplementation(() => new Promise(() => undefined));

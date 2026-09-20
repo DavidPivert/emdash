@@ -11,7 +11,8 @@
  * - Exposes an HTTP fetch handler for hook/route invocation
  */
 
-import { normalizeCapabilities, type PluginManifest } from "emdash";
+import { normalizePluginCapabilities, type PluginManifest } from "emdash";
+import { generatePluginHttpWireRuntimeSource } from "emdash/plugins/http-wire";
 
 const TRAILING_SLASH_RE = /\/$/;
 const NEWLINE_RE = /[\n\r]/g;
@@ -38,10 +39,7 @@ export interface WrapperOptions {
 
 export function generatePluginWrapper(manifest: PluginManifest, options: WrapperOptions): string {
 	const site = options.site ?? { name: "", url: "", locale: "en" };
-	const capabilities = normalizeCapabilities(manifest.capabilities);
-	if (capabilities.includes("comments:moderate") && !capabilities.includes("comments:read")) {
-		capabilities.push("comments:read");
-	}
+	const capabilities = normalizePluginCapabilities(manifest.capabilities);
 	const hasContentAccess =
 		capabilities.includes("content:read") ||
 		capabilities.includes("content:write") ||
@@ -64,6 +62,7 @@ export function generatePluginWrapper(manifest: PluginManifest, options: Wrapper
 	const hasContentRestore = capabilities.includes("content:restore");
 	const hasSchemaRead = capabilities.includes("schema:read");
 	const hasRevisionRead = capabilities.includes("content:revisions:read");
+	const httpWireRuntimeSource = generatePluginHttpWireRuntimeSource();
 
 	return `
 // =============================================================================
@@ -74,12 +73,28 @@ export function generatePluginWrapper(manifest: PluginManifest, options: Wrapper
 
 import pluginModule from "sandbox-plugin.js";
 
+${httpWireRuntimeSource}
+
 const hooks = pluginModule?.hooks || pluginModule?.default?.hooks || {};
 const routes = pluginModule?.routes || pluginModule?.default?.routes || {};
 
 const BACKING_URL = ${JSON.stringify(options.backingServiceUrl)};
 const AUTH_TOKEN = ${JSON.stringify(options.authToken)};
 const INVOKE_TOKEN = ${JSON.stringify(options.invokeToken)};
+
+function bridgeJsonReviver(_key, value) {
+	if (!value || typeof value !== "object" || Array.isArray(value) || Object.keys(value).length !== 1) return value;
+	if (typeof value.__emdashBytes === "string") {
+		const binary = atob(value.__emdashBytes);
+		const bytes = new Uint8Array(binary.length);
+		for (let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index);
+		return bytes;
+	}
+	if (Array.isArray(value.__emdashEscapedObject)) {
+		return Object.fromEntries(value.__emdashEscapedObject);
+	}
+	return value;
+}
 
 function storageObjectEntries(value) {
 	if (!value || typeof value !== "object" || Array.isArray(value) ||
@@ -291,7 +306,7 @@ async function bridgeCall(method, body) {
 		}
 		throw new Error("Bridge call " + method + " failed: " + text);
 	}
-	const data = await res.json();
+	const data = JSON.parse(await res.text(), bridgeJsonReviver);
 	return data.result;
 }
 
@@ -463,107 +478,32 @@ function createContext(originHook, invocationId) {
 		delete: (id) => bridgeCall("media/delete", { id }),
 	};
 
-	// Marshal a RequestInit into a JSON-safe shape so headers, body, and other
-	// fields survive transport over the bridge. The bridge handler reverses
-	// this in unmarshalRequestInit().
+	// Marshal a RequestInit into a bounded JSON-safe shape. Request performs the
+	// standard BodyInit encoding before the decoded bytes are measured.
 	async function marshalRequestInit(init) {
 		if (!init) return undefined;
+		let body = init.body;
+		const isBodyInit =
+			typeof body === "string" ||
+			body instanceof URLSearchParams ||
+			body instanceof ArrayBuffer ||
+			ArrayBuffer.isView(body) ||
+			(typeof Blob !== "undefined" && body instanceof Blob) ||
+			(typeof FormData !== "undefined" && body instanceof FormData) ||
+			(typeof ReadableStream !== "undefined" && body instanceof ReadableStream);
+		if (body !== undefined && body !== null && !isBodyInit) body = JSON.stringify(body);
+		const buffered = await bufferPluginHttpRequest({ ...init, body });
 		const out = {};
-		if (init.method) out.method = init.method;
-		if (init.redirect) out.redirect = init.redirect;
-		// Headers: serialize as a list of [name, value] pairs so multi-value
-		// headers (Set-Cookie etc.) survive round-trip. A plain object would
-		// collapse duplicate names.
-		if (init.headers) {
-			const headers = [];
-			if (init.headers instanceof Headers) {
-				init.headers.forEach((v, k) => { headers.push([k, v]); });
-			} else if (Array.isArray(init.headers)) {
-				for (const [k, v] of init.headers) headers.push([k, v]);
-			} else {
-				for (const [k, v] of Object.entries(init.headers)) {
-					headers.push([k, v]);
-				}
-			}
-			out.headers = headers;
-		}
-		// Helper: convert a Uint8Array view to base64, preserving offset/length
-		function viewToBase64(view) {
+		if (buffered?.method) out.method = buffered.method;
+		if (buffered?.redirect) out.redirect = buffered.redirect;
+		const headers = Array.from(new Headers(buffered?.headers).entries());
+		if (headers.length > 0) out.headers = headers;
+		if (buffered?.body !== undefined && buffered.body !== null) {
+			const bytes = new Uint8Array(buffered.body);
 			let binary = "";
-			for (let i = 0; i < view.length; i++) binary += String.fromCharCode(view[i]);
-			return btoa(binary);
-		}
-
-		// Helper: get a Uint8Array view from any binary input, respecting
-		// the original byteOffset and byteLength so we don't serialize the
-		// entire backing buffer for views like Uint8Array.subarray().
-		function toBytes(input) {
-			if (input instanceof Uint8Array) return input;
-			if (input instanceof ArrayBuffer) return new Uint8Array(input);
-			if (ArrayBuffer.isView(input)) {
-				// DataView, Int8Array, Float32Array, etc. — preserve the window
-				return new Uint8Array(input.buffer, input.byteOffset, input.byteLength);
-			}
-			// Should never reach here: callers gate with ArrayBuffer/isView checks.
-			// Throw loudly so unexpected body types surface as errors instead of
-			// silently dropping data.
-			throw new TypeError("toBytes: unsupported binary input type");
-		}
-
-		// Body: convert to base64 to preserve binary, or pass strings through
-		if (init.body !== undefined && init.body !== null) {
-			if (typeof init.body === "string") {
-				out.bodyType = "string";
-				out.body = init.body;
-			} else if (init.body instanceof ArrayBuffer || ArrayBuffer.isView(init.body)) {
-				out.bodyType = "base64";
-				out.body = viewToBase64(toBytes(init.body));
-			} else if (typeof Blob !== "undefined" && init.body instanceof Blob) {
-				// Blob/File (without going through FormData): read bytes and
-				// preserve content type if not already set
-				const bytes = new Uint8Array(await init.body.arrayBuffer());
-				out.bodyType = "base64";
-				out.body = viewToBase64(bytes);
-				if (init.body.type) {
-					if (!Array.isArray(out.headers)) out.headers = [];
-					const hasContentType = out.headers.some(([k]) => k.toLowerCase() === "content-type");
-					if (!hasContentType) {
-						out.headers.push(["content-type", init.body.type]);
-					}
-				}
-			} else if (init.body instanceof FormData) {
-				// FormData: serialize entries as { name, value, filename? }
-				const parts = [];
-				for (const [k, v] of init.body.entries()) {
-					if (typeof v === "string") {
-						parts.push({ name: k, value: v });
-					} else {
-						// File/Blob: read as base64
-						const bytes = new Uint8Array(await v.arrayBuffer());
-						parts.push({
-							name: k,
-							value: viewToBase64(bytes),
-							filename: v.name,
-							type: v.type,
-							isBlob: true,
-						});
-					}
-				}
-				out.bodyType = "formdata";
-				out.body = parts;
-			} else if (init.body instanceof URLSearchParams) {
-				out.bodyType = "string";
-				out.body = init.body.toString();
-				if (!Array.isArray(out.headers)) out.headers = [];
-				const hasContentType = out.headers.some(([k]) => k.toLowerCase() === "content-type");
-				if (!hasContentType) {
-					out.headers.push(["content-type", "application/x-www-form-urlencoded"]);
-				}
-			} else {
-				// Fall back to JSON for plain objects
-				out.bodyType = "string";
-				out.body = JSON.stringify(init.body);
-			}
+			for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+			out.bodyType = "base64";
+			out.body = btoa(binary);
 		}
 		return out;
 	}
@@ -572,18 +512,7 @@ function createContext(originHook, invocationId) {
 		fetch: async (url, init) => {
 			const marshaledInit = await marshalRequestInit(init);
 			const result = await bridgeCall("http/fetch", { url, init: marshaledInit });
-			// Decode base64 body back to bytes to preserve binary content
-			// (images, audio, etc.) so arrayBuffer()/blob() work correctly.
-			const binaryString = atob(result.bodyBase64);
-			const bytes = new Uint8Array(binaryString.length);
-			for (let i = 0; i < binaryString.length; i++) {
-				bytes[i] = binaryString.charCodeAt(i);
-			}
-			return new Response(bytes, {
-				status: result.status,
-				statusText: result.statusText,
-				headers: result.headers,
-			});
+			return pluginHttpResponseFromWire(result);
 		}
 	};
 

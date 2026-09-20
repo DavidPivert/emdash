@@ -47,6 +47,13 @@ import { assertStorageKey } from "./conditional-storage.js";
 import { createContentAccess } from "./content-access.js";
 import { CronAccessImpl } from "./cron.js";
 import type { EmailPipeline } from "./email.js";
+import {
+	bufferPluginHttpRequest,
+	pluginHttpRedirectAction,
+	pluginHttpResponseFromWire,
+	pluginHttpResponseToWire,
+	rewritePluginHttpRedirect,
+} from "./http-wire.js";
 import { readPluginMediaBytes, toPluginMediaItem, updatePluginMediaMetadata } from "./media.js";
 import {
 	createPluginSecretRedactor,
@@ -1078,20 +1085,28 @@ export function createMediaAccessWithWrite(
 /** Maximum number of redirects to follow in plugin HTTP access */
 const MAX_PLUGIN_REDIRECTS = 5;
 
+function stripTrailingDots(value: string): string {
+	let end = value.length;
+	while (end > 0 && value.charCodeAt(end - 1) === 46) end--;
+	return end === value.length ? value : value.slice(0, end);
+}
+
 /**
  * Check if a hostname matches any pattern in the allowed list.
  * Patterns: "*" matches all, "*.example.com" matches subdomains AND bare "example.com",
  * "api.example.com" matches exactly.
  */
 function isHostAllowed(host: string, allowedHosts: string[]): boolean {
+	const normalizedHost = stripTrailingDots(host.toLowerCase());
 	return allowedHosts.some((pattern) => {
-		if (pattern === "*") return true;
-		if (pattern.startsWith("*.")) {
-			const suffix = pattern.slice(1); // ".example.com"
+		const normalizedPattern = stripTrailingDots(pattern.toLowerCase());
+		if (normalizedPattern === "*") return true;
+		if (normalizedPattern.startsWith("*.")) {
+			const suffix = normalizedPattern.slice(1); // ".example.com"
 			// Match subdomains (foo.example.com) and bare domain (example.com)
-			return host.endsWith(suffix) || host === pattern.slice(2);
+			return normalizedHost.endsWith(suffix) || normalizedHost === normalizedPattern.slice(2);
 		}
-		return host === pattern;
+		return normalizedHost === normalizedPattern;
 	});
 }
 
@@ -1121,7 +1136,11 @@ async function validatePluginHttpTarget(pluginId: string, url: string): Promise<
  *
  * Uses redirect: "manual" to re-validate each redirect target before dispatch.
  */
-export function createHttpAccess(pluginId: string, allowedHosts: string[]): HttpAccess {
+export function createHttpAccess(
+	pluginId: string,
+	allowedHosts: string[],
+	fetchImpl: typeof fetch = globalThis.fetch,
+): HttpAccess {
 	return {
 		async fetch(url: string, init?: RequestInit): Promise<Response> {
 			// Deny by default — plugins must declare allowed hosts
@@ -1134,6 +1153,8 @@ export function createHttpAccess(pluginId: string, allowedHosts: string[]): Http
 
 			let currentUrl = url;
 			let currentInit = init;
+			let requestBuffered = false;
+			let redirected = false;
 
 			for (let i = 0; i <= MAX_PLUGIN_REDIRECTS; i++) {
 				const target = tryParsePluginHttpTarget(currentUrl);
@@ -1144,27 +1165,39 @@ export function createHttpAccess(pluginId: string, allowedHosts: string[]): Http
 					);
 				}
 				await validatePluginHttpTarget(pluginId, currentUrl);
+				if (!requestBuffered) {
+					currentInit = await bufferPluginHttpRequest(currentInit);
+					requestBuffered = true;
+				}
 
-				const response = await globalThis.fetch(currentUrl, {
+				const response = await fetchImpl(currentUrl, {
 					...currentInit,
 					redirect: "manual",
 				});
 
-				// Not a redirect -- return directly
-				if (response.status < 300 || response.status >= 400) {
-					return response;
-				}
-
-				// Extract redirect target
 				const location = response.headers.get("Location");
-				if (!location) {
-					return response;
+				if (location === null) {
+					return pluginHttpResponseFromWire(
+						await pluginHttpResponseToWire(response, currentUrl, redirected),
+					);
+				}
+				const redirectAction = pluginHttpRedirectAction(response.status, true, currentInit);
+				if (redirectAction === "return") {
+					return pluginHttpResponseFromWire(
+						await pluginHttpResponseToWire(response, currentUrl, redirected),
+					);
+				}
+				await response.body?.cancel();
+				if (redirectAction === "error") {
+					throw new Error(`Plugin "${pluginId}": redirect mode is "error"`);
 				}
 
 				// Resolve relative redirects; strip credentials on cross-origin hops
 				const previousOrigin = new URL(currentUrl).origin;
 				currentUrl = new URL(location, currentUrl).href;
+				redirected = true;
 				const nextOrigin = new URL(currentUrl).origin;
+				currentInit = rewritePluginHttpRedirect(response.status, currentInit);
 
 				if (previousOrigin !== nextOrigin && currentInit) {
 					currentInit = stripCredentialHeaders(currentInit);
@@ -1177,39 +1210,56 @@ export function createHttpAccess(pluginId: string, allowedHosts: string[]): Http
 }
 
 /**
- * Create unrestricted HTTP access (for plugins with network:fetch:any capability).
+ * Create unrestricted HTTP access (for plugins with network:request:unrestricted capability).
  * No host validation, but applies SSRF protection on redirect targets to
  * prevent plugins from being tricked into reaching internal services.
  */
-export function createUnrestrictedHttpAccess(pluginId: string): HttpAccess {
+export function createUnrestrictedHttpAccess(
+	pluginId: string,
+	fetchImpl: typeof fetch = globalThis.fetch,
+): HttpAccess {
 	return {
 		async fetch(url: string, init?: RequestInit): Promise<Response> {
 			let currentUrl = url;
 			let currentInit = init;
+			let requestBuffered = false;
+			let redirected = false;
 
 			for (let i = 0; i <= MAX_PLUGIN_REDIRECTS; i++) {
 				await validatePluginHttpTarget(pluginId, currentUrl);
+				if (!requestBuffered) {
+					currentInit = await bufferPluginHttpRequest(currentInit);
+					requestBuffered = true;
+				}
 
-				const response = await globalThis.fetch(currentUrl, {
+				const response = await fetchImpl(currentUrl, {
 					...currentInit,
 					redirect: "manual",
 				});
 
-				// Not a redirect -- return directly
-				if (response.status < 300 || response.status >= 400) {
-					return response;
-				}
-
-				// Extract redirect target
 				const location = response.headers.get("Location");
-				if (!location) {
-					return response;
+				if (location === null) {
+					return pluginHttpResponseFromWire(
+						await pluginHttpResponseToWire(response, currentUrl, redirected),
+					);
+				}
+				const redirectAction = pluginHttpRedirectAction(response.status, true, currentInit);
+				if (redirectAction === "return") {
+					return pluginHttpResponseFromWire(
+						await pluginHttpResponseToWire(response, currentUrl, redirected),
+					);
+				}
+				await response.body?.cancel();
+				if (redirectAction === "error") {
+					throw new Error(`Plugin "${pluginId}": redirect mode is "error"`);
 				}
 
 				// Resolve relative redirects; strip credentials on cross-origin hops
 				const previousOrigin = new URL(currentUrl).origin;
 				currentUrl = new URL(location, currentUrl).href;
+				redirected = true;
 				const nextOrigin = new URL(currentUrl).origin;
+				currentInit = rewritePluginHttpRedirect(response.status, currentInit);
 
 				if (previousOrigin !== nextOrigin && currentInit) {
 					currentInit = stripCredentialHeaders(currentInit);
