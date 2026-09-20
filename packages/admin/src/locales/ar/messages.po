@@ -243,8 +243,13 @@ msgid "{0, plural, one {field} other {fields}}"
 msgstr "{0, plural, zero {حقول} one {حقل} two {حقلان} few {# حقول} many {# حقلًا} other {# حقل}}"
 
 #. placeholder {0}: stats.mediaCount
-#: packages/admin/src/components/Dashboard.tsx:220
+#: packages/admin/src/components/Dashboard.tsx:319
 msgid "{0, plural, one {Media file} other {Media files}}"
+msgstr ""
+
+#. placeholder {0}: policyRejected - policyRejections.length
+#: packages/admin/src/components/Dashboard.tsx:198
+msgid "{0, plural, one {One more blocked entry is not shown.} other {# more blocked entries are not shown.}}"
 msgstr ""
 
 #. placeholder {0}: state.rows
@@ -253,7 +258,7 @@ msgid "{0, plural, one {Row deleted} other {# rows deleted}}"
 msgstr ""
 
 #. placeholder {0}: stats.userCount
-#: packages/admin/src/components/Dashboard.tsx:224
+#: packages/admin/src/components/Dashboard.tsx:323
 msgid "{0, plural, one {User} other {Users}}"
 msgstr ""
 
@@ -389,7 +394,7 @@ msgid "{0}/160 characters"
 msgstr "{0}/160 حرف"
 
 #. placeholder {0}: allowedHosts.join(", ")
-#: packages/admin/src/lib/api/marketplace.ts:426
+#: packages/admin/src/lib/api/marketplace.ts:429
 msgid "{base} to: {0}"
 msgstr "{base} إلى: {0}"
 
@@ -480,11 +485,11 @@ msgstr "{needsNewCollections, plural, few {سيتم انشاء # مجموعات 
 msgid "{needsNewFields, plural, one {Fields will be added to # existing collection} other {Fields will be added to # existing collections}}"
 msgstr "{needsNewFields, plural, few {سيتم إضافة حقول إلى # مجموعات موجودة حاليًا} many {سيتم إضافة حقول إلى # مجموعةً موجود حاليًا} other {سيتم إضافة حقول إلى # مجموعة موجودة حاليًا}}"
 
-#: packages/admin/src/components/Dashboard.tsx:109
+#: packages/admin/src/components/Dashboard.tsx:138
 msgid "{overdueCount, plural, one {One scheduled item is overdue and the scheduler heartbeat is stale. Run `npx emdash doctor` and verify the deployed Cron Trigger.} other {# scheduled items are overdue and the scheduler heartbeat is stale. Run `npx emdash doctor` and verify the deployed Cron Trigger.}}"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:104
+#: packages/admin/src/components/Dashboard.tsx:133
 msgid "{overdueCount, plural, one {One scheduled item is overdue, but no scheduler run has completed. Run `npx emdash doctor` and verify the deployed Cron Trigger.} other {# scheduled items are overdue, but no scheduler run has completed. Run `npx emdash doctor` and verify the deployed Cron Trigger.}}"
 msgstr ""
 
@@ -504,6 +509,10 @@ msgstr "{pluginName} تتطلب الصلاحيات التالية:"
 #: packages/admin/src/components/PluginSettings.tsx:142
 #: packages/admin/src/components/PluginSettings.tsx:170
 msgid "{pluginName} Settings"
+msgstr ""
+
+#: packages/admin/src/components/Dashboard.tsx:152
+msgid "{policyRejected, plural, one {Open the affected entry, resolve the policy reason, and schedule it again. A successful schedule or publish clears this notice.} other {Open the affected entries, resolve the policy reasons, and schedule them again. A successful schedule or publish clears each notice.}}"
 msgstr ""
 
 #: packages/admin/src/components/media/MediaBrowserItems.tsx:304
@@ -554,11 +563,11 @@ msgstr "{total, plural, zero {لا عناصر} one {عنصر واحد} two {عن
 msgid "{total, plural, one {# total} other {# total}}"
 msgstr "{total, plural, other {إجمالي #}}"
 
-#: packages/admin/src/components/Dashboard.tsx:208
+#: packages/admin/src/components/Dashboard.tsx:307
 msgid "{totalDrafts, plural, one {Draft} other {Drafts}}"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:214
+#: packages/admin/src/components/Dashboard.tsx:313
 msgid "{totalScheduled, plural, one {Scheduled} other {Scheduled}}"
 msgstr ""
 
@@ -767,8 +776,8 @@ msgstr ""
 msgid "Access Denied"
 msgstr "الوصول مرفوض"
 
-#: packages/admin/src/lib/api/marketplace.ts:393
-#: packages/admin/src/lib/api/marketplace.ts:403
+#: packages/admin/src/lib/api/marketplace.ts:396
+#: packages/admin/src/lib/api/marketplace.ts:406
 msgid "Access your media library"
 msgstr "الوصول إلى مكتبة الوسائط"
 
@@ -1293,7 +1302,7 @@ msgstr "تطبيق الرابط"
 msgid "Approve"
 msgstr "موافقة"
 
-#: packages/admin/src/lib/api/marketplace.ts:387
+#: packages/admin/src/lib/api/marketplace.ts:389
 msgid "Approve comments and mark them as pending or spam"
 msgstr ""
 
@@ -1870,7 +1879,7 @@ msgstr ""
 msgid "Change schedule"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:392
+#: packages/admin/src/lib/api/marketplace.ts:395
 msgid "Change where visitors are sent"
 msgstr ""
 
@@ -2305,7 +2314,7 @@ msgstr ""
 #: packages/admin/src/components/AdminCommandPalette.tsx:378
 #: packages/admin/src/components/comments/CommentDetail.tsx:103
 #: packages/admin/src/components/comments/CommentInbox.tsx:285
-#: packages/admin/src/components/Dashboard.tsx:276
+#: packages/admin/src/components/Dashboard.tsx:375
 #: packages/admin/src/components/PortableTextEditor.tsx:2925
 #: packages/admin/src/components/SectionEditor.tsx:215
 #: packages/admin/src/components/Sidebar.tsx:586
@@ -2474,7 +2483,7 @@ msgstr "تعذّر النسخ تلقائيًا. يرجى تحديد الرابط
 msgid "Could not insert section"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:131
+#: packages/admin/src/components/Dashboard.tsx:230
 msgid "Could not load dashboard data"
 msgstr ""
 
@@ -2670,7 +2679,7 @@ msgstr "قم بإنشاء أقسام في مكتبة الأقسام لاستخد
 msgid "Create Taxonomy"
 msgstr "إنشاء تصنيف"
 
-#: packages/admin/src/lib/api/marketplace.ts:390
+#: packages/admin/src/lib/api/marketplace.ts:393
 msgid "Create taxonomy terms and change content classifications"
 msgstr ""
 
@@ -2704,7 +2713,7 @@ msgid "Create your first reusable content section to get started."
 msgstr "أنشئ أول قسم محتوى قابل لإعادة الاستخدام خاص بك للبدء."
 
 #: packages/admin/src/lib/api/marketplace.ts:385
-#: packages/admin/src/lib/api/marketplace.ts:402
+#: packages/admin/src/lib/api/marketplace.ts:405
 msgid "Create, update, and delete content"
 msgstr "إنشاء المحتوى وتعديله وحذفه"
 
@@ -2841,7 +2850,7 @@ msgstr ""
 
 #: packages/admin/src/components/AdminCommandPalette.tsx:130
 #: packages/admin/src/components/ContentTypeList.tsx:358
-#: packages/admin/src/components/Dashboard.tsx:63
+#: packages/admin/src/components/Dashboard.tsx:65
 #: packages/admin/src/components/Sidebar.tsx:393
 #: packages/admin/src/components/Sidebar.tsx:577
 msgid "Dashboard"
@@ -3285,6 +3294,7 @@ msgstr "التخلي عن تغييرات المسودة؟"
 msgid "Discarding..."
 msgstr ""
 
+#: packages/admin/src/components/Dashboard.tsx:188
 #: packages/admin/src/components/settings/ApiTokenSettings.tsx:267
 msgid "Dismiss"
 msgstr "إخفاء"
@@ -3442,7 +3452,7 @@ msgid "draft, published, or archived"
 msgstr "مسودة، منشورة، أو مؤرشفة"
 
 #: packages/admin/src/components/ContentTypeEditor.tsx:71
-#: packages/admin/src/components/Dashboard.tsx:310
+#: packages/admin/src/components/Dashboard.tsx:409
 msgid "Drafts"
 msgstr "المسودات"
 
@@ -3543,6 +3553,7 @@ msgstr "مثال: MacBook Pro, iPhone"
 #: packages/admin/src/components/MenuEditor.tsx:544
 #: packages/admin/src/components/MenuList.tsx:234
 #: packages/admin/src/components/Sections.tsx:392
+#: packages/admin/src/components/Shell.tsx:86
 #: packages/admin/src/components/TranslationsPanel.tsx:93
 msgid "Edit"
 msgstr "تعديل"
@@ -3626,7 +3637,7 @@ msgstr "تعديل الرابط"
 msgid "Edit locking"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:395
+#: packages/admin/src/lib/api/marketplace.ts:398
 msgid "Edit media alt text, captions, and focal points"
 msgstr ""
 
@@ -3637,6 +3648,11 @@ msgstr "تعديل عنصر القائمة"
 #: packages/admin/src/components/MenuEditor.tsx:369
 msgid "Edit menu items"
 msgstr "تعديل عناصر القائمة"
+
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:30
+msgid "visualEditing.editMode"
+msgstr ""
 
 #: packages/admin/src/components/BylineCreditsEditor.tsx:872
 #: packages/admin/src/components/BylineCreditsEditor.tsx:966
@@ -3664,6 +3680,11 @@ msgstr ""
 #: packages/admin/src/components/editor/PluginBlockNode.tsx:368
 msgid "Edit URL"
 msgstr "تعديل الرابط"
+
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:21
+msgid "visualEditing.sessionExpired"
+msgstr ""
 
 #: packages/admin/src/components/users/roleDefinitions.ts:36
 #: packages/admin/src/components/WelcomeModal.tsx:26
@@ -4129,6 +4150,11 @@ msgstr "فشل تعطيل المستخدم"
 msgid "Failed to discard changes"
 msgstr "فشل تجاهل التغييرات"
 
+#: packages/admin/src/components/Dashboard.tsx:207
+#: packages/admin/src/lib/api/dashboard.ts:71
+msgid "Failed to dismiss scheduled publication rejection"
+msgstr ""
+
 #: packages/admin/src/components/WelcomeModal.tsx:76
 msgid "Failed to dismiss welcome"
 msgstr "فشل إغلاق رسالة الترحيب"
@@ -4167,7 +4193,7 @@ msgstr ""
 msgid "Failed to fetch collection"
 msgstr "فشل جلب المجموعة"
 
-#: packages/admin/src/lib/api/dashboard.ts:47
+#: packages/admin/src/lib/api/dashboard.ts:56
 msgid "Failed to fetch dashboard stats"
 msgstr ""
 
@@ -5020,6 +5046,15 @@ msgstr "إخفاء من محركات البحث"
 #: packages/admin/src/components/settings/ApiTokenSettings.tsx:283
 msgid "Hide token"
 msgstr "إخفاء الرمز"
+
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:32
+msgid "visualEditing.hideToolbar"
+msgstr ""
+
+#: packages/admin/src/components/Shell.tsx:86
+msgid "Hide toolbar"
+msgstr ""
 
 #: packages/admin/src/components/TaxonomyManager.tsx:839
 msgid "Hierarchical (like categories, with parent/child relationships)"
@@ -5931,7 +5966,7 @@ msgstr "تثبيت نسبة العرض إلى الارتفاع"
 msgid "Locked because this field has stored values. Delete the values (or the field) to change this."
 msgstr ""
 
-#: packages/admin/src/components/Header.tsx:109
+#: packages/admin/src/components/Header.tsx:110
 msgid "Log out"
 msgstr "تسجيل الخروج"
 
@@ -5974,13 +6009,13 @@ msgstr ""
 msgid "Main Sidebar"
 msgstr "الشريط الجانبي الرئيسي"
 
-#: packages/admin/src/lib/api/marketplace.ts:398
-#: packages/admin/src/lib/api/marketplace.ts:406
+#: packages/admin/src/lib/api/marketplace.ts:401
+#: packages/admin/src/lib/api/marketplace.ts:409
 msgid "Make network requests"
 msgstr "إجراء طلبات الشبكة"
 
-#: packages/admin/src/lib/api/marketplace.ts:399
-#: packages/admin/src/lib/api/marketplace.ts:407
+#: packages/admin/src/lib/api/marketplace.ts:402
+#: packages/admin/src/lib/api/marketplace.ts:410
 msgid "Make network requests to any host (unrestricted)"
 msgstr "إجراء طلبات الشبكة لأي مضيف (بدون قيود)"
 
@@ -6699,7 +6734,7 @@ msgstr ""
 msgid "No bylines found"
 msgstr "لم يُعثر على كُتّاب"
 
-#: packages/admin/src/components/Dashboard.tsx:282
+#: packages/admin/src/components/Dashboard.tsx:381
 msgid "No collections configured"
 msgstr "لم يتم تهيئة مجموعات"
 
@@ -6885,7 +6920,7 @@ msgstr ""
 msgid "No public URL available"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:361
+#: packages/admin/src/components/Dashboard.tsx:460
 msgid "No recent activity"
 msgstr "لا يوجد نشاط حديث"
 
@@ -7045,6 +7080,11 @@ msgstr ""
 #: packages/admin/src/components/MediaLibrary.tsx:1458
 #: packages/admin/src/components/MediaLibrary.tsx:1529
 msgid "Open folder {0}"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:31
+msgid "visualEditing.openInAdmin"
 msgstr ""
 
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:510
@@ -7632,6 +7672,15 @@ msgstr "المزود:"
 msgid "Publication date"
 msgstr ""
 
+#: packages/admin/src/components/Dashboard.tsx:151
+msgid "Publication policy blocked scheduled content"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:19
+msgid "visualEditing.publish"
+msgstr ""
+
 #: packages/admin/src/components/ContentList.tsx:505
 #: packages/admin/src/components/ContentSettingsPanel.tsx:526
 #: packages/admin/src/components/ContentSettingsPanel.tsx:550
@@ -7648,14 +7697,23 @@ msgstr ""
 msgid "Publish changes now"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:26
+msgid "visualEditing.publishFailed"
+msgstr ""
+
 #: packages/admin/src/components/ContentSettingsPanel.tsx:479
 msgid "Publish now"
+msgstr ""
+
+#: packages/admin/src/lib/api/marketplace.ts:386
+msgid "Publish, unpublish, schedule, and unschedule content"
 msgstr ""
 
 #: packages/admin/src/components/ContentList.tsx:859
 #: packages/admin/src/components/ContentList.tsx:870
 #: packages/admin/src/components/ContentStatusBadge.tsx:59
-#: packages/admin/src/components/Dashboard.tsx:304
+#: packages/admin/src/components/Dashboard.tsx:403
 #: packages/admin/src/router.tsx:1177
 msgid "Published"
 msgstr "منشور"
@@ -7697,6 +7755,11 @@ msgstr ""
 msgid "Publishing summary"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:20
+msgid "visualEditing.publishing"
+msgstr ""
+
 #: packages/admin/src/components/editor/codeBlockLanguages.ts:47
 msgid "Python"
 msgstr ""
@@ -7720,7 +7783,11 @@ msgstr "إقتباس"
 msgid "Raw meta"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:388
+#: packages/admin/src/lib/api/marketplace.ts:387
+msgid "Read and restore trashed content"
+msgstr ""
+
+#: packages/admin/src/lib/api/marketplace.ts:390
 msgid "Read collection and field definitions"
 msgstr ""
 
@@ -7728,7 +7795,7 @@ msgstr ""
 msgid "Read collection schemas"
 msgstr "قراءة مخططات المجموعات"
 
-#: packages/admin/src/lib/api/marketplace.ts:386
+#: packages/admin/src/lib/api/marketplace.ts:388
 msgid "Read comment bodies, author email addresses, pseudonymous IP hashes, user agents, and moderation metadata"
 msgstr ""
 
@@ -7736,7 +7803,7 @@ msgstr ""
 msgid "Read content entries"
 msgstr "قراءة مدخلات المحتوى"
 
-#: packages/admin/src/lib/api/marketplace.ts:394
+#: packages/admin/src/lib/api/marketplace.ts:397
 msgid "Read media file contents"
 msgstr ""
 
@@ -7744,7 +7811,7 @@ msgstr ""
 msgid "Read media files"
 msgstr "قراءة ملفات الوسائط"
 
-#: packages/admin/src/lib/api/marketplace.ts:391
+#: packages/admin/src/lib/api/marketplace.ts:394
 msgid "Read redirect rules"
 msgstr ""
 
@@ -7756,17 +7823,17 @@ msgstr ""
 msgid "Read site settings"
 msgstr "قراءة إعدادات الموقع"
 
-#: packages/admin/src/lib/api/marketplace.ts:397
-#: packages/admin/src/lib/api/marketplace.ts:405
+#: packages/admin/src/lib/api/marketplace.ts:400
+#: packages/admin/src/lib/api/marketplace.ts:408
 msgid "Read user accounts"
 msgstr "قراءة حسابات المستخدمين"
 
 #: packages/admin/src/lib/api/marketplace.ts:383
-#: packages/admin/src/lib/api/marketplace.ts:401
+#: packages/admin/src/lib/api/marketplace.ts:404
 msgid "Read your content"
 msgstr "قراءة المحتوى"
 
-#: packages/admin/src/lib/api/marketplace.ts:389
+#: packages/admin/src/lib/api/marketplace.ts:392
 msgid "Read your taxonomies and terms"
 msgstr ""
 
@@ -7788,7 +7855,7 @@ msgstr "جاهز"
 msgid "Ready to publish now or schedule for later"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:355
+#: packages/admin/src/components/Dashboard.tsx:454
 msgid "Recent Activity"
 msgstr "النشاط الأخير"
 
@@ -7836,6 +7903,11 @@ msgstr "مرجع"
 msgid "Referenced favicon unavailable."
 msgstr "أيقونة الموقع المرجعية غير متاحة."
 
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:25
+msgid "visualEditing.refreshPage"
+msgstr ""
+
 #: packages/admin/src/components/settings/MediaUsageSettings.tsx:337
 msgid "Refresh status"
 msgstr ""
@@ -7844,7 +7916,7 @@ msgstr ""
 msgid "Refresh status before continuing."
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:132
+#: packages/admin/src/components/Dashboard.tsx:231
 msgid "Refresh the page or try again."
 msgstr ""
 
@@ -8297,6 +8369,10 @@ msgstr "تمت الإعادة إلى النسخة المنشورة"
 msgid "Review"
 msgstr "مراجعة"
 
+#: packages/admin/src/lib/api/marketplace.ts:391
+msgid "Review and block publishing, scheduling, and unpublishing content"
+msgstr ""
+
 #: packages/admin/src/components/CapabilityConsentDialog.tsx:91
 msgid "Review New Permissions"
 msgstr "مراجعة الصلاحيات الجديدة"
@@ -8564,7 +8640,7 @@ msgstr ""
 msgid "Scheduled publication"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:118
+#: packages/admin/src/components/Dashboard.tsx:215
 msgid "Scheduled publishing needs attention"
 msgstr ""
 
@@ -8836,7 +8912,7 @@ msgid "Security error. Make sure you're on a secure connection."
 msgstr "خطأ أمني. تأكد من أنك على اتصال آمن."
 
 #: packages/admin/src/components/AdminCommandPalette.tsx:242
-#: packages/admin/src/components/Header.tsx:93
+#: packages/admin/src/components/Header.tsx:94
 #: packages/admin/src/components/Settings.tsx:81
 #: packages/admin/src/components/settings/SecuritySettings.tsx:88
 #: packages/admin/src/components/settings/SecuritySettings.tsx:110
@@ -9110,7 +9186,7 @@ msgstr "جاري الإعداد..."
 #: packages/admin/src/components/ContentEditor.tsx:1175
 #: packages/admin/src/components/ContentEditor.tsx:1474
 #: packages/admin/src/components/ContentTypeEditor.tsx:392
-#: packages/admin/src/components/Header.tsx:101
+#: packages/admin/src/components/Header.tsx:102
 #: packages/admin/src/components/PluginManager.tsx:521
 #: packages/admin/src/components/Settings.tsx:44
 #: packages/admin/src/components/Sidebar.tsx:484
@@ -9454,7 +9530,7 @@ msgstr "الحالة"
 msgid "Status code"
 msgstr "رمز الحالة"
 
-#: packages/admin/src/components/Dashboard.tsx:408
+#: packages/admin/src/components/Dashboard.tsx:507
 msgid "Status: {status}"
 msgstr ""
 
@@ -10322,7 +10398,7 @@ msgstr "نوع عنصر واجهة غير مدعوم: {0}"
 msgid "Until {0}"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:375
+#: packages/admin/src/components/Dashboard.tsx:474
 #: packages/admin/src/components/MediaUsedIn.tsx:255
 msgid "Untitled"
 msgstr "بدون عنوان"
@@ -10414,8 +10490,8 @@ msgstr "ارفع صورة للبدء"
 msgid "Upload and delete media"
 msgstr "رفع وحذف الوسائط"
 
-#: packages/admin/src/lib/api/marketplace.ts:396
-#: packages/admin/src/lib/api/marketplace.ts:404
+#: packages/admin/src/lib/api/marketplace.ts:399
+#: packages/admin/src/lib/api/marketplace.ts:407
 msgid "Upload and manage media"
 msgstr "رفع الوسائط وإدارتها"
 
@@ -10443,7 +10519,7 @@ msgstr "رفع ملفات"
 msgid "Upload images, videos, and documents to keep reusable assets in one place."
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:170
+#: packages/admin/src/components/Dashboard.tsx:269
 msgid "Upload Media"
 msgstr "رفع وسائط"
 
@@ -10611,8 +10687,8 @@ msgid "Used to identify this section. Lowercase letters, numbers, and hyphens on
 msgstr "يُستخدم لتحديد هوية هذا القسم. أحرف صغيرة وأرقام وشرطات فقط."
 
 #: packages/admin/src/components/DeviceAuthorizePage.tsx:223
-#: packages/admin/src/components/Header.tsx:43
-#: packages/admin/src/components/Header.tsx:83
+#: packages/admin/src/components/Header.tsx:44
+#: packages/admin/src/components/Header.tsx:84
 #: packages/admin/src/components/users/UserList.tsx:91
 msgid "User"
 msgstr "المستخدم"
@@ -10711,7 +10787,7 @@ msgstr "عرض {title} المنشور"
 msgid "View setup"
 msgstr ""
 
-#: packages/admin/src/components/Header.tsx:59
+#: packages/admin/src/components/Header.tsx:60
 msgid "View Site"
 msgstr "عرض الموقع"
 

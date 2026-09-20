@@ -239,9 +239,14 @@ msgid "{0, plural, one {field} other {fields}}"
 msgstr "{0, plural, one {欄位} other {欄位}}"
 
 #. placeholder {0}: stats.mediaCount
-#: packages/admin/src/components/Dashboard.tsx:220
+#: packages/admin/src/components/Dashboard.tsx:319
 msgid "{0, plural, one {Media file} other {Media files}}"
 msgstr "{0, plural, one {媒體檔案} other {媒體檔案}}"
+
+#. placeholder {0}: policyRejected - policyRejections.length
+#: packages/admin/src/components/Dashboard.tsx:198
+msgid "{0, plural, one {One more blocked entry is not shown.} other {# more blocked entries are not shown.}}"
+msgstr ""
 
 #. placeholder {0}: state.rows
 #: packages/admin/src/components/editor/TableControls.tsx:248
@@ -249,7 +254,7 @@ msgid "{0, plural, one {Row deleted} other {# rows deleted}}"
 msgstr ""
 
 #. placeholder {0}: stats.userCount
-#: packages/admin/src/components/Dashboard.tsx:224
+#: packages/admin/src/components/Dashboard.tsx:323
 msgid "{0, plural, one {User} other {Users}}"
 msgstr "{0, plural, one {使用者} other {使用者}}"
 
@@ -385,7 +390,7 @@ msgid "{0}/160 characters"
 msgstr "{0}/160 個字元"
 
 #. placeholder {0}: allowedHosts.join(", ")
-#: packages/admin/src/lib/api/marketplace.ts:426
+#: packages/admin/src/lib/api/marketplace.ts:429
 msgid "{base} to: {0}"
 msgstr "{base} 至: {0}"
 
@@ -476,11 +481,11 @@ msgstr "{needsNewCollections, plural, one {將建立 # 個新內容集合} other
 msgid "{needsNewFields, plural, one {Fields will be added to # existing collection} other {Fields will be added to # existing collections}}"
 msgstr "{needsNewFields, plural, one {欄位將新增至 # 個現有內容集合} other {欄位將新增至 # 個現有內容集合}}"
 
-#: packages/admin/src/components/Dashboard.tsx:109
+#: packages/admin/src/components/Dashboard.tsx:138
 msgid "{overdueCount, plural, one {One scheduled item is overdue and the scheduler heartbeat is stale. Run `npx emdash doctor` and verify the deployed Cron Trigger.} other {# scheduled items are overdue and the scheduler heartbeat is stale. Run `npx emdash doctor` and verify the deployed Cron Trigger.}}"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:104
+#: packages/admin/src/components/Dashboard.tsx:133
 msgid "{overdueCount, plural, one {One scheduled item is overdue, but no scheduler run has completed. Run `npx emdash doctor` and verify the deployed Cron Trigger.} other {# scheduled items are overdue, but no scheduler run has completed. Run `npx emdash doctor` and verify the deployed Cron Trigger.}}"
 msgstr ""
 
@@ -501,6 +506,10 @@ msgstr "{pluginName} 需要下列權限:"
 #: packages/admin/src/components/PluginSettings.tsx:170
 msgid "{pluginName} Settings"
 msgstr "{pluginName} 設定"
+
+#: packages/admin/src/components/Dashboard.tsx:152
+msgid "{policyRejected, plural, one {Open the affected entry, resolve the policy reason, and schedule it again. A successful schedule or publish clears this notice.} other {Open the affected entries, resolve the policy reasons, and schedule them again. A successful schedule or publish clears each notice.}}"
+msgstr ""
 
 #: packages/admin/src/components/media/MediaBrowserItems.tsx:304
 msgid "{position} of {total}"
@@ -550,11 +559,11 @@ msgstr "{total, plural, one {# 個項目} other {# 個項目}}"
 msgid "{total, plural, one {# total} other {# total}}"
 msgstr "{total, plural, one {共 # 筆} other {共 # 筆}}"
 
-#: packages/admin/src/components/Dashboard.tsx:208
+#: packages/admin/src/components/Dashboard.tsx:307
 msgid "{totalDrafts, plural, one {Draft} other {Drafts}}"
 msgstr "{totalDrafts, plural, one {草稿} other {草稿}}"
 
-#: packages/admin/src/components/Dashboard.tsx:214
+#: packages/admin/src/components/Dashboard.tsx:313
 msgid "{totalScheduled, plural, one {Scheduled} other {Scheduled}}"
 msgstr "{totalScheduled, plural, one {已排程} other {已排程}}"
 
@@ -763,8 +772,8 @@ msgstr "存取遭拒"
 msgid "Access Denied"
 msgstr "存取遭拒"
 
-#: packages/admin/src/lib/api/marketplace.ts:393
-#: packages/admin/src/lib/api/marketplace.ts:403
+#: packages/admin/src/lib/api/marketplace.ts:396
+#: packages/admin/src/lib/api/marketplace.ts:406
 msgid "Access your media library"
 msgstr "存取您的媒體庫"
 
@@ -1289,7 +1298,7 @@ msgstr "套用連結"
 msgid "Approve"
 msgstr "核准"
 
-#: packages/admin/src/lib/api/marketplace.ts:387
+#: packages/admin/src/lib/api/marketplace.ts:389
 msgid "Approve comments and mark them as pending or spam"
 msgstr ""
 
@@ -1866,7 +1875,7 @@ msgstr ""
 msgid "Change schedule"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:392
+#: packages/admin/src/lib/api/marketplace.ts:395
 msgid "Change where visitors are sent"
 msgstr ""
 
@@ -2301,7 +2310,7 @@ msgstr "內容"
 #: packages/admin/src/components/AdminCommandPalette.tsx:378
 #: packages/admin/src/components/comments/CommentDetail.tsx:103
 #: packages/admin/src/components/comments/CommentInbox.tsx:285
-#: packages/admin/src/components/Dashboard.tsx:276
+#: packages/admin/src/components/Dashboard.tsx:375
 #: packages/admin/src/components/PortableTextEditor.tsx:2925
 #: packages/admin/src/components/SectionEditor.tsx:215
 #: packages/admin/src/components/Sidebar.tsx:586
@@ -2470,7 +2479,7 @@ msgstr "無法自動複製。請選取上方網址並手動複製。"
 msgid "Could not insert section"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:131
+#: packages/admin/src/components/Dashboard.tsx:230
 msgid "Could not load dashboard data"
 msgstr "無法載入控制台資料"
 
@@ -2666,7 +2675,7 @@ msgstr "請先在區段庫中建立區段，才能在這裡使用"
 msgid "Create Taxonomy"
 msgstr "建立分類法"
 
-#: packages/admin/src/lib/api/marketplace.ts:390
+#: packages/admin/src/lib/api/marketplace.ts:393
 msgid "Create taxonomy terms and change content classifications"
 msgstr ""
 
@@ -2700,7 +2709,7 @@ msgid "Create your first reusable content section to get started."
 msgstr "建立第一個可重複使用的內容區段即可開始。"
 
 #: packages/admin/src/lib/api/marketplace.ts:385
-#: packages/admin/src/lib/api/marketplace.ts:402
+#: packages/admin/src/lib/api/marketplace.ts:405
 msgid "Create, update, and delete content"
 msgstr "建立、更新及刪除內容"
 
@@ -2837,7 +2846,7 @@ msgstr ""
 
 #: packages/admin/src/components/AdminCommandPalette.tsx:130
 #: packages/admin/src/components/ContentTypeList.tsx:358
-#: packages/admin/src/components/Dashboard.tsx:63
+#: packages/admin/src/components/Dashboard.tsx:65
 #: packages/admin/src/components/Sidebar.tsx:393
 #: packages/admin/src/components/Sidebar.tsx:577
 msgid "Dashboard"
@@ -3281,6 +3290,7 @@ msgstr "要捨棄草稿變更嗎？"
 msgid "Discarding..."
 msgstr "正在捨棄變更…"
 
+#: packages/admin/src/components/Dashboard.tsx:188
 #: packages/admin/src/components/settings/ApiTokenSettings.tsx:267
 msgid "Dismiss"
 msgstr "關閉"
@@ -3438,7 +3448,7 @@ msgid "draft, published, or archived"
 msgstr "草稿、已發佈或已封存"
 
 #: packages/admin/src/components/ContentTypeEditor.tsx:71
-#: packages/admin/src/components/Dashboard.tsx:310
+#: packages/admin/src/components/Dashboard.tsx:409
 msgid "Drafts"
 msgstr "草稿"
 
@@ -3539,6 +3549,7 @@ msgstr "例如 MacBook Pro、iPhone"
 #: packages/admin/src/components/MenuEditor.tsx:544
 #: packages/admin/src/components/MenuList.tsx:234
 #: packages/admin/src/components/Sections.tsx:392
+#: packages/admin/src/components/Shell.tsx:86
 #: packages/admin/src/components/TranslationsPanel.tsx:93
 msgid "Edit"
 msgstr "編輯"
@@ -3622,7 +3633,7 @@ msgstr "編輯連結"
 msgid "Edit locking"
 msgstr ""
 
-#: packages/admin/src/lib/api/marketplace.ts:395
+#: packages/admin/src/lib/api/marketplace.ts:398
 msgid "Edit media alt text, captions, and focal points"
 msgstr ""
 
@@ -3633,6 +3644,11 @@ msgstr "編輯選單項目"
 #: packages/admin/src/components/MenuEditor.tsx:369
 msgid "Edit menu items"
 msgstr "編輯選單項目"
+
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:30
+msgid "visualEditing.editMode"
+msgstr ""
 
 #: packages/admin/src/components/BylineCreditsEditor.tsx:872
 #: packages/admin/src/components/BylineCreditsEditor.tsx:966
@@ -3660,6 +3676,11 @@ msgstr ""
 #: packages/admin/src/components/editor/PluginBlockNode.tsx:368
 msgid "Edit URL"
 msgstr "編輯網址"
+
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:21
+msgid "visualEditing.sessionExpired"
+msgstr ""
 
 #: packages/admin/src/components/users/roleDefinitions.ts:36
 #: packages/admin/src/components/WelcomeModal.tsx:26
@@ -4128,6 +4149,11 @@ msgstr "無法停用使用者"
 msgid "Failed to discard changes"
 msgstr "捨棄變更失敗"
 
+#: packages/admin/src/components/Dashboard.tsx:207
+#: packages/admin/src/lib/api/dashboard.ts:71
+msgid "Failed to dismiss scheduled publication rejection"
+msgstr ""
+
 #: packages/admin/src/components/WelcomeModal.tsx:76
 msgid "Failed to dismiss welcome"
 msgstr "關閉歡迎畫面失敗"
@@ -4166,7 +4192,7 @@ msgstr "擷取備份設定失敗"
 msgid "Failed to fetch collection"
 msgstr "擷取內容集合失敗"
 
-#: packages/admin/src/lib/api/dashboard.ts:47
+#: packages/admin/src/lib/api/dashboard.ts:56
 msgid "Failed to fetch dashboard stats"
 msgstr "無法擷取控制台統計資料"
 
@@ -5019,6 +5045,15 @@ msgstr "對搜尋引擎隱藏"
 #: packages/admin/src/components/settings/ApiTokenSettings.tsx:283
 msgid "Hide token"
 msgstr "隱藏權杖"
+
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:32
+msgid "visualEditing.hideToolbar"
+msgstr ""
+
+#: packages/admin/src/components/Shell.tsx:86
+msgid "Hide toolbar"
+msgstr ""
 
 #: packages/admin/src/components/TaxonomyManager.tsx:839
 msgid "Hierarchical (like categories, with parent/child relationships)"
@@ -5930,7 +5965,7 @@ msgstr "鎖定長寬比"
 msgid "Locked because this field has stored values. Delete the values (or the field) to change this."
 msgstr "這個欄位已有儲存值，因此已鎖定。請刪除這些值 (或刪除此欄位) 後再變更。"
 
-#: packages/admin/src/components/Header.tsx:109
+#: packages/admin/src/components/Header.tsx:110
 msgid "Log out"
 msgstr "登出"
 
@@ -5973,13 +6008,13 @@ msgstr ""
 msgid "Main Sidebar"
 msgstr "主要側邊欄"
 
-#: packages/admin/src/lib/api/marketplace.ts:398
-#: packages/admin/src/lib/api/marketplace.ts:406
+#: packages/admin/src/lib/api/marketplace.ts:401
+#: packages/admin/src/lib/api/marketplace.ts:409
 msgid "Make network requests"
 msgstr "發出網路要求"
 
-#: packages/admin/src/lib/api/marketplace.ts:399
-#: packages/admin/src/lib/api/marketplace.ts:407
+#: packages/admin/src/lib/api/marketplace.ts:402
+#: packages/admin/src/lib/api/marketplace.ts:410
 msgid "Make network requests to any host (unrestricted)"
 msgstr "向任何主機發出網路要求 (不受限制)"
 
@@ -6698,7 +6733,7 @@ msgstr ""
 msgid "No bylines found"
 msgstr "找不到署名資料"
 
-#: packages/admin/src/components/Dashboard.tsx:282
+#: packages/admin/src/components/Dashboard.tsx:381
 msgid "No collections configured"
 msgstr "尚未設定任何內容集合"
 
@@ -6884,7 +6919,7 @@ msgstr ""
 msgid "No public URL available"
 msgstr "沒有可用的公開網址"
 
-#: packages/admin/src/components/Dashboard.tsx:361
+#: packages/admin/src/components/Dashboard.tsx:460
 msgid "No recent activity"
 msgstr "沒有近期活動"
 
@@ -7044,6 +7079,11 @@ msgstr ""
 #: packages/admin/src/components/MediaLibrary.tsx:1458
 #: packages/admin/src/components/MediaLibrary.tsx:1529
 msgid "Open folder {0}"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:31
+msgid "visualEditing.openInAdmin"
 msgstr ""
 
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:510
@@ -7631,6 +7671,15 @@ msgstr "服務提供者:"
 msgid "Publication date"
 msgstr ""
 
+#: packages/admin/src/components/Dashboard.tsx:151
+msgid "Publication policy blocked scheduled content"
+msgstr ""
+
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:19
+msgid "visualEditing.publish"
+msgstr ""
+
 #: packages/admin/src/components/ContentList.tsx:505
 #: packages/admin/src/components/ContentSettingsPanel.tsx:526
 #: packages/admin/src/components/ContentSettingsPanel.tsx:550
@@ -7647,14 +7696,23 @@ msgstr ""
 msgid "Publish changes now"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:26
+msgid "visualEditing.publishFailed"
+msgstr ""
+
 #: packages/admin/src/components/ContentSettingsPanel.tsx:479
 msgid "Publish now"
+msgstr ""
+
+#: packages/admin/src/lib/api/marketplace.ts:386
+msgid "Publish, unpublish, schedule, and unschedule content"
 msgstr ""
 
 #: packages/admin/src/components/ContentList.tsx:859
 #: packages/admin/src/components/ContentList.tsx:870
 #: packages/admin/src/components/ContentStatusBadge.tsx:59
-#: packages/admin/src/components/Dashboard.tsx:304
+#: packages/admin/src/components/Dashboard.tsx:403
 #: packages/admin/src/router.tsx:1177
 msgid "Published"
 msgstr "已發佈"
@@ -7696,6 +7754,11 @@ msgstr ""
 msgid "Publishing summary"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:20
+msgid "visualEditing.publishing"
+msgstr ""
+
 #: packages/admin/src/components/editor/codeBlockLanguages.ts:47
 msgid "Python"
 msgstr "Python"
@@ -7719,7 +7782,11 @@ msgstr "引用"
 msgid "Raw meta"
 msgstr "原始中繼資料"
 
-#: packages/admin/src/lib/api/marketplace.ts:388
+#: packages/admin/src/lib/api/marketplace.ts:387
+msgid "Read and restore trashed content"
+msgstr ""
+
+#: packages/admin/src/lib/api/marketplace.ts:390
 msgid "Read collection and field definitions"
 msgstr ""
 
@@ -7727,7 +7794,7 @@ msgstr ""
 msgid "Read collection schemas"
 msgstr "讀取內容集合結構描述"
 
-#: packages/admin/src/lib/api/marketplace.ts:386
+#: packages/admin/src/lib/api/marketplace.ts:388
 msgid "Read comment bodies, author email addresses, pseudonymous IP hashes, user agents, and moderation metadata"
 msgstr ""
 
@@ -7735,7 +7802,7 @@ msgstr ""
 msgid "Read content entries"
 msgstr "讀取內容項目"
 
-#: packages/admin/src/lib/api/marketplace.ts:394
+#: packages/admin/src/lib/api/marketplace.ts:397
 msgid "Read media file contents"
 msgstr ""
 
@@ -7743,7 +7810,7 @@ msgstr ""
 msgid "Read media files"
 msgstr "讀取媒體檔案"
 
-#: packages/admin/src/lib/api/marketplace.ts:391
+#: packages/admin/src/lib/api/marketplace.ts:394
 msgid "Read redirect rules"
 msgstr ""
 
@@ -7755,17 +7822,17 @@ msgstr ""
 msgid "Read site settings"
 msgstr "讀取網站設定"
 
-#: packages/admin/src/lib/api/marketplace.ts:397
-#: packages/admin/src/lib/api/marketplace.ts:405
+#: packages/admin/src/lib/api/marketplace.ts:400
+#: packages/admin/src/lib/api/marketplace.ts:408
 msgid "Read user accounts"
 msgstr "讀取使用者帳號"
 
 #: packages/admin/src/lib/api/marketplace.ts:383
-#: packages/admin/src/lib/api/marketplace.ts:401
+#: packages/admin/src/lib/api/marketplace.ts:404
 msgid "Read your content"
 msgstr "讀取您的內容"
 
-#: packages/admin/src/lib/api/marketplace.ts:389
+#: packages/admin/src/lib/api/marketplace.ts:392
 msgid "Read your taxonomies and terms"
 msgstr "讀取您的分類法及分類項目"
 
@@ -7787,7 +7854,7 @@ msgstr "就緒"
 msgid "Ready to publish now or schedule for later"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:355
+#: packages/admin/src/components/Dashboard.tsx:454
 msgid "Recent Activity"
 msgstr "近期活動"
 
@@ -7835,6 +7902,11 @@ msgstr "參照"
 msgid "Referenced favicon unavailable."
 msgstr "參照的網站圖示無法使用。"
 
+#. js-lingui-explicit-id
+#: packages/admin/src/locales/server.ts:25
+msgid "visualEditing.refreshPage"
+msgstr ""
+
 #: packages/admin/src/components/settings/MediaUsageSettings.tsx:337
 msgid "Refresh status"
 msgstr ""
@@ -7843,7 +7915,7 @@ msgstr ""
 msgid "Refresh status before continuing."
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:132
+#: packages/admin/src/components/Dashboard.tsx:231
 msgid "Refresh the page or try again."
 msgstr "重新整理頁面或再試一次。"
 
@@ -8296,6 +8368,10 @@ msgstr "已還原至已發佈版本"
 msgid "Review"
 msgstr "審閱"
 
+#: packages/admin/src/lib/api/marketplace.ts:391
+msgid "Review and block publishing, scheduling, and unpublishing content"
+msgstr ""
+
 #: packages/admin/src/components/CapabilityConsentDialog.tsx:91
 msgid "Review New Permissions"
 msgstr "檢閱新權限"
@@ -8563,7 +8639,7 @@ msgstr ""
 msgid "Scheduled publication"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:118
+#: packages/admin/src/components/Dashboard.tsx:215
 msgid "Scheduled publishing needs attention"
 msgstr ""
 
@@ -8835,7 +8911,7 @@ msgid "Security error. Make sure you're on a secure connection."
 msgstr "發生安全性錯誤。請確認您使用安全連線。"
 
 #: packages/admin/src/components/AdminCommandPalette.tsx:242
-#: packages/admin/src/components/Header.tsx:93
+#: packages/admin/src/components/Header.tsx:94
 #: packages/admin/src/components/Settings.tsx:81
 #: packages/admin/src/components/settings/SecuritySettings.tsx:88
 #: packages/admin/src/components/settings/SecuritySettings.tsx:110
@@ -9109,7 +9185,7 @@ msgstr "正在設定…"
 #: packages/admin/src/components/ContentEditor.tsx:1175
 #: packages/admin/src/components/ContentEditor.tsx:1474
 #: packages/admin/src/components/ContentTypeEditor.tsx:392
-#: packages/admin/src/components/Header.tsx:101
+#: packages/admin/src/components/Header.tsx:102
 #: packages/admin/src/components/PluginManager.tsx:521
 #: packages/admin/src/components/Settings.tsx:44
 #: packages/admin/src/components/Sidebar.tsx:484
@@ -9453,7 +9529,7 @@ msgstr "狀態"
 msgid "Status code"
 msgstr "狀態碼"
 
-#: packages/admin/src/components/Dashboard.tsx:408
+#: packages/admin/src/components/Dashboard.tsx:507
 msgid "Status: {status}"
 msgstr "狀態: {status}"
 
@@ -10321,7 +10397,7 @@ msgstr "不支援的小工具元素類型: {0}"
 msgid "Until {0}"
 msgstr ""
 
-#: packages/admin/src/components/Dashboard.tsx:375
+#: packages/admin/src/components/Dashboard.tsx:474
 #: packages/admin/src/components/MediaUsedIn.tsx:255
 msgid "Untitled"
 msgstr "未命名"
@@ -10413,8 +10489,8 @@ msgstr "上傳圖片即可開始使用"
 msgid "Upload and delete media"
 msgstr "上傳及刪除媒體"
 
-#: packages/admin/src/lib/api/marketplace.ts:396
-#: packages/admin/src/lib/api/marketplace.ts:404
+#: packages/admin/src/lib/api/marketplace.ts:399
+#: packages/admin/src/lib/api/marketplace.ts:407
 msgid "Upload and manage media"
 msgstr "上傳及管理媒體"
 
@@ -10442,7 +10518,7 @@ msgstr "上傳檔案"
 msgid "Upload images, videos, and documents to keep reusable assets in one place."
 msgstr "上傳圖片、影片及文件，將可重複使用的素材集中存放於一處。"
 
-#: packages/admin/src/components/Dashboard.tsx:170
+#: packages/admin/src/components/Dashboard.tsx:269
 msgid "Upload Media"
 msgstr "上傳媒體"
 
@@ -10610,8 +10686,8 @@ msgid "Used to identify this section. Lowercase letters, numbers, and hyphens on
 msgstr "用來識別這個區段。只能使用小寫字母、數字及連字號。"
 
 #: packages/admin/src/components/DeviceAuthorizePage.tsx:223
-#: packages/admin/src/components/Header.tsx:43
-#: packages/admin/src/components/Header.tsx:83
+#: packages/admin/src/components/Header.tsx:44
+#: packages/admin/src/components/Header.tsx:84
 #: packages/admin/src/components/users/UserList.tsx:91
 msgid "User"
 msgstr "使用者"
@@ -10710,7 +10786,7 @@ msgstr "檢視已發佈的 {title}"
 msgid "View setup"
 msgstr ""
 
-#: packages/admin/src/components/Header.tsx:59
+#: packages/admin/src/components/Header.tsx:60
 msgid "View Site"
 msgstr "檢視網站"
 
