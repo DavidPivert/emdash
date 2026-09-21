@@ -282,7 +282,7 @@ msgid "{0} banner"
 msgstr "แบนเนอร์ {0}"
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:233
+#: packages/admin/src/components/TaxonomyManager.tsx:245
 msgid "{0} can't be moved here — its parent has no translation in this locale, so this list isn't the group it belongs to."
 msgstr ""
 
@@ -857,7 +857,7 @@ msgstr ""
 #: packages/admin/src/components/ContentList.tsx:637
 #: packages/admin/src/components/ContentList.tsx:769
 #: packages/admin/src/components/ContentTypeList.tsx:190
-#: packages/admin/src/components/TaxonomyManager.tsx:1056
+#: packages/admin/src/components/TaxonomyManager.tsx:1113
 #: packages/admin/src/routes/byline-schema.tsx:249
 msgid "Actions"
 msgstr "การดำเนินการ"
@@ -883,8 +883,8 @@ msgstr "เพิ่ม"
 #. placeholder {0}: taxonomyDef.labelSingular || t`Term`
 #: packages/admin/src/components/BylineCreditsEditor.tsx:498
 #: packages/admin/src/components/PortableTextEditor.tsx:2304
-#: packages/admin/src/components/TaxonomyManager.tsx:545
-#: packages/admin/src/components/TaxonomyManager.tsx:1047
+#: packages/admin/src/components/TaxonomyManager.tsx:557
+#: packages/admin/src/components/TaxonomyManager.tsx:1082
 msgid "Add {0}"
 msgstr "เพิ่ม {0}"
 
@@ -1282,7 +1282,7 @@ msgstr ""
 #: packages/admin/src/router.tsx:2099
 #: packages/admin/src/router.tsx:2115
 #: packages/admin/src/router.tsx:2140
-#: packages/admin/src/router.tsx:2641
+#: packages/admin/src/router.tsx:2642
 #: packages/admin/src/routes/byline-schema.tsx:103
 #: packages/admin/src/routes/byline-schema.tsx:123
 #: packages/admin/src/routes/byline-schema.tsx:139
@@ -1512,7 +1512,7 @@ msgstr "อัตโนมัติ (เปลี่ยน slug)"
 msgid "Auto-approve authenticated users"
 msgstr "อนุมัติผู้ใช้ที่ยืนยันตัวตนแล้วโดยอัตโนมัติ"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:591
+#: packages/admin/src/components/TaxonomyManager.tsx:603
 msgid "Auto-generated from name (you can edit)"
 msgstr "สร้างอัตโนมัติจากชื่อ (คุณสามารถแก้ไขได้)"
 
@@ -1805,9 +1805,9 @@ msgstr "สามารถดูเนื้อหาได้"
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:216
 #: packages/admin/src/components/settings/ApiTokenSettings.tsx:234
 #: packages/admin/src/components/settings/SecuritySettings.tsx:166
-#: packages/admin/src/components/TaxonomyManager.tsx:374
-#: packages/admin/src/components/TaxonomyManager.tsx:661
-#: packages/admin/src/components/TaxonomyManager.tsx:876
+#: packages/admin/src/components/TaxonomyManager.tsx:386
+#: packages/admin/src/components/TaxonomyManager.tsx:673
+#: packages/admin/src/components/TaxonomyManager.tsx:888
 #: packages/admin/src/components/users/InviteUserModal.tsx:198
 #: packages/admin/src/components/Widgets.tsx:451
 #: packages/admin/src/components/WordPressImport.tsx:1933
@@ -2164,13 +2164,13 @@ msgstr "คลิกลิงก์ในอีเมลเพื่อเข้
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:337
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:343
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:347
-#: packages/admin/src/components/TaxonomyManager.tsx:351
-#: packages/admin/src/components/TaxonomyManager.tsx:554
-#: packages/admin/src/components/TaxonomyManager.tsx:560
-#: packages/admin/src/components/TaxonomyManager.tsx:564
-#: packages/admin/src/components/TaxonomyManager.tsx:795
-#: packages/admin/src/components/TaxonomyManager.tsx:801
-#: packages/admin/src/components/TaxonomyManager.tsx:805
+#: packages/admin/src/components/TaxonomyManager.tsx:363
+#: packages/admin/src/components/TaxonomyManager.tsx:566
+#: packages/admin/src/components/TaxonomyManager.tsx:572
+#: packages/admin/src/components/TaxonomyManager.tsx:576
+#: packages/admin/src/components/TaxonomyManager.tsx:807
+#: packages/admin/src/components/TaxonomyManager.tsx:813
+#: packages/admin/src/components/TaxonomyManager.tsx:817
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:298
 #: packages/admin/src/components/users/InviteUserModal.tsx:88
 #: packages/admin/src/components/users/InviteUserModal.tsx:94
@@ -2239,7 +2239,7 @@ msgstr "คอลเลกชัน"
 msgid "Collection:"
 msgstr "คอลเลกชัน:"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:846
+#: packages/admin/src/components/TaxonomyManager.tsx:858
 msgid "Collections"
 msgstr "คอลเลกชัน"
 
@@ -2611,7 +2611,7 @@ msgstr ""
 msgid "Couldn't verify how many values reference \"{0}\". Deleting will still remove every stored value for this field — but the count above could not be checked."
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:1055
+#: packages/admin/src/components/TaxonomyManager.tsx:1112
 msgid "Count"
 msgstr "จำนวน"
 
@@ -2620,7 +2620,7 @@ msgstr "จำนวน"
 #: packages/admin/src/components/MenuList.tsx:178
 #: packages/admin/src/components/Redirects.tsx:192
 #: packages/admin/src/components/Sections.tsx:212
-#: packages/admin/src/components/TaxonomyManager.tsx:668
+#: packages/admin/src/components/TaxonomyManager.tsx:680
 #: packages/admin/src/components/Widgets.tsx:454
 #: packages/admin/src/routes/bylines.tsx:579
 msgid "Create"
@@ -2650,7 +2650,7 @@ msgid "Create a bullet list"
 msgstr "สร้างรายการแบบจุด"
 
 #. placeholder {0}: taxonomyDef.labelSingular?.toLowerCase() || "term"
-#: packages/admin/src/components/TaxonomyManager.tsx:550
+#: packages/admin/src/components/TaxonomyManager.tsx:562
 msgid "Create a new {0}"
 msgstr "สร้าง {0} ใหม่"
 
@@ -2741,8 +2741,8 @@ msgstr "สร้างส่วน"
 msgid "Create sections in the Sections library to use them here"
 msgstr "สร้างส่วนในไลบรารีส่วนเพื่อใช้งานที่นี่"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:788
-#: packages/admin/src/components/TaxonomyManager.tsx:879
+#: packages/admin/src/components/TaxonomyManager.tsx:800
+#: packages/admin/src/components/TaxonomyManager.tsx:891
 msgid "Create Taxonomy"
 msgstr "สร้างอนุกรมวิธาน"
 
@@ -2838,7 +2838,7 @@ msgstr ""
 #: packages/admin/src/components/Redirects.tsx:189
 #: packages/admin/src/components/Sections.tsx:212
 #: packages/admin/src/components/settings/ApiTokenSettings.tsx:540
-#: packages/admin/src/components/TaxonomyManager.tsx:879
+#: packages/admin/src/components/TaxonomyManager.tsx:891
 #: packages/admin/src/components/TaxonomySidebar.tsx:339
 msgid "Creating..."
 msgstr "กำลังสร้าง..."
@@ -2978,7 +2978,7 @@ msgstr "รูปภาพโซเชียลเริ่มต้น"
 msgid "Default Social Image"
 msgstr "รูปภาพโซเชียลเริ่มต้น"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:791
+#: packages/admin/src/components/TaxonomyManager.tsx:803
 msgid "Define a new taxonomy for classifying content"
 msgstr "กำหนดอนุกรมวิธานใหม่สำหรับการจัดประเภทเนื้อหา"
 
@@ -3009,7 +3009,8 @@ msgstr "กำหนดไว้ในโค้ด"
 #: packages/admin/src/components/Sections.tsx:308
 #: packages/admin/src/components/Sections.tsx:407
 #: packages/admin/src/components/settings/BackupSettings.tsx:352
-#: packages/admin/src/components/TaxonomyManager.tsx:1118
+#: packages/admin/src/components/TaxonomyManager.tsx:1175
+#: packages/admin/src/components/TaxonomyManager.tsx:1191
 #: packages/admin/src/components/Widgets.tsx:716
 #: packages/admin/src/routes/byline-schema.tsx:378
 #: packages/admin/src/routes/bylines.tsx:588
@@ -3029,7 +3030,7 @@ msgstr ""
 #: packages/admin/src/components/Sections.tsx:408
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:275
 #: packages/admin/src/components/settings/BackupSettings.tsx:312
-#: packages/admin/src/components/TaxonomyManager.tsx:285
+#: packages/admin/src/components/TaxonomyManager.tsx:297
 #: packages/admin/src/components/Widgets.tsx:817
 #: packages/admin/src/routes/byline-schema.tsx:458
 msgid "Delete {0}"
@@ -3051,7 +3052,7 @@ msgid "Delete {0} widget area"
 msgstr "ลบพื้นที่วิดเจ็ต {0}"
 
 #. placeholder {0}: taxonomyDef.labelSingular || "Term"
-#: packages/admin/src/components/TaxonomyManager.tsx:1114
+#: packages/admin/src/components/TaxonomyManager.tsx:1171
 msgid "Delete {0}?"
 msgstr "ลบ {0} หรือไม่?"
 
@@ -3161,6 +3162,14 @@ msgstr "ลบส่วนหรือไม่?"
 msgid "Delete table"
 msgstr "ลบตาราง"
 
+#: packages/admin/src/components/TaxonomyManager.tsx:1102
+msgid "Delete taxonomy"
+msgstr ""
+
+#: packages/admin/src/components/TaxonomyManager.tsx:1189
+msgid "Delete Taxonomy"
+msgstr ""
+
 #: packages/admin/src/components/Widgets.tsx:714
 msgid "Delete Widget Area?"
 msgstr "ลบพื้นที่วิดเจ็ตหรือไม่?"
@@ -3168,6 +3177,11 @@ msgstr "ลบพื้นที่วิดเจ็ตหรือไม่?"
 #: packages/admin/src/components/ContentList.tsx:766
 msgid "Deleted"
 msgstr "ลบแล้ว"
+
+#. placeholder {0}: taxonomyDef.label
+#: packages/admin/src/components/TaxonomyManager.tsx:1190
+msgid "Deleting \"{0}\" also deletes every term in it, in all languages, and removes those terms from the content filed under them. The entries themselves are kept. This cannot be undone."
+msgstr ""
 
 #. placeholder {0}: deletingField.label
 #. placeholder {1}: deleteUsageQuery.data.totalAffectedRows
@@ -3185,7 +3199,8 @@ msgstr ""
 #: packages/admin/src/components/Redirects.tsx:604
 #: packages/admin/src/components/Sections.tsx:309
 #: packages/admin/src/components/settings/BackupSettings.tsx:353
-#: packages/admin/src/components/TaxonomyManager.tsx:1119
+#: packages/admin/src/components/TaxonomyManager.tsx:1176
+#: packages/admin/src/components/TaxonomyManager.tsx:1192
 #: packages/admin/src/components/Widgets.tsx:717
 #: packages/admin/src/routes/bylines.tsx:625
 msgid "Deleting..."
@@ -3246,7 +3261,7 @@ msgstr "อธิบายว่าส่วนนี้มีไว้เพื
 msgid "Description"
 msgstr "คำอธิบาย"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:623
+#: packages/admin/src/components/TaxonomyManager.tsx:635
 msgid "Description (optional)"
 msgstr "คำอธิบาย (ไม่บังคับ)"
 
@@ -3631,8 +3646,8 @@ msgstr "แก้ไข"
 #: packages/admin/src/components/ContentTypeList.tsx:332
 #: packages/admin/src/components/PortableTextEditor.tsx:2085
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:263
-#: packages/admin/src/components/TaxonomyManager.tsx:277
-#: packages/admin/src/components/TaxonomyManager.tsx:544
+#: packages/admin/src/components/TaxonomyManager.tsx:289
+#: packages/admin/src/components/TaxonomyManager.tsx:556
 #: packages/admin/src/routes/byline-schema.tsx:449
 #: packages/admin/src/routes/bylines.tsx:476
 msgid "Edit {0}"
@@ -3964,9 +3979,9 @@ msgstr "ป้อน URL ของเว็บไซต์ WordPress ของ�
 #: packages/admin/src/components/MenuEditor.tsx:193
 #: packages/admin/src/components/MenuEditor.tsx:233
 #: packages/admin/src/components/SetupWizard.tsx:532
-#: packages/admin/src/components/TaxonomyManager.tsx:947
+#: packages/admin/src/components/TaxonomyManager.tsx:982
 #: packages/admin/src/components/Widgets.tsx:769
-#: packages/admin/src/router.tsx:2858
+#: packages/admin/src/router.tsx:2859
 msgid "Error"
 msgstr "ข้อผิดพลาด"
 
@@ -4188,7 +4203,11 @@ msgstr "ลบการเปลี่ยนเส้นทางไม่สำ
 msgid "Failed to delete section"
 msgstr "ลบส่วนไม่สำเร็จ"
 
-#: packages/admin/src/lib/api/taxonomies.ts:221
+#: packages/admin/src/lib/api/taxonomies.ts:145
+msgid "Failed to delete taxonomy"
+msgstr ""
+
+#: packages/admin/src/lib/api/taxonomies.ts:231
 msgid "Failed to delete term"
 msgstr "ลบเทอมไม่สำเร็จ"
 
@@ -4547,7 +4566,7 @@ msgstr "เขียน URL ใหม่ไม่สำเร็จ"
 
 #: packages/admin/src/router.tsx:735
 #: packages/admin/src/router.tsx:1101
-#: packages/admin/src/router.tsx:2640
+#: packages/admin/src/router.tsx:2641
 msgid "Failed to save"
 msgstr "บันทึกไม่สำเร็จ"
 
@@ -4963,7 +4982,7 @@ msgstr "การตั้งค่าทั่วไป"
 msgid "Generated automatically."
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:816
+#: packages/admin/src/components/TaxonomyManager.tsx:828
 msgid "Genres"
 msgstr "แนว"
 
@@ -4984,7 +5003,7 @@ msgid "Go"
 msgstr ""
 
 #: packages/admin/src/components/WordPressImport.tsx:2434
-#: packages/admin/src/router.tsx:2878
+#: packages/admin/src/router.tsx:2879
 msgid "Go to Dashboard"
 msgstr "ไปที่แดชบอร์ด"
 
@@ -5123,7 +5142,7 @@ msgstr ""
 msgid "Hide toolbar"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:839
+#: packages/admin/src/components/TaxonomyManager.tsx:851
 msgid "Hierarchical (like categories, with parent/child relationships)"
 msgstr "แบบลำดับชั้น (เหมือนหมวดหมู่ ที่มีความสัมพันธ์แม่/ลูก)"
 
@@ -5704,7 +5723,7 @@ msgstr ""
 #: packages/admin/src/components/MenuEditor.tsx:416
 #: packages/admin/src/components/MenuEditor.tsx:593
 #: packages/admin/src/components/MenuList.tsx:169
-#: packages/admin/src/components/TaxonomyManager.tsx:813
+#: packages/admin/src/components/TaxonomyManager.tsx:825
 #: packages/admin/src/components/Widgets.tsx:436
 #: packages/admin/src/routes/byline-schema.tsx:234
 msgid "Label"
@@ -5877,7 +5896,7 @@ msgstr "โหลดเพิ่มเติม"
 msgid "Load more folders"
 msgstr ""
 
-#: packages/admin/src/router.tsx:2833
+#: packages/admin/src/router.tsx:2834
 msgid "Loading"
 msgstr ""
 
@@ -5893,8 +5912,8 @@ msgstr "กำลังโหลดคอลเลกชัน..."
 msgid "Loading comments..."
 msgstr "กำลังโหลดความคิดเห็น..."
 
-#: packages/admin/src/router.tsx:2835
-#: packages/admin/src/router.tsx:2847
+#: packages/admin/src/router.tsx:2836
+#: packages/admin/src/router.tsx:2848
 msgid "Loading configuration..."
 msgstr "กำลังโหลดการกำหนดค่า..."
 
@@ -5960,7 +5979,7 @@ msgstr "กำลังโหลดการตั้งค่า..."
 msgid "Loading setup..."
 msgstr "กำลังโหลดการตั้งค่า..."
 
-#: packages/admin/src/components/TaxonomyManager.tsx:1060
+#: packages/admin/src/components/TaxonomyManager.tsx:1117
 msgid "Loading terms..."
 msgstr "กำลังโหลดเทอม..."
 
@@ -5992,7 +6011,7 @@ msgstr "กำลังโหลดวิดเจ็ต..."
 #: packages/admin/src/components/settings/BackupSettings.tsx:154
 #: packages/admin/src/components/settings/EmailSettings.tsx:69
 #: packages/admin/src/components/settings/SecuritySettings.tsx:99
-#: packages/admin/src/components/TaxonomyManager.tsx:1014
+#: packages/admin/src/components/TaxonomyManager.tsx:1049
 #: packages/admin/src/components/ThemeMarketplaceBrowse.tsx:170
 #: packages/admin/src/components/ThemeMarketplaceBrowse.tsx:244
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:143
@@ -6062,7 +6081,7 @@ msgstr "ข้อความยาว"
 msgid "Lowercase letters, numbers, and hyphens only"
 msgstr "ใช้ได้เฉพาะตัวอักษรพิมพ์เล็ก ตัวเลข และยัติภังค์เท่านั้น"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:831
+#: packages/admin/src/components/TaxonomyManager.tsx:843
 msgid "Lowercase letters, numbers, and underscores only, starting with a letter"
 msgstr "ใช้ได้เฉพาะตัวอักษรพิมพ์เล็ก ตัวเลข และขีดล่างเท่านั้น โดยขึ้นต้นด้วยตัวอักษร"
 
@@ -6085,7 +6104,7 @@ msgstr "จัดการ"
 
 #. placeholder {0}: taxonomyDef.label.toLowerCase()
 #. placeholder {1}: taxonomyDef.collections.join(", ")
-#: packages/admin/src/components/TaxonomyManager.tsx:1031
+#: packages/admin/src/components/TaxonomyManager.tsx:1066
 msgid "Manage {0} for {1}"
 msgstr "จัดการ {0} สำหรับ {1}"
 
@@ -6410,7 +6429,9 @@ msgid "Monthly/yearly archives"
 msgstr ""
 
 #. placeholder {0}: byline.displayName
+#. placeholder {0}: taxonomyDef.label
 #: packages/admin/src/components/BylineCreditsEditor.tsx:853
+#: packages/admin/src/components/TaxonomyManager.tsx:1092
 msgid "More actions for {0}"
 msgstr ""
 
@@ -6449,12 +6470,12 @@ msgid "Move \"{title}\" to trash? You can restore it later."
 msgstr "ย้าย \"{title}\" ไปยังถังขยะ? คุณสามารถกู้คืนได้ภายหลัง"
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:256
+#: packages/admin/src/components/TaxonomyManager.tsx:268
 msgid "Move {0} down"
 msgstr ""
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:255
+#: packages/admin/src/components/TaxonomyManager.tsx:267
 msgid "Move {0} down — unavailable, its parent has no translation in this locale"
 msgstr ""
 
@@ -6469,12 +6490,12 @@ msgid "Move {0} later"
 msgstr ""
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:243
+#: packages/admin/src/components/TaxonomyManager.tsx:255
 msgid "Move {0} up"
 msgstr ""
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:242
+#: packages/admin/src/components/TaxonomyManager.tsx:254
 msgid "Move {0} up — unavailable, its parent has no translation in this locale"
 msgstr ""
 
@@ -6573,20 +6594,20 @@ msgstr "My Awesome Blog"
 #: packages/admin/src/components/MarketplaceBrowse.tsx:45
 #: packages/admin/src/components/MediaFolderDialog.tsx:131
 #: packages/admin/src/components/MenuList.tsx:157
-#: packages/admin/src/components/TaxonomyManager.tsx:572
-#: packages/admin/src/components/TaxonomyManager.tsx:822
-#: packages/admin/src/components/TaxonomyManager.tsx:1054
+#: packages/admin/src/components/TaxonomyManager.tsx:584
+#: packages/admin/src/components/TaxonomyManager.tsx:834
+#: packages/admin/src/components/TaxonomyManager.tsx:1111
 #: packages/admin/src/components/ThemeMarketplaceBrowse.tsx:37
 #: packages/admin/src/components/users/UserDetail.tsx:148
 #: packages/admin/src/components/Widgets.tsx:430
 msgid "Name"
 msgstr "ชื่อ"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:748
+#: packages/admin/src/components/TaxonomyManager.tsx:760
 msgid "Name and label are required"
 msgstr "ต้องระบุชื่อและป้ายกำกับ"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:754
+#: packages/admin/src/components/TaxonomyManager.tsx:766
 msgid "Name must start with a letter and contain only lowercase letters, numbers, and underscores"
 msgstr "ชื่อต้องขึ้นต้นด้วยตัวอักษร และประกอบด้วยตัวอักษรพิมพ์เล็ก ตัวเลข และขีดล่างเท่านั้น"
 
@@ -6678,7 +6699,7 @@ msgstr "ส่วนใหม่"
 msgid "new tab"
 msgstr "แท็บใหม่"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:1044
+#: packages/admin/src/components/TaxonomyManager.tsx:1079
 msgid "New Taxonomy"
 msgstr "อนุกรมวิธานใหม่"
 
@@ -6694,7 +6715,7 @@ msgstr "หน้าต่างใหม่"
 msgid "Newest"
 msgstr "ใหม่ที่สุด"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:575
+#: packages/admin/src/components/TaxonomyManager.tsx:587
 msgid "News"
 msgstr "ข่าวสาร"
 
@@ -6744,7 +6765,7 @@ msgid "No {0} yet."
 msgstr "ยังไม่มี{0}"
 
 #. placeholder {0}: taxonomyDef.label.toLowerCase()
-#: packages/admin/src/components/TaxonomyManager.tsx:1063
+#: packages/admin/src/components/TaxonomyManager.tsx:1120
 msgid "No {0} yet. Create one to get started."
 msgstr "ยังไม่มี{0} สร้างขึ้นมาเพื่อเริ่มต้นใช้งาน"
 
@@ -7065,8 +7086,8 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:601
-#: packages/admin/src/components/TaxonomyManager.tsx:610
+#: packages/admin/src/components/TaxonomyManager.tsx:613
+#: packages/admin/src/components/TaxonomyManager.tsx:622
 msgid "None (top level)"
 msgstr "ไม่มี (ระดับบนสุด)"
 
@@ -7205,7 +7226,7 @@ msgstr "คำบรรยายที่ไม่บังคับแสดง
 msgid "Optional caption for display"
 msgstr "คำบรรยายที่ไม่บังคับสำหรับการแสดงผล"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:626
+#: packages/admin/src/components/TaxonomyManager.tsx:638
 msgid "Optional description"
 msgstr "คำอธิบายที่ไม่บังคับ"
 
@@ -7288,7 +7309,7 @@ msgstr "ความเป็นเจ้าของ"
 msgid "Package"
 msgstr "แพ็กเกจ"
 
-#: packages/admin/src/router.tsx:2873
+#: packages/admin/src/router.tsx:2874
 msgid "Page Not Found"
 msgstr "ไม่พบหน้า"
 
@@ -7320,7 +7341,7 @@ msgid "Paragraph inserted before table"
 msgstr ""
 
 #: packages/admin/src/components/MenuEditor.tsx:615
-#: packages/admin/src/components/TaxonomyManager.tsx:597
+#: packages/admin/src/components/TaxonomyManager.tsx:609
 msgid "Parent"
 msgstr "รายการแม่"
 
@@ -8408,7 +8429,7 @@ msgstr "กำลังกู้คืน..."
 #: packages/admin/src/components/SandboxedContentEditorPanel.tsx:174
 #: packages/admin/src/components/ThemeMarketplaceBrowse.tsx:122
 #: packages/admin/src/lib/content-editor-panels.tsx:201
-#: packages/admin/src/router.tsx:2861
+#: packages/admin/src/router.tsx:2862
 #: packages/admin/src/routes/byline-schema.tsx:280
 msgid "Retry"
 msgstr "ลองใหม่"
@@ -8670,7 +8691,7 @@ msgstr ""
 #: packages/admin/src/components/PluginSettings.tsx:209
 #: packages/admin/src/components/Redirects.tsx:188
 #: packages/admin/src/components/SaveButton.tsx:33
-#: packages/admin/src/components/TaxonomyManager.tsx:665
+#: packages/admin/src/components/TaxonomyManager.tsx:677
 #: packages/admin/src/components/users/UserDetail.tsx:311
 #: packages/admin/src/components/Widgets.tsx:983
 #: packages/admin/src/routes/bylines.tsx:579
@@ -9491,7 +9512,7 @@ msgstr "ข้ามแล้ว"
 #: packages/admin/src/components/FieldEditor.tsx:454
 #: packages/admin/src/components/SectionEditor.tsx:280
 #: packages/admin/src/components/Sections.tsx:184
-#: packages/admin/src/components/TaxonomyManager.tsx:581
+#: packages/admin/src/components/TaxonomyManager.tsx:593
 #: packages/admin/src/routes/byline-schema.tsx:237
 #: packages/admin/src/routes/bylines.tsx:486
 msgid "Slug"
@@ -9765,7 +9786,7 @@ msgstr ""
 msgid "Target"
 msgstr "เป้าหมาย"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:359
+#: packages/admin/src/components/TaxonomyManager.tsx:371
 msgid "Target locale"
 msgstr "ภาษาเป้าหมาย"
 
@@ -9778,15 +9799,19 @@ msgstr "อนุกรมวิธาน"
 msgid "Taxonomies Manage"
 msgstr "จัดการอนุกรมวิธาน"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:1130
+#: packages/admin/src/components/TaxonomyManager.tsx:1203
 msgid "Taxonomy created"
 msgstr "สร้างอนุกรมวิธานแล้ว"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:35
+#: packages/admin/src/components/TaxonomyManager.tsx:969
+msgid "Taxonomy deleted"
+msgstr ""
+
+#: packages/admin/src/components/TaxonomyManager.tsx:45
 msgid "Taxonomy not found: {taxonomyName}"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:346
+#: packages/admin/src/components/TaxonomyManager.tsx:358
 msgid "Taxonomy: {taxonomyName}"
 msgstr "อนุกรมวิธาน: {taxonomyName}"
 
@@ -9794,19 +9819,19 @@ msgstr "อนุกรมวิธาน: {taxonomyName}"
 msgid "Template:"
 msgstr "เทมเพลต:"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:544
-#: packages/admin/src/components/TaxonomyManager.tsx:545
-#: packages/admin/src/components/TaxonomyManager.tsx:1047
+#: packages/admin/src/components/TaxonomyManager.tsx:556
+#: packages/admin/src/components/TaxonomyManager.tsx:557
+#: packages/admin/src/components/TaxonomyManager.tsx:1082
 msgid "Term"
 msgstr "เทอม"
 
 #. placeholder {0}: term.label
 #. placeholder {1}: term.locale.toUpperCase()
-#: packages/admin/src/components/TaxonomyManager.tsx:994
+#: packages/admin/src/components/TaxonomyManager.tsx:1029
 msgid "Term \"{0}\" created in {1}."
 msgstr "สร้างเทอม \"{0}\" ใน {1} แล้ว"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:934
+#: packages/admin/src/components/TaxonomyManager.tsx:947
 msgid "Term deleted"
 msgstr "ลบเทอมแล้ว"
 
@@ -9883,7 +9908,7 @@ msgstr "ลบเมนูแล้ว"
 msgid "The name of your site, used in the header and metadata"
 msgstr "ชื่อเว็บไซต์ของคุณ ใช้ในส่วนหัวและข้อมูลเมตา"
 
-#: packages/admin/src/router.tsx:2875
+#: packages/admin/src/router.tsx:2876
 msgid "The page you're looking for doesn't exist."
 msgstr "ไม่พบหน้าที่คุณกำลังค้นหา"
 
@@ -10170,7 +10195,7 @@ msgid "This will move the item to trash. You can restore it later from the trash
 msgstr "การดำเนินการนี้จะย้ายรายการไปยังถังขยะ คุณสามารถกู้คืนได้ในภายหลังจากถังขยะ"
 
 #. placeholder {0}: deleteTarget?.label
-#: packages/admin/src/components/TaxonomyManager.tsx:1116
+#: packages/admin/src/components/TaxonomyManager.tsx:1173
 msgid "This will permanently delete \"{0}\" and remove it from all content."
 msgstr "การดำเนินการนี้จะลบ \"{0}\" อย่างถาวรและนำออกจากเนื้อหาทั้งหมด"
 
@@ -10274,29 +10299,29 @@ msgstr ""
 msgid "Translatable"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:271
-#: packages/admin/src/components/TaxonomyManager.tsx:381
+#: packages/admin/src/components/TaxonomyManager.tsx:283
+#: packages/admin/src/components/TaxonomyManager.tsx:393
 #: packages/admin/src/components/TranslationsPanel.tsx:104
 msgid "Translate"
 msgstr "แปล"
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:343
+#: packages/admin/src/components/TaxonomyManager.tsx:355
 msgid "Translate \"{0}\""
 msgstr "แปล \"{0}\""
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:268
+#: packages/admin/src/components/TaxonomyManager.tsx:280
 msgid "Translate {0}"
 msgstr "แปล {0}"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:381
+#: packages/admin/src/components/TaxonomyManager.tsx:393
 #: packages/admin/src/components/TranslationsPanel.tsx:104
 msgid "Translating..."
 msgstr "กำลังแปล..."
 
 #: packages/admin/src/components/MenuEditor.tsx:143
-#: packages/admin/src/components/TaxonomyManager.tsx:993
+#: packages/admin/src/components/TaxonomyManager.tsx:1028
 #: packages/admin/src/components/TaxonomySidebar.tsx:471
 #: packages/admin/src/router.tsx:1360
 msgid "Translation created"
@@ -10545,7 +10570,7 @@ msgstr "วิดเจ็ตไม่มีชื่อ"
 msgid "Up to {MAX_SELECTED} bylines can be selected"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:667
+#: packages/admin/src/components/TaxonomyManager.tsx:679
 msgid "Update"
 msgstr "อัปเดต"
 
@@ -10563,7 +10588,7 @@ msgid "Update site settings"
 msgstr "อัปเดตการตั้งค่าเว็บไซต์"
 
 #. placeholder {0}: taxonomyDef.labelSingular?.toLowerCase() || "term"
-#: packages/admin/src/components/TaxonomyManager.tsx:549
+#: packages/admin/src/components/TaxonomyManager.tsx:561
 msgid "Update the {0} details"
 msgstr "อัปเดตรายละเอียดของ {0}"
 
@@ -10790,7 +10815,7 @@ msgstr "ใช้ Passkey ที่ลงทะเบียนไว้เพื
 msgid "Used as the fallback Open Graph image when a page has none. Recommended size: 1200×630."
 msgstr "ใช้เป็นรูปภาพ Open Graph สำรองเมื่อหน้าไม่มีรูปภาพ ขนาดที่แนะนำ: 1200×630"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:834
+#: packages/admin/src/components/TaxonomyManager.tsx:846
 msgid "Used as the identifier. Lowercase letters, numbers, and underscores only."
 msgstr "ใช้เป็นตัวระบุ ใช้ได้เฉพาะตัวอักษรพิมพ์เล็ก ตัวเลข และขีดล่างเท่านั้น"
 
@@ -11051,7 +11076,7 @@ msgstr "เวลาที่เผยแพร่รายการ"
 msgid "Where is it saved?"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:848
+#: packages/admin/src/components/TaxonomyManager.tsx:860
 msgid "Which content types can use this taxonomy"
 msgstr "ประเภทเนื้อหาใดบ้างที่ใช้อนุกรมวิธานนี้ได้"
 

@@ -286,7 +286,7 @@ msgid "{0} banner"
 msgstr ""
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:233
+#: packages/admin/src/components/TaxonomyManager.tsx:245
 msgid "{0} can't be moved here — its parent has no translation in this locale, so this list isn't the group it belongs to."
 msgstr ""
 
@@ -861,7 +861,7 @@ msgstr ""
 #: packages/admin/src/components/ContentList.tsx:637
 #: packages/admin/src/components/ContentList.tsx:769
 #: packages/admin/src/components/ContentTypeList.tsx:190
-#: packages/admin/src/components/TaxonomyManager.tsx:1056
+#: packages/admin/src/components/TaxonomyManager.tsx:1113
 #: packages/admin/src/routes/byline-schema.tsx:249
 msgid "Actions"
 msgstr "الإجراءات"
@@ -887,8 +887,8 @@ msgstr "إضافة"
 #. placeholder {0}: taxonomyDef.labelSingular || t`Term`
 #: packages/admin/src/components/BylineCreditsEditor.tsx:498
 #: packages/admin/src/components/PortableTextEditor.tsx:2304
-#: packages/admin/src/components/TaxonomyManager.tsx:545
-#: packages/admin/src/components/TaxonomyManager.tsx:1047
+#: packages/admin/src/components/TaxonomyManager.tsx:557
+#: packages/admin/src/components/TaxonomyManager.tsx:1082
 msgid "Add {0}"
 msgstr "إضافة {0}"
 
@@ -1286,7 +1286,7 @@ msgstr ""
 #: packages/admin/src/router.tsx:2099
 #: packages/admin/src/router.tsx:2115
 #: packages/admin/src/router.tsx:2140
-#: packages/admin/src/router.tsx:2641
+#: packages/admin/src/router.tsx:2642
 #: packages/admin/src/routes/byline-schema.tsx:103
 #: packages/admin/src/routes/byline-schema.tsx:123
 #: packages/admin/src/routes/byline-schema.tsx:139
@@ -1516,7 +1516,7 @@ msgstr "تلقائي (تغيير جزء الرابط)"
 msgid "Auto-approve authenticated users"
 msgstr "الموافقة التلقائية على المستخدمين المسجّلين"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:591
+#: packages/admin/src/components/TaxonomyManager.tsx:603
 msgid "Auto-generated from name (you can edit)"
 msgstr "تم توليده تلقائيًا من الاسم (يمكنك التعديل)"
 
@@ -1809,9 +1809,9 @@ msgstr "يمكنه عرض المحتوى"
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:216
 #: packages/admin/src/components/settings/ApiTokenSettings.tsx:234
 #: packages/admin/src/components/settings/SecuritySettings.tsx:166
-#: packages/admin/src/components/TaxonomyManager.tsx:374
-#: packages/admin/src/components/TaxonomyManager.tsx:661
-#: packages/admin/src/components/TaxonomyManager.tsx:876
+#: packages/admin/src/components/TaxonomyManager.tsx:386
+#: packages/admin/src/components/TaxonomyManager.tsx:673
+#: packages/admin/src/components/TaxonomyManager.tsx:888
 #: packages/admin/src/components/users/InviteUserModal.tsx:198
 #: packages/admin/src/components/Widgets.tsx:451
 #: packages/admin/src/components/WordPressImport.tsx:1933
@@ -2168,13 +2168,13 @@ msgstr "إضغط على الرابط في البريد الإلكتروني لت
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:337
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:343
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:347
-#: packages/admin/src/components/TaxonomyManager.tsx:351
-#: packages/admin/src/components/TaxonomyManager.tsx:554
-#: packages/admin/src/components/TaxonomyManager.tsx:560
-#: packages/admin/src/components/TaxonomyManager.tsx:564
-#: packages/admin/src/components/TaxonomyManager.tsx:795
-#: packages/admin/src/components/TaxonomyManager.tsx:801
-#: packages/admin/src/components/TaxonomyManager.tsx:805
+#: packages/admin/src/components/TaxonomyManager.tsx:363
+#: packages/admin/src/components/TaxonomyManager.tsx:566
+#: packages/admin/src/components/TaxonomyManager.tsx:572
+#: packages/admin/src/components/TaxonomyManager.tsx:576
+#: packages/admin/src/components/TaxonomyManager.tsx:807
+#: packages/admin/src/components/TaxonomyManager.tsx:813
+#: packages/admin/src/components/TaxonomyManager.tsx:817
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:298
 #: packages/admin/src/components/users/InviteUserModal.tsx:88
 #: packages/admin/src/components/users/InviteUserModal.tsx:94
@@ -2243,7 +2243,7 @@ msgstr "مجموعة"
 msgid "Collection:"
 msgstr "المجموعة:"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:846
+#: packages/admin/src/components/TaxonomyManager.tsx:858
 msgid "Collections"
 msgstr "المجموعات"
 
@@ -2615,7 +2615,7 @@ msgstr ""
 msgid "Couldn't verify how many values reference \"{0}\". Deleting will still remove every stored value for this field — but the count above could not be checked."
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:1055
+#: packages/admin/src/components/TaxonomyManager.tsx:1112
 msgid "Count"
 msgstr "العدد"
 
@@ -2624,7 +2624,7 @@ msgstr "العدد"
 #: packages/admin/src/components/MenuList.tsx:178
 #: packages/admin/src/components/Redirects.tsx:192
 #: packages/admin/src/components/Sections.tsx:212
-#: packages/admin/src/components/TaxonomyManager.tsx:668
+#: packages/admin/src/components/TaxonomyManager.tsx:680
 #: packages/admin/src/components/Widgets.tsx:454
 #: packages/admin/src/routes/bylines.tsx:579
 msgid "Create"
@@ -2654,7 +2654,7 @@ msgid "Create a bullet list"
 msgstr "إنشاء قائمة نقطية"
 
 #. placeholder {0}: taxonomyDef.labelSingular?.toLowerCase() || "term"
-#: packages/admin/src/components/TaxonomyManager.tsx:550
+#: packages/admin/src/components/TaxonomyManager.tsx:562
 msgid "Create a new {0}"
 msgstr "إنشاء {0} جديد"
 
@@ -2745,8 +2745,8 @@ msgstr "إنشاء قسم"
 msgid "Create sections in the Sections library to use them here"
 msgstr "قم بإنشاء أقسام في مكتبة الأقسام لاستخدامها هنا"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:788
-#: packages/admin/src/components/TaxonomyManager.tsx:879
+#: packages/admin/src/components/TaxonomyManager.tsx:800
+#: packages/admin/src/components/TaxonomyManager.tsx:891
 msgid "Create Taxonomy"
 msgstr "إنشاء تصنيف"
 
@@ -2842,7 +2842,7 @@ msgstr ""
 #: packages/admin/src/components/Redirects.tsx:189
 #: packages/admin/src/components/Sections.tsx:212
 #: packages/admin/src/components/settings/ApiTokenSettings.tsx:540
-#: packages/admin/src/components/TaxonomyManager.tsx:879
+#: packages/admin/src/components/TaxonomyManager.tsx:891
 #: packages/admin/src/components/TaxonomySidebar.tsx:339
 msgid "Creating..."
 msgstr "جاري الإنشاء..."
@@ -2982,7 +2982,7 @@ msgstr "صورة التواصل الاجتماعي الافتراضية"
 msgid "Default Social Image"
 msgstr "صورة التواصل الاجتماعي الافتراضية"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:791
+#: packages/admin/src/components/TaxonomyManager.tsx:803
 msgid "Define a new taxonomy for classifying content"
 msgstr "قم بتعريف تصنيف جديد لتنظيم المحتوى"
 
@@ -3013,7 +3013,8 @@ msgstr "مُعرَّف في الكود"
 #: packages/admin/src/components/Sections.tsx:308
 #: packages/admin/src/components/Sections.tsx:407
 #: packages/admin/src/components/settings/BackupSettings.tsx:352
-#: packages/admin/src/components/TaxonomyManager.tsx:1118
+#: packages/admin/src/components/TaxonomyManager.tsx:1175
+#: packages/admin/src/components/TaxonomyManager.tsx:1191
 #: packages/admin/src/components/Widgets.tsx:716
 #: packages/admin/src/routes/byline-schema.tsx:378
 #: packages/admin/src/routes/bylines.tsx:588
@@ -3033,7 +3034,7 @@ msgstr ""
 #: packages/admin/src/components/Sections.tsx:408
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:275
 #: packages/admin/src/components/settings/BackupSettings.tsx:312
-#: packages/admin/src/components/TaxonomyManager.tsx:285
+#: packages/admin/src/components/TaxonomyManager.tsx:297
 #: packages/admin/src/components/Widgets.tsx:817
 #: packages/admin/src/routes/byline-schema.tsx:458
 msgid "Delete {0}"
@@ -3055,7 +3056,7 @@ msgid "Delete {0} widget area"
 msgstr "حذف منطقة عناصر الواجهة {0}"
 
 #. placeholder {0}: taxonomyDef.labelSingular || "Term"
-#: packages/admin/src/components/TaxonomyManager.tsx:1114
+#: packages/admin/src/components/TaxonomyManager.tsx:1171
 msgid "Delete {0}?"
 msgstr "حذف {0}؟"
 
@@ -3165,6 +3166,14 @@ msgstr "حذف القسم؟"
 msgid "Delete table"
 msgstr "حذف الجدول"
 
+#: packages/admin/src/components/TaxonomyManager.tsx:1102
+msgid "Delete taxonomy"
+msgstr ""
+
+#: packages/admin/src/components/TaxonomyManager.tsx:1189
+msgid "Delete Taxonomy"
+msgstr ""
+
 #: packages/admin/src/components/Widgets.tsx:714
 msgid "Delete Widget Area?"
 msgstr "حذف منطقة عناصر الواجهة؟"
@@ -3172,6 +3181,11 @@ msgstr "حذف منطقة عناصر الواجهة؟"
 #: packages/admin/src/components/ContentList.tsx:766
 msgid "Deleted"
 msgstr "محذوف"
+
+#. placeholder {0}: taxonomyDef.label
+#: packages/admin/src/components/TaxonomyManager.tsx:1190
+msgid "Deleting \"{0}\" also deletes every term in it, in all languages, and removes those terms from the content filed under them. The entries themselves are kept. This cannot be undone."
+msgstr ""
 
 #. placeholder {0}: deletingField.label
 #. placeholder {1}: deleteUsageQuery.data.totalAffectedRows
@@ -3189,7 +3203,8 @@ msgstr ""
 #: packages/admin/src/components/Redirects.tsx:604
 #: packages/admin/src/components/Sections.tsx:309
 #: packages/admin/src/components/settings/BackupSettings.tsx:353
-#: packages/admin/src/components/TaxonomyManager.tsx:1119
+#: packages/admin/src/components/TaxonomyManager.tsx:1176
+#: packages/admin/src/components/TaxonomyManager.tsx:1192
 #: packages/admin/src/components/Widgets.tsx:717
 #: packages/admin/src/routes/bylines.tsx:625
 msgid "Deleting..."
@@ -3250,7 +3265,7 @@ msgstr "قم بوصف الغرض من هذا القسم..."
 msgid "Description"
 msgstr "الوصف"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:623
+#: packages/admin/src/components/TaxonomyManager.tsx:635
 msgid "Description (optional)"
 msgstr "الوصف (اختياري)"
 
@@ -3635,8 +3650,8 @@ msgstr "تعديل"
 #: packages/admin/src/components/ContentTypeList.tsx:332
 #: packages/admin/src/components/PortableTextEditor.tsx:2085
 #: packages/admin/src/components/settings/AllowedDomainsSettings.tsx:263
-#: packages/admin/src/components/TaxonomyManager.tsx:277
-#: packages/admin/src/components/TaxonomyManager.tsx:544
+#: packages/admin/src/components/TaxonomyManager.tsx:289
+#: packages/admin/src/components/TaxonomyManager.tsx:556
 #: packages/admin/src/routes/byline-schema.tsx:449
 #: packages/admin/src/routes/bylines.tsx:476
 msgid "Edit {0}"
@@ -3968,9 +3983,9 @@ msgstr "أدخل رابط موقع WordPress الخاص بك"
 #: packages/admin/src/components/MenuEditor.tsx:193
 #: packages/admin/src/components/MenuEditor.tsx:233
 #: packages/admin/src/components/SetupWizard.tsx:532
-#: packages/admin/src/components/TaxonomyManager.tsx:947
+#: packages/admin/src/components/TaxonomyManager.tsx:982
 #: packages/admin/src/components/Widgets.tsx:769
-#: packages/admin/src/router.tsx:2858
+#: packages/admin/src/router.tsx:2859
 msgid "Error"
 msgstr "خطأ"
 
@@ -4192,7 +4207,11 @@ msgstr "فشل حذف إعادة التوجيه"
 msgid "Failed to delete section"
 msgstr "فشل حذف القسم"
 
-#: packages/admin/src/lib/api/taxonomies.ts:221
+#: packages/admin/src/lib/api/taxonomies.ts:145
+msgid "Failed to delete taxonomy"
+msgstr ""
+
+#: packages/admin/src/lib/api/taxonomies.ts:231
 msgid "Failed to delete term"
 msgstr "فشل حذف المصطلح"
 
@@ -4551,7 +4570,7 @@ msgstr "فشل إعادة كتابة الروابط"
 
 #: packages/admin/src/router.tsx:735
 #: packages/admin/src/router.tsx:1101
-#: packages/admin/src/router.tsx:2640
+#: packages/admin/src/router.tsx:2641
 msgid "Failed to save"
 msgstr "فشل الحفظ"
 
@@ -4967,7 +4986,7 @@ msgstr "الإعدادات العامة"
 msgid "Generated automatically."
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:816
+#: packages/admin/src/components/TaxonomyManager.tsx:828
 msgid "Genres"
 msgstr "الأنواع الأدبية"
 
@@ -4988,7 +5007,7 @@ msgid "Go"
 msgstr ""
 
 #: packages/admin/src/components/WordPressImport.tsx:2434
-#: packages/admin/src/router.tsx:2878
+#: packages/admin/src/router.tsx:2879
 msgid "Go to Dashboard"
 msgstr "الذهاب إلى لوحة المعلومات"
 
@@ -5127,7 +5146,7 @@ msgstr ""
 msgid "Hide toolbar"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:839
+#: packages/admin/src/components/TaxonomyManager.tsx:851
 msgid "Hierarchical (like categories, with parent/child relationships)"
 msgstr "هرمي (مثل الفئات، بعلاقات أب/ابن)"
 
@@ -5708,7 +5727,7 @@ msgstr ""
 #: packages/admin/src/components/MenuEditor.tsx:416
 #: packages/admin/src/components/MenuEditor.tsx:593
 #: packages/admin/src/components/MenuList.tsx:169
-#: packages/admin/src/components/TaxonomyManager.tsx:813
+#: packages/admin/src/components/TaxonomyManager.tsx:825
 #: packages/admin/src/components/Widgets.tsx:436
 #: packages/admin/src/routes/byline-schema.tsx:234
 msgid "Label"
@@ -5881,7 +5900,7 @@ msgstr "تحميل المزيد"
 msgid "Load more folders"
 msgstr ""
 
-#: packages/admin/src/router.tsx:2833
+#: packages/admin/src/router.tsx:2834
 msgid "Loading"
 msgstr ""
 
@@ -5897,8 +5916,8 @@ msgstr "جاري تحميل المجموعات..."
 msgid "Loading comments..."
 msgstr "جاري تحميل التعليقات..."
 
-#: packages/admin/src/router.tsx:2835
-#: packages/admin/src/router.tsx:2847
+#: packages/admin/src/router.tsx:2836
+#: packages/admin/src/router.tsx:2848
 msgid "Loading configuration..."
 msgstr "جارٍ تحميل الإعدادات..."
 
@@ -5964,7 +5983,7 @@ msgstr "جاري تحميل الإعدادات..."
 msgid "Loading setup..."
 msgstr "جاري تحميل الإعداد..."
 
-#: packages/admin/src/components/TaxonomyManager.tsx:1060
+#: packages/admin/src/components/TaxonomyManager.tsx:1117
 msgid "Loading terms..."
 msgstr "جاري تحميل المصطلحات..."
 
@@ -5996,7 +6015,7 @@ msgstr "جارٍ تحميل عناصر الواجهة..."
 #: packages/admin/src/components/settings/BackupSettings.tsx:154
 #: packages/admin/src/components/settings/EmailSettings.tsx:69
 #: packages/admin/src/components/settings/SecuritySettings.tsx:99
-#: packages/admin/src/components/TaxonomyManager.tsx:1014
+#: packages/admin/src/components/TaxonomyManager.tsx:1049
 #: packages/admin/src/components/ThemeMarketplaceBrowse.tsx:170
 #: packages/admin/src/components/ThemeMarketplaceBrowse.tsx:244
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:143
@@ -6066,7 +6085,7 @@ msgstr "نص طويل"
 msgid "Lowercase letters, numbers, and hyphens only"
 msgstr "أحرف صغيرة وأرقام وشرطات فقط"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:831
+#: packages/admin/src/components/TaxonomyManager.tsx:843
 msgid "Lowercase letters, numbers, and underscores only, starting with a letter"
 msgstr "أحرف صغيرة وأرقام وشرطات سفلية فقط، تبدأ بحرف"
 
@@ -6089,7 +6108,7 @@ msgstr "إدارة"
 
 #. placeholder {0}: taxonomyDef.label.toLowerCase()
 #. placeholder {1}: taxonomyDef.collections.join(", ")
-#: packages/admin/src/components/TaxonomyManager.tsx:1031
+#: packages/admin/src/components/TaxonomyManager.tsx:1066
 msgid "Manage {0} for {1}"
 msgstr "إدارة {0} لـ {1}"
 
@@ -6414,7 +6433,9 @@ msgid "Monthly/yearly archives"
 msgstr ""
 
 #. placeholder {0}: byline.displayName
+#. placeholder {0}: taxonomyDef.label
 #: packages/admin/src/components/BylineCreditsEditor.tsx:853
+#: packages/admin/src/components/TaxonomyManager.tsx:1092
 msgid "More actions for {0}"
 msgstr ""
 
@@ -6453,12 +6474,12 @@ msgid "Move \"{title}\" to trash? You can restore it later."
 msgstr "نقل \"{title}\" إلى سلة المحذوفات؟ يمكنك استعادته لاحقًا."
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:256
+#: packages/admin/src/components/TaxonomyManager.tsx:268
 msgid "Move {0} down"
 msgstr ""
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:255
+#: packages/admin/src/components/TaxonomyManager.tsx:267
 msgid "Move {0} down — unavailable, its parent has no translation in this locale"
 msgstr ""
 
@@ -6473,12 +6494,12 @@ msgid "Move {0} later"
 msgstr ""
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:243
+#: packages/admin/src/components/TaxonomyManager.tsx:255
 msgid "Move {0} up"
 msgstr ""
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:242
+#: packages/admin/src/components/TaxonomyManager.tsx:254
 msgid "Move {0} up — unavailable, its parent has no translation in this locale"
 msgstr ""
 
@@ -6577,20 +6598,20 @@ msgstr "مدونتي الرائعة"
 #: packages/admin/src/components/MarketplaceBrowse.tsx:45
 #: packages/admin/src/components/MediaFolderDialog.tsx:131
 #: packages/admin/src/components/MenuList.tsx:157
-#: packages/admin/src/components/TaxonomyManager.tsx:572
-#: packages/admin/src/components/TaxonomyManager.tsx:822
-#: packages/admin/src/components/TaxonomyManager.tsx:1054
+#: packages/admin/src/components/TaxonomyManager.tsx:584
+#: packages/admin/src/components/TaxonomyManager.tsx:834
+#: packages/admin/src/components/TaxonomyManager.tsx:1111
 #: packages/admin/src/components/ThemeMarketplaceBrowse.tsx:37
 #: packages/admin/src/components/users/UserDetail.tsx:148
 #: packages/admin/src/components/Widgets.tsx:430
 msgid "Name"
 msgstr "الاسم"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:748
+#: packages/admin/src/components/TaxonomyManager.tsx:760
 msgid "Name and label are required"
 msgstr "الاسم والتسمية مطلوبان"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:754
+#: packages/admin/src/components/TaxonomyManager.tsx:766
 msgid "Name must start with a letter and contain only lowercase letters, numbers, and underscores"
 msgstr "يجب أن يبدأ الاسم بحرف ويحتوي فقط على أحرف صغيرة وأرقام وشرطات سفلية"
 
@@ -6682,7 +6703,7 @@ msgstr "قسم جديد"
 msgid "new tab"
 msgstr "علامة تبويب جديدة"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:1044
+#: packages/admin/src/components/TaxonomyManager.tsx:1079
 msgid "New Taxonomy"
 msgstr "تصنيف جديد"
 
@@ -6698,7 +6719,7 @@ msgstr "نافذة جديدة"
 msgid "Newest"
 msgstr "الأحدث"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:575
+#: packages/admin/src/components/TaxonomyManager.tsx:587
 msgid "News"
 msgstr "أخبار"
 
@@ -6748,7 +6769,7 @@ msgid "No {0} yet."
 msgstr "لا يوجد {0} بعد."
 
 #. placeholder {0}: taxonomyDef.label.toLowerCase()
-#: packages/admin/src/components/TaxonomyManager.tsx:1063
+#: packages/admin/src/components/TaxonomyManager.tsx:1120
 msgid "No {0} yet. Create one to get started."
 msgstr "لا يوجد {0} بعد. قم بإنشاء أحدها للبدء."
 
@@ -7069,8 +7090,8 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:601
-#: packages/admin/src/components/TaxonomyManager.tsx:610
+#: packages/admin/src/components/TaxonomyManager.tsx:613
+#: packages/admin/src/components/TaxonomyManager.tsx:622
 msgid "None (top level)"
 msgstr "بدون (المستوى الأعلى)"
 
@@ -7209,7 +7230,7 @@ msgstr "تسمية توضيحية اختيارية تُعرض أسفل الصو�
 msgid "Optional caption for display"
 msgstr "تسمية توضيحية اختيارية للعرض"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:626
+#: packages/admin/src/components/TaxonomyManager.tsx:638
 msgid "Optional description"
 msgstr "وصف اختياري"
 
@@ -7292,7 +7313,7 @@ msgstr "الملكية"
 msgid "Package"
 msgstr "الحزمة"
 
-#: packages/admin/src/router.tsx:2873
+#: packages/admin/src/router.tsx:2874
 msgid "Page Not Found"
 msgstr "الصفحة غير موجودة"
 
@@ -7324,7 +7345,7 @@ msgid "Paragraph inserted before table"
 msgstr ""
 
 #: packages/admin/src/components/MenuEditor.tsx:615
-#: packages/admin/src/components/TaxonomyManager.tsx:597
+#: packages/admin/src/components/TaxonomyManager.tsx:609
 msgid "Parent"
 msgstr "الأب"
 
@@ -8412,7 +8433,7 @@ msgstr "جاري الاستعادة..."
 #: packages/admin/src/components/SandboxedContentEditorPanel.tsx:174
 #: packages/admin/src/components/ThemeMarketplaceBrowse.tsx:122
 #: packages/admin/src/lib/content-editor-panels.tsx:201
-#: packages/admin/src/router.tsx:2861
+#: packages/admin/src/router.tsx:2862
 #: packages/admin/src/routes/byline-schema.tsx:280
 msgid "Retry"
 msgstr "إعادة المحاولة"
@@ -8674,7 +8695,7 @@ msgstr ""
 #: packages/admin/src/components/PluginSettings.tsx:209
 #: packages/admin/src/components/Redirects.tsx:188
 #: packages/admin/src/components/SaveButton.tsx:33
-#: packages/admin/src/components/TaxonomyManager.tsx:665
+#: packages/admin/src/components/TaxonomyManager.tsx:677
 #: packages/admin/src/components/users/UserDetail.tsx:311
 #: packages/admin/src/components/Widgets.tsx:983
 #: packages/admin/src/routes/bylines.tsx:579
@@ -9495,7 +9516,7 @@ msgstr "تم التخطي"
 #: packages/admin/src/components/FieldEditor.tsx:454
 #: packages/admin/src/components/SectionEditor.tsx:280
 #: packages/admin/src/components/Sections.tsx:184
-#: packages/admin/src/components/TaxonomyManager.tsx:581
+#: packages/admin/src/components/TaxonomyManager.tsx:593
 #: packages/admin/src/routes/byline-schema.tsx:237
 #: packages/admin/src/routes/bylines.tsx:486
 msgid "Slug"
@@ -9769,7 +9790,7 @@ msgstr ""
 msgid "Target"
 msgstr "الهدف"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:359
+#: packages/admin/src/components/TaxonomyManager.tsx:371
 msgid "Target locale"
 msgstr "اللغة المستهدفة"
 
@@ -9782,15 +9803,19 @@ msgstr "التصنيفات"
 msgid "Taxonomies Manage"
 msgstr "إدارة التصنيفات"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:1130
+#: packages/admin/src/components/TaxonomyManager.tsx:1203
 msgid "Taxonomy created"
 msgstr "تم إنشاء التصنيف"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:35
+#: packages/admin/src/components/TaxonomyManager.tsx:969
+msgid "Taxonomy deleted"
+msgstr ""
+
+#: packages/admin/src/components/TaxonomyManager.tsx:45
 msgid "Taxonomy not found: {taxonomyName}"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:346
+#: packages/admin/src/components/TaxonomyManager.tsx:358
 msgid "Taxonomy: {taxonomyName}"
 msgstr "التصنيف: {taxonomyName}"
 
@@ -9798,19 +9823,19 @@ msgstr "التصنيف: {taxonomyName}"
 msgid "Template:"
 msgstr "القالب:"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:544
-#: packages/admin/src/components/TaxonomyManager.tsx:545
-#: packages/admin/src/components/TaxonomyManager.tsx:1047
+#: packages/admin/src/components/TaxonomyManager.tsx:556
+#: packages/admin/src/components/TaxonomyManager.tsx:557
+#: packages/admin/src/components/TaxonomyManager.tsx:1082
 msgid "Term"
 msgstr "المصطلح"
 
 #. placeholder {0}: term.label
 #. placeholder {1}: term.locale.toUpperCase()
-#: packages/admin/src/components/TaxonomyManager.tsx:994
+#: packages/admin/src/components/TaxonomyManager.tsx:1029
 msgid "Term \"{0}\" created in {1}."
 msgstr "تم إنشاء المصطلح \"{0}\" في {1}."
 
-#: packages/admin/src/components/TaxonomyManager.tsx:934
+#: packages/admin/src/components/TaxonomyManager.tsx:947
 msgid "Term deleted"
 msgstr "تم حذف المصطلح"
 
@@ -9887,7 +9912,7 @@ msgstr "تم حذف القائمة."
 msgid "The name of your site, used in the header and metadata"
 msgstr "اسم موقعك، يُستخدم في الترويسة والبيانات الوصفية"
 
-#: packages/admin/src/router.tsx:2875
+#: packages/admin/src/router.tsx:2876
 msgid "The page you're looking for doesn't exist."
 msgstr "الصفحة التي تبحث عنها غير موجودة."
 
@@ -10174,7 +10199,7 @@ msgid "This will move the item to trash. You can restore it later from the trash
 msgstr "سيؤدي هذا إلى نقل العنصر إلى سلة المحذوفات. يمكنك استعادته لاحقًا من سلة المحذوفات."
 
 #. placeholder {0}: deleteTarget?.label
-#: packages/admin/src/components/TaxonomyManager.tsx:1116
+#: packages/admin/src/components/TaxonomyManager.tsx:1173
 msgid "This will permanently delete \"{0}\" and remove it from all content."
 msgstr "سيؤدي هذا إلى حذف \"{0}\" نهائيًا وإزالته من جميع المحتوى."
 
@@ -10278,29 +10303,29 @@ msgstr ""
 msgid "Translatable"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:271
-#: packages/admin/src/components/TaxonomyManager.tsx:381
+#: packages/admin/src/components/TaxonomyManager.tsx:283
+#: packages/admin/src/components/TaxonomyManager.tsx:393
 #: packages/admin/src/components/TranslationsPanel.tsx:104
 msgid "Translate"
 msgstr "ترجمة"
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:343
+#: packages/admin/src/components/TaxonomyManager.tsx:355
 msgid "Translate \"{0}\""
 msgstr "ترجمة \"{0}\""
 
 #. placeholder {0}: term.label
-#: packages/admin/src/components/TaxonomyManager.tsx:268
+#: packages/admin/src/components/TaxonomyManager.tsx:280
 msgid "Translate {0}"
 msgstr "ترجمة {0}"
 
-#: packages/admin/src/components/TaxonomyManager.tsx:381
+#: packages/admin/src/components/TaxonomyManager.tsx:393
 #: packages/admin/src/components/TranslationsPanel.tsx:104
 msgid "Translating..."
 msgstr "جارٍ الترجمة..."
 
 #: packages/admin/src/components/MenuEditor.tsx:143
-#: packages/admin/src/components/TaxonomyManager.tsx:993
+#: packages/admin/src/components/TaxonomyManager.tsx:1028
 #: packages/admin/src/components/TaxonomySidebar.tsx:471
 #: packages/admin/src/router.tsx:1360
 msgid "Translation created"
@@ -10549,7 +10574,7 @@ msgstr "عنصر واجهة بلا عنوان"
 msgid "Up to {MAX_SELECTED} bylines can be selected"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:667
+#: packages/admin/src/components/TaxonomyManager.tsx:679
 msgid "Update"
 msgstr "تحديث"
 
@@ -10567,7 +10592,7 @@ msgid "Update site settings"
 msgstr "تحديث إعدادات الموقع"
 
 #. placeholder {0}: taxonomyDef.labelSingular?.toLowerCase() || "term"
-#: packages/admin/src/components/TaxonomyManager.tsx:549
+#: packages/admin/src/components/TaxonomyManager.tsx:561
 msgid "Update the {0} details"
 msgstr "تحديث تفاصيل {0}"
 
@@ -10794,7 +10819,7 @@ msgstr "قم باستخدام مفتاح المرور المسجل الخاص ب
 msgid "Used as the fallback Open Graph image when a page has none. Recommended size: 1200×630."
 msgstr "تُستخدم صورةً احتياطية لـ Open Graph حين لا تحتوي الصفحة على صورة. الحجم الموصى به: 1200×630."
 
-#: packages/admin/src/components/TaxonomyManager.tsx:834
+#: packages/admin/src/components/TaxonomyManager.tsx:846
 msgid "Used as the identifier. Lowercase letters, numbers, and underscores only."
 msgstr "يُستخدم كمعرف. أحرف صغيرة وأرقام وشرطات سفلية فقط."
 
@@ -11055,7 +11080,7 @@ msgstr "متى تم نشر المُدخل"
 msgid "Where is it saved?"
 msgstr ""
 
-#: packages/admin/src/components/TaxonomyManager.tsx:848
+#: packages/admin/src/components/TaxonomyManager.tsx:860
 msgid "Which content types can use this taxonomy"
 msgstr "أنواع المحتوى التي يمكنها استخدام هذا التصنيف"
 
