@@ -53,7 +53,7 @@ msgstr ""
 msgid "\"{0}\" will be permanently deleted."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:597
+#: packages/admin/src/components/RegistryPluginDetail.tsx:598
 msgid "(pre-release)"
 msgstr "(إصدار أولي)"
 
@@ -61,7 +61,7 @@ msgstr "(إصدار أولي)"
 msgid "(synced)"
 msgstr "(متزامن)"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:600
+#: packages/admin/src/components/RegistryPluginDetail.tsx:601
 msgid "(too new)"
 msgstr "(حديث جدًا)"
 
@@ -265,7 +265,7 @@ msgstr ""
 #. placeholder {0}: envLabel(m.key)
 #. placeholder {1}: m.required
 #. placeholder {2}: m.host
-#: packages/admin/src/components/RegistryPluginDetail.tsx:703
+#: packages/admin/src/components/RegistryPluginDetail.tsx:705
 msgid "{0} {1} required — you have {2}."
 msgstr ""
 
@@ -281,7 +281,7 @@ msgid "{0} added to this post."
 msgstr ""
 
 #. placeholder {0}: displayName ?? slug
-#: packages/admin/src/components/RegistryPluginDetail.tsx:507
+#: packages/admin/src/components/RegistryPluginDetail.tsx:508
 msgid "{0} banner"
 msgstr ""
 
@@ -311,7 +311,7 @@ msgid "{0} has been removed"
 msgstr "تم إزالة {0}"
 
 #. placeholder {0}: displayName ?? slug
-#: packages/admin/src/components/RegistryPluginDetail.tsx:519
+#: packages/admin/src/components/RegistryPluginDetail.tsx:520
 msgid "{0} icon"
 msgstr ""
 
@@ -1500,7 +1500,7 @@ msgstr ""
 msgid "Authorizing..."
 msgstr "جاري التفويض..."
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:752
+#: packages/admin/src/components/RegistryPluginDetail.tsx:754
 msgid "Authors"
 msgstr "المؤلفون"
 
@@ -1599,7 +1599,7 @@ msgid "Back to marketplace"
 msgstr "العودة إلى السوق"
 
 #: packages/admin/src/components/PluginSettings.tsx:118
-#: packages/admin/src/components/RegistryPluginDetail.tsx:893
+#: packages/admin/src/components/RegistryPluginDetail.tsx:898
 msgid "Back to plugins"
 msgstr "العودة إلى الإضافات"
 
@@ -1940,7 +1940,7 @@ msgstr ""
 msgid "Change where visitors are sent"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:881
+#: packages/admin/src/components/RegistryPluginDetail.tsx:886
 msgid "Changelog"
 msgstr ""
 
@@ -2957,7 +2957,7 @@ msgstr ""
 msgid "Decimal number"
 msgstr "عدد عشري"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:817
+#: packages/admin/src/components/RegistryPluginDetail.tsx:819
 msgid "Declared permissions"
 msgstr "الصلاحيات المُعلنة"
 
@@ -3258,7 +3258,7 @@ msgid "Describe what this section is for..."
 msgstr "قم بوصف الغرض من هذا القسم..."
 
 #: packages/admin/src/components/ContentTypeEditor.tsx:425
-#: packages/admin/src/components/RegistryPluginDetail.tsx:878
+#: packages/admin/src/components/RegistryPluginDetail.tsx:883
 #: packages/admin/src/components/SectionEditor.tsx:295
 #: packages/admin/src/components/Sections.tsx:200
 #: packages/admin/src/components/Widgets.tsx:438
@@ -3511,7 +3511,7 @@ msgstr ""
 msgid "Download backups and schedule automatic backups to storage"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:560
+#: packages/admin/src/components/RegistryPluginDetail.tsx:561
 msgid "Download SBOM"
 msgstr ""
 
@@ -4013,7 +4013,7 @@ msgstr ""
 msgid "Every place using this image will update to the selected version."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:663
+#: packages/admin/src/components/RegistryPluginDetail.tsx:665
 msgid "Every published release of this plugin has been withdrawn or could not be verified. Check back later, or contact the publisher."
 msgstr "كل الإصدارات المنشورة لهذه الإضافة تم سحبها أو تعذّر التحقق منها. تحقق لاحقًا أو تواصل مع الناشر."
 
@@ -4403,7 +4403,7 @@ msgid "Failed to import media"
 msgstr "فشل استيراد الوسائط"
 
 #: packages/admin/src/lib/api/marketplace.ts:344
-#: packages/admin/src/lib/api/registry.ts:797
+#: packages/admin/src/lib/api/registry.ts:826
 msgid "Failed to install plugin"
 msgstr "فشل تثبيت الإضافة"
 
@@ -4616,7 +4616,7 @@ msgid "Failed to set entry terms"
 msgstr "فشل تعيين مصطلحات المدخل"
 
 #: packages/admin/src/lib/api/marketplace.ts:387
-#: packages/admin/src/lib/api/registry.ts:1011
+#: packages/admin/src/lib/api/registry.ts:1040
 msgid "Failed to uninstall plugin"
 msgstr "فشل إلغاء تثبيت الإضافة"
 
@@ -4655,7 +4655,7 @@ msgstr ""
 
 #: packages/admin/src/components/PluginManager.tsx:314
 #: packages/admin/src/lib/api/marketplace.ts:370
-#: packages/admin/src/lib/api/registry.ts:886
+#: packages/admin/src/lib/api/registry.ts:915
 msgid "Failed to update plugin"
 msgstr "فشل تحديث الإضافة"
 
@@ -4695,7 +4695,7 @@ msgstr ""
 msgid "Failed to verify authentication"
 msgstr "فشل التحقق من المصادقة"
 
-#: packages/admin/src/lib/api/registry.ts:769
+#: packages/admin/src/lib/api/registry.ts:770
 msgid "Failed to verify plugin"
 msgstr ""
 
@@ -4703,7 +4703,7 @@ msgstr ""
 msgid "Failed to verify registration"
 msgstr "فشل التحقق من التسجيل"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:880
+#: packages/admin/src/components/RegistryPluginDetail.tsx:885
 msgid "FAQ"
 msgstr ""
 
@@ -5421,7 +5421,7 @@ msgid "Index existing content and keep Used in results up to date."
 msgstr ""
 
 #: packages/admin/src/components/FieldEditor.tsx:491
-#: packages/admin/src/components/RegistryPluginDetail.tsx:574
+#: packages/admin/src/components/RegistryPluginDetail.tsx:575
 msgid "Indexed"
 msgstr ""
 
@@ -5530,7 +5530,7 @@ msgid "Instagram"
 msgstr "إنستغرام"
 
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:213
-#: packages/admin/src/components/RegistryPluginDetail.tsx:625
+#: packages/admin/src/components/RegistryPluginDetail.tsx:626
 msgid "Install"
 msgstr "تثبيت"
 
@@ -5546,7 +5546,7 @@ msgstr "تم حظر التثبيت"
 msgid "Install the EmDash Exporter plugin on your WordPress site and generate a key under Tools → EmDash Migration."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:879
+#: packages/admin/src/components/RegistryPluginDetail.tsx:884
 msgid "Installation"
 msgstr ""
 
@@ -5557,7 +5557,7 @@ msgstr ""
 #: packages/admin/src/components/MarketplaceBrowse.tsx:263
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:194
 #: packages/admin/src/components/RegistryBrowse.tsx:234
-#: packages/admin/src/components/RegistryPluginDetail.tsx:610
+#: packages/admin/src/components/RegistryPluginDetail.tsx:611
 msgid "Installed"
 msgstr "مثبَّت"
 
@@ -5651,7 +5651,7 @@ msgstr "تم حذف العنصر"
 msgid "Item updated"
 msgstr "تم تحديث العنصر"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:478
+#: packages/admin/src/components/RegistryPluginDetail.tsx:479
 msgid "Its listing has not been approved for display. Check back later."
 msgstr ""
 
@@ -6895,7 +6895,7 @@ msgstr "لا يوجد عناوين في المستند"
 msgid "No images in this gallery yet."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:661
+#: packages/admin/src/components/RegistryPluginDetail.tsx:663
 msgid "No installable releases"
 msgstr "لا توجد إصدارات قابلة للتثبيت"
 
@@ -7095,7 +7095,7 @@ msgstr ""
 msgid "None (top level)"
 msgstr "بدون (المستوى الأعلى)"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:696
+#: packages/admin/src/components/RegistryPluginDetail.tsx:698
 msgid "Not compatible with this environment"
 msgstr ""
 
@@ -7551,7 +7551,7 @@ msgstr ""
 msgid "Plugin column unavailable"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:829
+#: packages/admin/src/components/RegistryPluginDetail.tsx:831
 msgid "Plugin details"
 msgstr ""
 
@@ -7592,7 +7592,7 @@ msgstr ""
 msgid "Plugin not found"
 msgstr "لم يتم العثور على الإضافة"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:493
+#: packages/admin/src/components/RegistryPluginDetail.tsx:494
 msgid "Plugin not found. The publisher or slug may be incorrect."
 msgstr ""
 
@@ -7639,7 +7639,7 @@ msgid "Plugin uninstalled"
 msgstr "تم إلغاء تثبيت الإضافة"
 
 #: packages/admin/src/lib/api/marketplace.ts:232
-#: packages/admin/src/lib/api/registry.ts:926
+#: packages/admin/src/lib/api/registry.ts:955
 msgid "Plugin update requires re-consent"
 msgstr "تحديث الإضافة يستلزم الموافقة من جديد"
 
@@ -7689,7 +7689,7 @@ msgstr ""
 msgid "Posts Per Page"
 msgstr "المنشورات لكل صفحة"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:546
+#: packages/admin/src/components/RegistryPluginDetail.tsx:547
 msgid "Pre-release"
 msgstr "إصدار أولي"
 
@@ -7840,7 +7840,7 @@ msgstr ""
 msgid "Published At"
 msgstr "تم النشر في"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:538
+#: packages/admin/src/components/RegistryPluginDetail.tsx:539
 msgid "Published by <0/>"
 msgstr ""
 
@@ -7852,7 +7852,7 @@ msgstr ""
 msgid "Publisher approval required only for permission escalation"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:646
+#: packages/admin/src/components/RegistryPluginDetail.tsx:648
 msgid "Publisher handle verification failed"
 msgstr ""
 
@@ -8060,7 +8060,7 @@ msgstr "المستودع"
 msgid "Release CID"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:677
+#: packages/admin/src/components/RegistryPluginDetail.tsx:679
 msgid "Release is too new to install"
 msgstr "الإصدار حديث جدًا للتثبيت"
 
@@ -8706,12 +8706,12 @@ msgstr "جاري الحفظ..."
 msgid "Saving…"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:550
+#: packages/admin/src/components/RegistryPluginDetail.tsx:551
 msgid "SBOM"
 msgstr ""
 
 #. placeholder {0}: sbom.format
-#: packages/admin/src/components/RegistryPluginDetail.tsx:548
+#: packages/admin/src/components/RegistryPluginDetail.tsx:549
 msgid "SBOM · {0}"
 msgstr ""
 
@@ -8780,7 +8780,7 @@ msgstr "النطاقات"
 #. placeholder {0}: i + 1
 #. placeholder {0}: index + 1
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:264
-#: packages/admin/src/components/RegistryPluginDetail.tsx:722
+#: packages/admin/src/components/RegistryPluginDetail.tsx:724
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:174
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:293
 msgid "Screenshot {0}"
@@ -8801,7 +8801,7 @@ msgid "Screenshot viewer"
 msgstr "عارض لقطات الشاشة"
 
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:254
-#: packages/admin/src/components/RegistryPluginDetail.tsx:716
+#: packages/admin/src/components/RegistryPluginDetail.tsx:718
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:164
 msgid "Screenshots"
 msgstr "لقطات الشاشة"
@@ -8994,7 +8994,7 @@ msgstr "أقسام"
 msgid "Secure your account"
 msgstr "تأمين حسابك"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:882
+#: packages/admin/src/components/RegistryPluginDetail.tsx:887
 #: packages/admin/src/components/Settings.tsx:85
 msgid "Security"
 msgstr "الأمن"
@@ -9023,7 +9023,7 @@ msgstr "التدقيق الأمني صنّف هذه الإضافة على أنه
 msgid "Security audit passed"
 msgstr "نجح التدقيق الأمني"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:785
+#: packages/admin/src/components/RegistryPluginDetail.tsx:787
 msgid "Security contacts"
 msgstr "جهات الاتصال الأمني"
 
@@ -9075,7 +9075,7 @@ msgstr ""
 msgid "Select a menu..."
 msgstr "اختر قائمة..."
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:397
+#: packages/admin/src/components/RegistryPluginDetail.tsx:398
 msgid "Select a release before verifying it"
 msgstr ""
 
@@ -9929,7 +9929,7 @@ msgid "The public URL of your site (used for canonical links and sitemaps)"
 msgstr "الرابط العام لموقعك (يُستخدم للروابط الأساسية وخرائط الموقع)"
 
 #: packages/admin/src/components/RegistryBrowse.tsx:219
-#: packages/admin/src/components/RegistryPluginDetail.tsx:532
+#: packages/admin/src/components/RegistryPluginDetail.tsx:533
 msgid "The publisher identity cannot be verified."
 msgstr ""
 
@@ -10109,6 +10109,18 @@ msgstr ""
 msgid "This permanently deletes {0} from storage."
 msgstr ""
 
+#: packages/admin/src/lib/api/registry.ts:785
+msgid "This plugin cannot be installed because its publisher profile is missing valid verification metadata. Ask the publisher to republish it with the latest EmDash plugin CLI."
+msgstr ""
+
+#: packages/admin/src/lib/api/registry.ts:793
+msgid "This plugin cannot be installed because its release provenance could not be verified. Ask the publisher to publish a new verified release."
+msgstr ""
+
+#: packages/admin/src/lib/api/registry.ts:797
+msgid "This plugin cannot be installed because its signed publisher records failed verification. Ask the publisher to publish a corrected release."
+msgstr ""
+
 #: packages/admin/src/components/CapabilityConsentDialog.tsx:201
 msgid "This plugin exposes the following routes without authentication:"
 msgstr ""
@@ -10117,7 +10129,7 @@ msgstr ""
 msgid "This plugin has no configurable settings."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:476
+#: packages/admin/src/components/RegistryPluginDetail.tsx:477
 msgid "This plugin is not available yet"
 msgstr ""
 
@@ -10129,7 +10141,7 @@ msgstr "لا تتطلب هذه الإضافة صلاحيات خاصة."
 msgid "This publisher identity no longer resolves."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:648
+#: packages/admin/src/components/RegistryPluginDetail.tsx:650
 msgid "This publisher's handle does not resolve back to its identity. Installation is disabled until the publisher fixes their handle."
 msgstr ""
 
@@ -10137,7 +10149,7 @@ msgstr ""
 msgid "This redirect rule will be permanently removed."
 msgstr "سيتم إزالة قاعدة إعادة التوجيه هذه بشكل نهائي."
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:698
+#: packages/admin/src/components/RegistryPluginDetail.tsx:700
 msgid "This release requires a newer environment than your site currently runs. Upgrade before installing."
 msgstr ""
 
@@ -10607,7 +10619,7 @@ msgstr "التحديث إلى الإصدار {0}"
 
 #: packages/admin/src/components/ContentList.tsx:869
 #: packages/admin/src/components/ContentSettingsPanel.tsx:982
-#: packages/admin/src/components/RegistryPluginDetail.tsx:569
+#: packages/admin/src/components/RegistryPluginDetail.tsx:570
 msgid "Updated"
 msgstr ""
 
@@ -10894,7 +10906,7 @@ msgstr "التحقق"
 msgid "Verified publisher"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:414
+#: packages/admin/src/components/RegistryPluginDetail.tsx:415
 msgid "Verify the plugin before installing it"
 msgstr ""
 
@@ -10908,18 +10920,18 @@ msgstr "جاري التحقق من رابطك..."
 
 #: packages/admin/src/components/auth/PasskeyLogin.tsx:212
 #: packages/admin/src/components/auth/PasskeyRegistration.tsx:372
-#: packages/admin/src/components/RegistryPluginDetail.tsx:625
+#: packages/admin/src/components/RegistryPluginDetail.tsx:626
 msgid "Verifying..."
 msgstr "جاري التحقق..."
 
 #: packages/admin/src/components/CapabilityConsentDialog.tsx:105
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:341
-#: packages/admin/src/components/RegistryPluginDetail.tsx:583
+#: packages/admin/src/components/RegistryPluginDetail.tsx:584
 msgid "Version"
 msgstr "الإصدار"
 
 #. placeholder {0}: release.version
-#: packages/admin/src/components/RegistryPluginDetail.tsx:545
+#: packages/admin/src/components/RegistryPluginDetail.tsx:546
 msgid "Version {0}"
 msgstr "الإصدار {0}"
 
@@ -10951,11 +10963,11 @@ msgstr ""
 msgid "View Site"
 msgstr "عرض الموقع"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:743
+#: packages/admin/src/components/RegistryPluginDetail.tsx:745
 msgid "View source"
 msgstr "عرض المصدر"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:985
+#: packages/admin/src/components/RegistryPluginDetail.tsx:990
 msgid "View the {license} license on spdx.org"
 msgstr "عرض رخصة {license} على spdx.org"
 
@@ -11028,7 +11040,7 @@ msgid "WebAuthn is not supported in this browser"
 msgstr "WebAuthn غير مدعوم في هذا المتصفح"
 
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:246
-#: packages/admin/src/components/RegistryPluginDetail.tsx:768
+#: packages/admin/src/components/RegistryPluginDetail.tsx:770
 msgid "Website"
 msgstr "الموقع الإلكتروني"
 
@@ -11420,7 +11432,7 @@ msgid "Your Role"
 msgstr "دورك"
 
 #. placeholder {0}: formatHoldback(config.policy?.minimumReleaseAgeSeconds ?? 0)
-#: packages/admin/src/components/RegistryPluginDetail.tsx:679
+#: packages/admin/src/components/RegistryPluginDetail.tsx:681
 msgid "Your site requires releases to be at least {0} old before they can be installed. This release will become installable later."
 msgstr "يشترط موقعك أن تكون الإصدارات مضى عليها ما لا يقل عن {0} قبل تثبيتها. سيصبح هذا الإصدار قابلاً للتثبيت لاحقًا."
 

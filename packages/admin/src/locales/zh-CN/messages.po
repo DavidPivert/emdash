@@ -49,7 +49,7 @@ msgstr ""
 msgid "\"{0}\" will be permanently deleted."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:597
+#: packages/admin/src/components/RegistryPluginDetail.tsx:598
 msgid "(pre-release)"
 msgstr "（预发布）"
 
@@ -57,7 +57,7 @@ msgstr "（预发布）"
 msgid "(synced)"
 msgstr "（已同步）"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:600
+#: packages/admin/src/components/RegistryPluginDetail.tsx:601
 msgid "(too new)"
 msgstr "（版本过高）"
 
@@ -261,7 +261,7 @@ msgstr ""
 #. placeholder {0}: envLabel(m.key)
 #. placeholder {1}: m.required
 #. placeholder {2}: m.host
-#: packages/admin/src/components/RegistryPluginDetail.tsx:703
+#: packages/admin/src/components/RegistryPluginDetail.tsx:705
 msgid "{0} {1} required — you have {2}."
 msgstr "{0} {1} 必需 — 您有 {2}。"
 
@@ -277,7 +277,7 @@ msgid "{0} added to this post."
 msgstr ""
 
 #. placeholder {0}: displayName ?? slug
-#: packages/admin/src/components/RegistryPluginDetail.tsx:507
+#: packages/admin/src/components/RegistryPluginDetail.tsx:508
 msgid "{0} banner"
 msgstr "{0} 横幅"
 
@@ -307,7 +307,7 @@ msgid "{0} has been removed"
 msgstr "{0} 已移除"
 
 #. placeholder {0}: displayName ?? slug
-#: packages/admin/src/components/RegistryPluginDetail.tsx:519
+#: packages/admin/src/components/RegistryPluginDetail.tsx:520
 msgid "{0} icon"
 msgstr "{0} 图标"
 
@@ -1496,7 +1496,7 @@ msgstr ""
 msgid "Authorizing..."
 msgstr "授权中..."
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:752
+#: packages/admin/src/components/RegistryPluginDetail.tsx:754
 msgid "Authors"
 msgstr "作者"
 
@@ -1595,7 +1595,7 @@ msgid "Back to marketplace"
 msgstr "返回市场"
 
 #: packages/admin/src/components/PluginSettings.tsx:118
-#: packages/admin/src/components/RegistryPluginDetail.tsx:893
+#: packages/admin/src/components/RegistryPluginDetail.tsx:898
 msgid "Back to plugins"
 msgstr "返回插件列表"
 
@@ -1936,7 +1936,7 @@ msgstr ""
 msgid "Change where visitors are sent"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:881
+#: packages/admin/src/components/RegistryPluginDetail.tsx:886
 msgid "Changelog"
 msgstr "更新日志"
 
@@ -2953,7 +2953,7 @@ msgstr ""
 msgid "Decimal number"
 msgstr "十进制数字"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:817
+#: packages/admin/src/components/RegistryPluginDetail.tsx:819
 msgid "Declared permissions"
 msgstr "声明的权限"
 
@@ -3254,7 +3254,7 @@ msgid "Describe what this section is for..."
 msgstr "描述此区块的用途..."
 
 #: packages/admin/src/components/ContentTypeEditor.tsx:425
-#: packages/admin/src/components/RegistryPluginDetail.tsx:878
+#: packages/admin/src/components/RegistryPluginDetail.tsx:883
 #: packages/admin/src/components/SectionEditor.tsx:295
 #: packages/admin/src/components/Sections.tsx:200
 #: packages/admin/src/components/Widgets.tsx:438
@@ -3507,7 +3507,7 @@ msgstr ""
 msgid "Download backups and schedule automatic backups to storage"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:560
+#: packages/admin/src/components/RegistryPluginDetail.tsx:561
 msgid "Download SBOM"
 msgstr "下载 SBOM"
 
@@ -4012,7 +4012,7 @@ msgstr ""
 msgid "Every place using this image will update to the selected version."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:663
+#: packages/admin/src/components/RegistryPluginDetail.tsx:665
 msgid "Every published release of this plugin has been withdrawn or could not be verified. Check back later, or contact the publisher."
 msgstr "此插件的每个已发布版本均已撤回或无法验证。请稍后查看，或联系发布者。"
 
@@ -4402,7 +4402,7 @@ msgid "Failed to import media"
 msgstr "导入媒体失败"
 
 #: packages/admin/src/lib/api/marketplace.ts:344
-#: packages/admin/src/lib/api/registry.ts:797
+#: packages/admin/src/lib/api/registry.ts:826
 msgid "Failed to install plugin"
 msgstr "安装插件失败"
 
@@ -4615,7 +4615,7 @@ msgid "Failed to set entry terms"
 msgstr "设置条目词条失败"
 
 #: packages/admin/src/lib/api/marketplace.ts:387
-#: packages/admin/src/lib/api/registry.ts:1011
+#: packages/admin/src/lib/api/registry.ts:1040
 msgid "Failed to uninstall plugin"
 msgstr "卸载插件失败"
 
@@ -4654,7 +4654,7 @@ msgstr "更新媒体失败"
 
 #: packages/admin/src/components/PluginManager.tsx:314
 #: packages/admin/src/lib/api/marketplace.ts:370
-#: packages/admin/src/lib/api/registry.ts:886
+#: packages/admin/src/lib/api/registry.ts:915
 msgid "Failed to update plugin"
 msgstr "更新插件失败"
 
@@ -4694,7 +4694,7 @@ msgstr "上传到提供者失败"
 msgid "Failed to verify authentication"
 msgstr "验证身份认证失败"
 
-#: packages/admin/src/lib/api/registry.ts:769
+#: packages/admin/src/lib/api/registry.ts:770
 msgid "Failed to verify plugin"
 msgstr ""
 
@@ -4702,7 +4702,7 @@ msgstr ""
 msgid "Failed to verify registration"
 msgstr "验证注册失败"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:880
+#: packages/admin/src/components/RegistryPluginDetail.tsx:885
 msgid "FAQ"
 msgstr "常见问题"
 
@@ -5420,7 +5420,7 @@ msgid "Index existing content and keep Used in results up to date."
 msgstr ""
 
 #: packages/admin/src/components/FieldEditor.tsx:491
-#: packages/admin/src/components/RegistryPluginDetail.tsx:574
+#: packages/admin/src/components/RegistryPluginDetail.tsx:575
 msgid "Indexed"
 msgstr "已索引"
 
@@ -5529,7 +5529,7 @@ msgid "Instagram"
 msgstr "Instagram"
 
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:213
-#: packages/admin/src/components/RegistryPluginDetail.tsx:625
+#: packages/admin/src/components/RegistryPluginDetail.tsx:626
 msgid "Install"
 msgstr "安装"
 
@@ -5545,7 +5545,7 @@ msgstr "安装被阻止"
 msgid "Install the EmDash Exporter plugin on your WordPress site and generate a key under Tools → EmDash Migration."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:879
+#: packages/admin/src/components/RegistryPluginDetail.tsx:884
 msgid "Installation"
 msgstr "安装"
 
@@ -5556,7 +5556,7 @@ msgstr ""
 #: packages/admin/src/components/MarketplaceBrowse.tsx:263
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:194
 #: packages/admin/src/components/RegistryBrowse.tsx:234
-#: packages/admin/src/components/RegistryPluginDetail.tsx:610
+#: packages/admin/src/components/RegistryPluginDetail.tsx:611
 msgid "Installed"
 msgstr "已安装"
 
@@ -5650,7 +5650,7 @@ msgstr "项目已删除"
 msgid "Item updated"
 msgstr "项目已更新"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:478
+#: packages/admin/src/components/RegistryPluginDetail.tsx:479
 msgid "Its listing has not been approved for display. Check back later."
 msgstr ""
 
@@ -6894,7 +6894,7 @@ msgstr "文档中无标题"
 msgid "No images in this gallery yet."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:661
+#: packages/admin/src/components/RegistryPluginDetail.tsx:663
 msgid "No installable releases"
 msgstr "无可安装的版本"
 
@@ -7094,7 +7094,7 @@ msgstr ""
 msgid "None (top level)"
 msgstr "无（顶级）"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:696
+#: packages/admin/src/components/RegistryPluginDetail.tsx:698
 msgid "Not compatible with this environment"
 msgstr "与此环境不兼容"
 
@@ -7550,7 +7550,7 @@ msgstr ""
 msgid "Plugin column unavailable"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:829
+#: packages/admin/src/components/RegistryPluginDetail.tsx:831
 msgid "Plugin details"
 msgstr "插件详情"
 
@@ -7591,7 +7591,7 @@ msgstr ""
 msgid "Plugin not found"
 msgstr "未找到插件"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:493
+#: packages/admin/src/components/RegistryPluginDetail.tsx:494
 msgid "Plugin not found. The publisher or slug may be incorrect."
 msgstr ""
 
@@ -7638,7 +7638,7 @@ msgid "Plugin uninstalled"
 msgstr "插件已卸载"
 
 #: packages/admin/src/lib/api/marketplace.ts:232
-#: packages/admin/src/lib/api/registry.ts:926
+#: packages/admin/src/lib/api/registry.ts:955
 msgid "Plugin update requires re-consent"
 msgstr "插件更新需要重新授权"
 
@@ -7688,7 +7688,7 @@ msgstr ""
 msgid "Posts Per Page"
 msgstr "每页文章数"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:546
+#: packages/admin/src/components/RegistryPluginDetail.tsx:547
 msgid "Pre-release"
 msgstr "预发布"
 
@@ -7839,7 +7839,7 @@ msgstr ""
 msgid "Published At"
 msgstr "发布时间"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:538
+#: packages/admin/src/components/RegistryPluginDetail.tsx:539
 msgid "Published by <0/>"
 msgstr ""
 
@@ -7851,7 +7851,7 @@ msgstr ""
 msgid "Publisher approval required only for permission escalation"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:646
+#: packages/admin/src/components/RegistryPluginDetail.tsx:648
 msgid "Publisher handle verification failed"
 msgstr ""
 
@@ -8059,7 +8059,7 @@ msgstr "插件仓库"
 msgid "Release CID"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:677
+#: packages/admin/src/components/RegistryPluginDetail.tsx:679
 msgid "Release is too new to install"
 msgstr "版本太新，无法安装"
 
@@ -8705,12 +8705,12 @@ msgstr "保存中..."
 msgid "Saving…"
 msgstr "保存中…"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:550
+#: packages/admin/src/components/RegistryPluginDetail.tsx:551
 msgid "SBOM"
 msgstr "SBOM"
 
 #. placeholder {0}: sbom.format
-#: packages/admin/src/components/RegistryPluginDetail.tsx:548
+#: packages/admin/src/components/RegistryPluginDetail.tsx:549
 msgid "SBOM · {0}"
 msgstr "SBOM · {0}"
 
@@ -8779,7 +8779,7 @@ msgstr "权限范围"
 #. placeholder {0}: i + 1
 #. placeholder {0}: index + 1
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:264
-#: packages/admin/src/components/RegistryPluginDetail.tsx:722
+#: packages/admin/src/components/RegistryPluginDetail.tsx:724
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:174
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:293
 msgid "Screenshot {0}"
@@ -8800,7 +8800,7 @@ msgid "Screenshot viewer"
 msgstr "截图查看器"
 
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:254
-#: packages/admin/src/components/RegistryPluginDetail.tsx:716
+#: packages/admin/src/components/RegistryPluginDetail.tsx:718
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:164
 msgid "Screenshots"
 msgstr "截图"
@@ -8993,7 +8993,7 @@ msgstr "区块"
 msgid "Secure your account"
 msgstr "保护您的账户"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:882
+#: packages/admin/src/components/RegistryPluginDetail.tsx:887
 #: packages/admin/src/components/Settings.tsx:85
 msgid "Security"
 msgstr "安全"
@@ -9022,7 +9022,7 @@ msgstr "安全审计标记此插件为可能不安全。"
 msgid "Security audit passed"
 msgstr "安全审计通过"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:785
+#: packages/admin/src/components/RegistryPluginDetail.tsx:787
 msgid "Security contacts"
 msgstr "安全联系方式"
 
@@ -9074,7 +9074,7 @@ msgstr ""
 msgid "Select a menu..."
 msgstr "选择菜单..."
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:397
+#: packages/admin/src/components/RegistryPluginDetail.tsx:398
 msgid "Select a release before verifying it"
 msgstr ""
 
@@ -9928,7 +9928,7 @@ msgid "The public URL of your site (used for canonical links and sitemaps)"
 msgstr "您站点的公共 URL（用于规范链接和站点地图）"
 
 #: packages/admin/src/components/RegistryBrowse.tsx:219
-#: packages/admin/src/components/RegistryPluginDetail.tsx:532
+#: packages/admin/src/components/RegistryPluginDetail.tsx:533
 msgid "The publisher identity cannot be verified."
 msgstr ""
 
@@ -10108,6 +10108,18 @@ msgstr ""
 msgid "This permanently deletes {0} from storage."
 msgstr ""
 
+#: packages/admin/src/lib/api/registry.ts:785
+msgid "This plugin cannot be installed because its publisher profile is missing valid verification metadata. Ask the publisher to republish it with the latest EmDash plugin CLI."
+msgstr ""
+
+#: packages/admin/src/lib/api/registry.ts:793
+msgid "This plugin cannot be installed because its release provenance could not be verified. Ask the publisher to publish a new verified release."
+msgstr ""
+
+#: packages/admin/src/lib/api/registry.ts:797
+msgid "This plugin cannot be installed because its signed publisher records failed verification. Ask the publisher to publish a corrected release."
+msgstr ""
+
 #: packages/admin/src/components/CapabilityConsentDialog.tsx:201
 msgid "This plugin exposes the following routes without authentication:"
 msgstr ""
@@ -10116,7 +10128,7 @@ msgstr ""
 msgid "This plugin has no configurable settings."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:476
+#: packages/admin/src/components/RegistryPluginDetail.tsx:477
 msgid "This plugin is not available yet"
 msgstr ""
 
@@ -10128,7 +10140,7 @@ msgstr "此插件不需要特殊权限。"
 msgid "This publisher identity no longer resolves."
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:648
+#: packages/admin/src/components/RegistryPluginDetail.tsx:650
 msgid "This publisher's handle does not resolve back to its identity. Installation is disabled until the publisher fixes their handle."
 msgstr ""
 
@@ -10136,7 +10148,7 @@ msgstr ""
 msgid "This redirect rule will be permanently removed."
 msgstr "此重定向规则将被永久移除。"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:698
+#: packages/admin/src/components/RegistryPluginDetail.tsx:700
 msgid "This release requires a newer environment than your site currently runs. Upgrade before installing."
 msgstr "此版本需要比您站点当前运行的更新版本的环境。请在安装前升级。"
 
@@ -10606,7 +10618,7 @@ msgstr "更新至 v{0}"
 
 #: packages/admin/src/components/ContentList.tsx:869
 #: packages/admin/src/components/ContentSettingsPanel.tsx:982
-#: packages/admin/src/components/RegistryPluginDetail.tsx:569
+#: packages/admin/src/components/RegistryPluginDetail.tsx:570
 msgid "Updated"
 msgstr "已更新"
 
@@ -10893,7 +10905,7 @@ msgstr "验证"
 msgid "Verified publisher"
 msgstr ""
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:414
+#: packages/admin/src/components/RegistryPluginDetail.tsx:415
 msgid "Verify the plugin before installing it"
 msgstr ""
 
@@ -10907,18 +10919,18 @@ msgstr "正在验证您的链接..."
 
 #: packages/admin/src/components/auth/PasskeyLogin.tsx:212
 #: packages/admin/src/components/auth/PasskeyRegistration.tsx:372
-#: packages/admin/src/components/RegistryPluginDetail.tsx:625
+#: packages/admin/src/components/RegistryPluginDetail.tsx:626
 msgid "Verifying..."
 msgstr "验证中..."
 
 #: packages/admin/src/components/CapabilityConsentDialog.tsx:105
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:341
-#: packages/admin/src/components/RegistryPluginDetail.tsx:583
+#: packages/admin/src/components/RegistryPluginDetail.tsx:584
 msgid "Version"
 msgstr "版本"
 
 #. placeholder {0}: release.version
-#: packages/admin/src/components/RegistryPluginDetail.tsx:545
+#: packages/admin/src/components/RegistryPluginDetail.tsx:546
 msgid "Version {0}"
 msgstr "版本 {0}"
 
@@ -10950,11 +10962,11 @@ msgstr ""
 msgid "View Site"
 msgstr "查看站点"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:743
+#: packages/admin/src/components/RegistryPluginDetail.tsx:745
 msgid "View source"
 msgstr "查看源码"
 
-#: packages/admin/src/components/RegistryPluginDetail.tsx:985
+#: packages/admin/src/components/RegistryPluginDetail.tsx:990
 msgid "View the {license} license on spdx.org"
 msgstr "在 spdx.org 上查看 {license} 许可证"
 
@@ -11027,7 +11039,7 @@ msgid "WebAuthn is not supported in this browser"
 msgstr "此浏览器不支持 WebAuthn"
 
 #: packages/admin/src/components/MarketplacePluginDetail.tsx:246
-#: packages/admin/src/components/RegistryPluginDetail.tsx:768
+#: packages/admin/src/components/RegistryPluginDetail.tsx:770
 msgid "Website"
 msgstr "网站"
 
@@ -11419,7 +11431,7 @@ msgid "Your Role"
 msgstr "您的角色"
 
 #. placeholder {0}: formatHoldback(config.policy?.minimumReleaseAgeSeconds ?? 0)
-#: packages/admin/src/components/RegistryPluginDetail.tsx:679
+#: packages/admin/src/components/RegistryPluginDetail.tsx:681
 msgid "Your site requires releases to be at least {0} old before they can be installed. This release will become installable later."
 msgstr "您的站点要求插件发布至少 {0} 后才能安装。此版本稍后将可供安装。"
 
