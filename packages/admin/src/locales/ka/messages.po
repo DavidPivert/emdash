@@ -292,7 +292,7 @@ msgid "{0} detected"
 msgstr "აღმოჩენილია {0}"
 
 #. placeholder {0}: term.locale.toUpperCase()
-#: packages/admin/src/components/TaxonomySidebar.tsx:356
+#: packages/admin/src/components/TaxonomySidebar.tsx:616
 msgid "{0} fallback"
 msgstr "{0} — სარეზერვო"
 
@@ -370,7 +370,7 @@ msgid "{0} system + {1} custom {2}"
 msgstr "{0} სისტემური + {1} მორგებული {2}"
 
 #. placeholder {0}: taxonomy.label
-#: packages/admin/src/components/TaxonomySidebar.tsx:411
+#: packages/admin/src/components/TaxonomySidebar.tsx:675
 msgid "{0} updated"
 msgstr "{0} განახლდა"
 
@@ -460,6 +460,10 @@ msgstr "{label} გადავიდა პოზიციაზე {0} / {1}."
 #: packages/admin/src/components/BylineCreditsEditor.tsx:291
 msgid "{label} moved to position {0}."
 msgstr "{label} გადავიდა პოზიციაზე {0}."
+
+#: packages/admin/src/components/TaxonomySidebar.tsx:531
+msgid "{label} options"
+msgstr ""
 
 #: packages/admin/src/components/ContentList.tsx:1197
 msgid "{matchCount, plural, one {# item matching \"{searchQuery}\"} other {# items matching \"{searchQuery}\"}}"
@@ -795,7 +799,7 @@ msgstr "გამოქვეყნების ოპერაცია უკ�
 msgid "A short description of your site"
 msgstr "საიტის მოკლე აღწერა"
 
-#: packages/admin/src/components/TaxonomySidebar.tsx:455
+#: packages/admin/src/components/TaxonomySidebar.tsx:755
 msgid "A source and target locale are required"
 msgstr "წყაროს და სამიზნე ლოკალი სავალდებულოა"
 
@@ -874,7 +878,6 @@ msgstr "აქტიური"
 #: packages/admin/src/components/AllowedTypesEditor.tsx:174
 #: packages/admin/src/components/BylineCreditsEditor.tsx:501
 #: packages/admin/src/components/MenuEditor.tsx:441
-#: packages/admin/src/components/TaxonomySidebar.tsx:619
 msgid "Add"
 msgstr "დამატება"
 
@@ -887,10 +890,6 @@ msgstr "დამატება"
 #: packages/admin/src/components/TaxonomyManager.tsx:1082
 msgid "Add {0}"
 msgstr "{0}-ის დამატება"
-
-#: packages/admin/src/components/TaxonomySidebar.tsx:316
-msgid "Add {label}"
-msgstr "{label}-ის დამატება"
 
 #: packages/admin/src/components/settings/SecuritySettings.tsx:160
 msgid "Add a new passkey"
@@ -995,11 +994,6 @@ msgstr "MIME ტიპის ან გაფართოების დამ�
 msgid "Add New"
 msgstr "ახლის დამატება"
 
-#. placeholder {0}: (taxonomy.labelSingular || taxonomy.label).toLowerCase()
-#: packages/admin/src/components/TaxonomySidebar.tsx:631
-msgid "Add new {0}"
-msgstr "ახალი {0}-ის დამატება"
-
 #: packages/admin/src/components/MediaFolderDialog.tsx:127
 #: packages/admin/src/components/MediaLibrary.tsx:852
 #: packages/admin/src/components/MediaLibrary.tsx:857
@@ -1034,10 +1028,6 @@ msgstr "SEO მეტამონაცემების ველების 
 #: packages/admin/src/components/FieldEditor.tsx:580
 msgid "Add Sub-Field"
 msgstr "ქვეველის დამატება"
-
-#: packages/admin/src/components/TaxonomySidebar.tsx:318
-msgid "Add tags..."
-msgstr "თეგების დამატება..."
 
 #: packages/admin/src/components/Widgets.tsx:403
 msgid "Add Widget Area"
@@ -1262,8 +1252,8 @@ msgstr "დაშიფრული ციფრული გასაღებ�
 #: packages/admin/src/components/settings/SocialSettings.tsx:67
 #: packages/admin/src/components/settings/SocialSettings.tsx:111
 #: packages/admin/src/components/settings/SocialSettings.tsx:112
-#: packages/admin/src/components/TaxonomySidebar.tsx:416
-#: packages/admin/src/components/TaxonomySidebar.tsx:476
+#: packages/admin/src/components/TaxonomySidebar.tsx:680
+#: packages/admin/src/components/TaxonomySidebar.tsx:776
 #: packages/admin/src/components/ThemeMarketplaceBrowse.tsx:114
 #: packages/admin/src/router.tsx:469
 #: packages/admin/src/router.tsx:484
@@ -1534,7 +1524,7 @@ msgid "Available bylines"
 msgstr "ხელმისაწვდომი ბაილაინები"
 
 #. placeholder {0}: assignment.availableLocales.map((locale) => locale.toUpperCase()).join(", ")
-#: packages/admin/src/components/TaxonomySidebar.tsx:545
+#: packages/admin/src/components/TaxonomySidebar.tsx:839
 msgid "Available in {0}"
 msgstr "ხელმისაწვდომია {0}-ში"
 
@@ -2012,6 +2002,12 @@ msgstr "მოწმდება, რამდენი შენახული
 msgid "Checking this device for passkey support..."
 msgstr "მოწმდება ამ მოწყობილობის პასკის მხარდაჭერა..."
 
+#: packages/admin/src/components/TaxonomySidebar.tsx:394
+#: packages/admin/src/components/TaxonomySidebar.tsx:395
+#: packages/admin/src/components/TaxonomySidebar.tsx:488
+msgid "Choose {label}"
+msgstr ""
+
 #: packages/admin/src/components/auth/PasskeyRegistration.tsx:577
 msgid "Choose a credential manager on this device, another device, or a security key."
 msgstr "აირჩიეთ ამ მოწყობილობაზე არსებული შესვლის მონაცემების მენეჯერი, სხვა მოწყობილობა ან უსაფრთხოების გასაღები."
@@ -2164,6 +2160,7 @@ msgstr "შესასვლელად გადადით ელფოს�
 #: packages/admin/src/components/TaxonomyManager.tsx:807
 #: packages/admin/src/components/TaxonomyManager.tsx:813
 #: packages/admin/src/components/TaxonomyManager.tsx:817
+#: packages/admin/src/components/TaxonomySidebar.tsx:602
 #: packages/admin/src/components/ThemeMarketplaceDetail.tsx:298
 #: packages/admin/src/components/users/InviteUserModal.tsx:88
 #: packages/admin/src/components/users/InviteUserModal.tsx:94
@@ -2624,7 +2621,7 @@ msgstr "შექმნა"
 msgid "Create “{0}”"
 msgstr "„{0}“-ის შექმნა"
 
-#: packages/admin/src/components/TaxonomySidebar.tsx:339
+#: packages/admin/src/components/TaxonomySidebar.tsx:580
 msgid "Create \"{trimmedInput}\""
 msgstr "„{trimmedInput}“-ის შექმნა"
 
@@ -2634,7 +2631,7 @@ msgid "Create {0}"
 msgstr "{0}-ის შექმნა"
 
 #. placeholder {0}: resolvedEntryLocale.toUpperCase()
-#: packages/admin/src/components/TaxonomySidebar.tsx:556
+#: packages/admin/src/components/TaxonomySidebar.tsx:850
 msgid "Create {0} translation"
 msgstr "{0} თარგმანის შექმნა"
 
@@ -2646,6 +2643,10 @@ msgstr "მარკირებული სიის შექმნა"
 #: packages/admin/src/components/TaxonomyManager.tsx:562
 msgid "Create a new {0}"
 msgstr "ახალი {0}-ის შექმნა"
+
+#: packages/admin/src/components/TaxonomySidebar.tsx:580
+msgid "Create a new {singularLabel}"
+msgstr ""
 
 #: packages/admin/src/components/PortableTextEditor.tsx:1624
 msgid "Create a numbered list"
@@ -2832,7 +2833,6 @@ msgstr "იქმნება მოჭრილი ასლი..."
 #: packages/admin/src/components/Sections.tsx:212
 #: packages/admin/src/components/settings/ApiTokenSettings.tsx:540
 #: packages/admin/src/components/TaxonomyManager.tsx:891
-#: packages/admin/src/components/TaxonomySidebar.tsx:339
 msgid "Creating..."
 msgstr "იქმნება..."
 
@@ -3655,6 +3655,11 @@ msgstr "{0} ველის რედაქტირება"
 msgid "Edit {itemLabel}"
 msgstr "{itemLabel}-ის რედაქტირება"
 
+#: packages/admin/src/components/TaxonomySidebar.tsx:414
+#: packages/admin/src/components/TaxonomySidebar.tsx:423
+msgid "Edit {label}"
+msgstr ""
+
 #: packages/admin/src/components/ContentList.tsx:1343
 msgid "Edit {title}"
 msgstr "{title}-ის რედაქტირება"
@@ -3997,6 +4002,10 @@ msgstr "სექციის შენახვისას შეცდომ�
 msgid "Error updating widget"
 msgstr "ვიჯეტის განახლებისას შეცდომა"
 
+#: packages/admin/src/components/TaxonomySidebar.tsx:600
+msgid "Esc"
+msgstr ""
+
 #: packages/admin/src/components/MediaDetailPanel.tsx:1974
 msgid "Every place using this image will update to the cropped version."
 msgstr "ყველგან, სადაც ეს სურათი გამოიყენება, განახლდება მოჭრილი ვერსიით."
@@ -4092,6 +4101,11 @@ msgstr "პლაგინთან კომუნიკაცია ვერ 
 msgid "Failed to confirm upload"
 msgstr "ატვირთვის დადასტურება ვერ მოხერხდა"
 
+#. placeholder {0}: failedLabels.join(", ")
+#: packages/admin/src/components/TaxonomySidebar.tsx:746
+msgid "Failed to create {0}"
+msgstr ""
+
 #: packages/admin/src/components/SetupWizard.tsx:486
 msgid "Failed to create admin"
 msgstr "ადმინისტრატორის შექმნა ვერ მოხერხდა"
@@ -4121,11 +4135,11 @@ msgstr "სექციის შექმნა ვერ მოხერხდ
 msgid "Failed to create some collections"
 msgstr "ზოგიერთი კოლექციის შექმნა ვერ მოხერხდა"
 
-#: packages/admin/src/components/TaxonomySidebar.tsx:638
+#: packages/admin/src/components/TaxonomySidebar.tsx:725
 msgid "Failed to create term"
 msgstr "ტერმინის შექმნა ვერ მოხერხდა"
 
-#: packages/admin/src/components/TaxonomySidebar.tsx:475
+#: packages/admin/src/components/TaxonomySidebar.tsx:775
 #: packages/admin/src/router.tsx:1366
 msgid "Failed to create translation"
 msgstr "თარგმანის შექმნა ვერ მოხერხდა"
@@ -4287,7 +4301,7 @@ msgstr "დაფის სტატისტიკის ჩატვირთ�
 msgid "Failed to fetch email settings"
 msgstr "ელფოსტის პარამეტრების ჩატვირთვა ვერ მოხერხდა"
 
-#: packages/admin/src/components/TaxonomySidebar.tsx:140
+#: packages/admin/src/components/TaxonomySidebar.tsx:159
 msgid "Failed to fetch entry terms"
 msgstr "ჩანაწერის ტერმინების ჩატვირთვა ვერ მოხერხდა"
 
@@ -4357,7 +4371,7 @@ msgstr "პარამეტრების ჩატვირთვა ვე�
 msgid "Failed to fetch setup status"
 msgstr "დაყენების სტატუსის ჩატვირთვა ვერ მოხერხდა"
 
-#: packages/admin/src/components/TaxonomySidebar.tsx:124
+#: packages/admin/src/components/TaxonomySidebar.tsx:143
 msgid "Failed to fetch terms"
 msgstr "ტერმინების ჩატვირთვა ვერ მოხერხდა"
 
@@ -4607,7 +4621,7 @@ msgstr "სატესტო ელფოსტის გაგზავნა 
 msgid "Failed to send verification email"
 msgstr "დამადასტურებელი ელფოსტის გაგზავნა ვერ მოხერხდა"
 
-#: packages/admin/src/components/TaxonomySidebar.tsx:159
+#: packages/admin/src/components/TaxonomySidebar.tsx:178
 msgid "Failed to set entry terms"
 msgstr "ჩანაწერის ტერმინების დაყენება ვერ მოხერხდა"
 
@@ -4629,7 +4643,7 @@ msgid "Failed to update"
 msgstr "განახლება ვერ მოხერხდა"
 
 #. placeholder {0}: taxonomy.label.toLowerCase()
-#: packages/admin/src/components/TaxonomySidebar.tsx:415
+#: packages/admin/src/components/TaxonomySidebar.tsx:679
 msgid "Failed to update {0}"
 msgstr "{0}-ის განახლება ვერ მოხერხდა"
 
@@ -6611,6 +6625,10 @@ msgstr "სახელი და იარლიყი სავალდებ
 msgid "Name must start with a letter and contain only lowercase letters, numbers, and underscores"
 msgstr "სახელი უნდა იწყებოდეს ასოთი და შეიცავდეს მხოლოდ პატარა ასოებს, რიცხვებსა და ქვედა ტირეს"
 
+#: packages/admin/src/components/TaxonomySidebar.tsx:590
+msgid "Navigate"
+msgstr ""
+
 #: packages/admin/src/components/AdminCommandPalette.tsx:342
 #: packages/admin/src/components/ContentTypeEditor.tsx:480
 msgid "Navigation"
@@ -6643,11 +6661,6 @@ msgstr "ახალი"
 #: packages/admin/src/components/CapabilityConsentDialog.tsx:185
 msgid "NEW"
 msgstr "ახალი"
-
-#. placeholder {0}: (taxonomy.labelSingular || taxonomy.label).toLowerCase()
-#: packages/admin/src/components/TaxonomySidebar.tsx:607
-msgid "New {0}"
-msgstr "ახალი {0}"
 
 #: packages/admin/src/components/ContentEditor.tsx:994
 msgid "New {itemLabel}"
@@ -6754,11 +6767,6 @@ msgstr "არა"
 msgid "No (shared across translations)"
 msgstr "არა (საერთო თარგმანებისთვის)"
 
-#. placeholder {0}: taxonomy.label.toLowerCase()
-#: packages/admin/src/components/TaxonomySidebar.tsx:576
-msgid "No {0} available."
-msgstr "{0} მიუწვდომელია."
-
 #. placeholder {0}: collectionLabel.toLowerCase()
 #: packages/admin/src/components/ContentList.tsx:658
 msgid "No {0} yet."
@@ -6768,6 +6776,10 @@ msgstr "{0} ჯერ არ არის."
 #: packages/admin/src/components/TaxonomyManager.tsx:1120
 msgid "No {0} yet. Create one to get started."
 msgstr "{0} ჯერ არ არის. დასაწყებად შექმენით ერთი."
+
+#: packages/admin/src/components/TaxonomySidebar.tsx:565
+msgid "No {label} found."
+msgstr ""
 
 #: packages/admin/src/components/Redirects.tsx:218
 msgid "No 404 errors recorded yet."
@@ -8088,12 +8100,12 @@ msgid "Remove"
 msgstr "მოცილება"
 
 #. placeholder {0}: job.file.name
+#. placeholder {0}: option.term.label
 #. placeholder {0}: passkey.name
-#. placeholder {0}: row.file.name
 #: packages/admin/src/components/media/MediaBrowserItems.tsx:220
 #: packages/admin/src/components/MediaUploadDialog.tsx:162
 #: packages/admin/src/components/settings/PasskeyItem.tsx:181
-#: packages/admin/src/components/TaxonomySidebar.tsx:294
+#: packages/admin/src/components/TaxonomySidebar.tsx:457
 msgid "Remove {0}"
 msgstr "{0}-ის მოცილება"
 
@@ -8110,7 +8122,7 @@ msgstr "{entry}-ის მოცილება"
 msgid "Remove {label}"
 msgstr "{label}-ის მოცილება"
 
-#: packages/admin/src/components/TaxonomySidebar.tsx:565
+#: packages/admin/src/components/TaxonomySidebar.tsx:859
 msgid "Remove assignment"
 msgstr "მინიჭების მოცილება"
 
@@ -8827,6 +8839,14 @@ msgstr "{0}-ის ძებნა"
 msgid "Search {0}..."
 msgstr "{0}-ის ძებნა..."
 
+#: packages/admin/src/components/TaxonomySidebar.tsx:499
+msgid "Search {label}"
+msgstr ""
+
+#: packages/admin/src/components/TaxonomySidebar.tsx:519
+msgid "Search {label}…"
+msgstr ""
+
 #: packages/admin/src/components/MediaLibrary.tsx:966
 #: packages/admin/src/components/MediaPickerModal.tsx:1255
 msgid "Search by filename..."
@@ -9172,6 +9192,10 @@ msgstr "აირჩიეთ, რომელი ტიპის შიგთ�
 #: packages/admin/src/components/RepeaterField.tsx:385
 msgid "Select..."
 msgstr "აირჩიეთ..."
+
+#: packages/admin/src/components/TaxonomySidebar.tsx:428
+msgid "Selected {label}"
+msgstr ""
 
 #: packages/admin/src/components/PortableTextEditor.tsx:1936
 msgid "Selected {selectedItemTitle}"
@@ -9799,7 +9823,7 @@ msgid "Target locale"
 msgstr "სამიზნე ლოკალი"
 
 #: packages/admin/src/components/ContentSettingsPanel.tsx:1144
-#: packages/admin/src/components/TaxonomySidebar.tsx:683
+#: packages/admin/src/components/TaxonomySidebar.tsx:891
 msgid "Taxonomies"
 msgstr "ტაქსონომიები"
 
@@ -10277,6 +10301,10 @@ msgstr "დახურვისთვის"
 msgid "to select"
 msgstr "არჩევისთვის"
 
+#: packages/admin/src/components/TaxonomySidebar.tsx:596
+msgid "Toggle"
+msgstr ""
+
 #: packages/admin/src/components/editor/TableControls.tsx:31
 msgid "Toggle header column"
 msgstr "სათაურის სვეტის გადართვა"
@@ -10342,7 +10370,7 @@ msgstr "ითარგმნება..."
 
 #: packages/admin/src/components/MenuEditor.tsx:143
 #: packages/admin/src/components/TaxonomyManager.tsx:1028
-#: packages/admin/src/components/TaxonomySidebar.tsx:471
+#: packages/admin/src/components/TaxonomySidebar.tsx:771
 #: packages/admin/src/router.tsx:1360
 msgid "Translation created"
 msgstr "თარგმანი შეიქმნა"
@@ -10550,7 +10578,7 @@ msgstr "გამოუქვეყნებელი"
 msgid "Unregistered Content Tables Found"
 msgstr "აღმოჩენილია დაურეგისტრირებელი შიგთავსის ცხრილები"
 
-#: packages/admin/src/components/TaxonomySidebar.tsx:543
+#: packages/admin/src/components/TaxonomySidebar.tsx:837
 msgid "Unresolved assignment"
 msgstr "გადაუწყვეტელი მიკუთვნება"
 
