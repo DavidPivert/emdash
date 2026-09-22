@@ -1340,11 +1340,6 @@ msgstr "گذرواژه برنامه"
 msgid "Apply"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:299
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:300
-msgid "Apply language"
-msgstr ""
-
 #: packages/admin/src/components/PortableTextEditor.tsx:3949
 #: packages/admin/src/components/PortableTextEditor.tsx:3950
 msgid "Apply link"
@@ -1784,8 +1779,6 @@ msgstr "می‌تواند محتوا را مشاهده کند"
 #: packages/admin/src/components/ContentSettingsPanel.tsx:313
 #: packages/admin/src/components/ContentSettingsPanel.tsx:493
 #: packages/admin/src/components/ContentSettingsPanel.tsx:1291
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:311
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:312
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:539
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:735
 #: packages/admin/src/components/editor/ImageNode.tsx:299
@@ -2220,7 +2213,7 @@ msgstr "کد"
 msgid "Code Block"
 msgstr "بلوک کد"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:229
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:227
 msgid "Code block actions"
 msgstr ""
 
@@ -2497,8 +2490,8 @@ msgstr ""
 msgid "Contributor"
 msgstr "مشارکت‌کننده"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:246
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:270
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:244
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:268
 msgid "Copied"
 msgstr ""
 
@@ -2512,12 +2505,12 @@ msgstr "در کلیپ‌بورد کپی شد"
 msgid "Copy {0} to clipboard"
 msgstr "کپی {0} در کلیپ‌بورد"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:246
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:253
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:244
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:251
 msgid "Copy code"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:270
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:268
 msgid "Copy failed"
 msgstr ""
 
@@ -4058,6 +4051,10 @@ msgstr "برون‌ریزی دستی از وردپرس"
 msgid "Export your content from WordPress to import everything including drafts."
 msgstr "محتوای خود را از وردپرس برون‌ریزی کنید تا همه چیز شامل پیش‌نویس‌ها درون‌ریزی شود."
 
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:35
+msgid "F#"
+msgstr ""
+
 #: packages/admin/src/components/settings/SocialSettings.tsx:155
 msgid "Facebook"
 msgstr "فیسبوک"
@@ -5000,7 +4997,7 @@ msgstr "گیت‌هاب"
 msgid "Give this passkey a name to help you identify it later."
 msgstr "به این شاه‌کلید یک نام بدهید تا بعداً آن را شناسایی کنید."
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:35
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:36
 msgid "Go"
 msgstr ""
 
@@ -5014,7 +5011,7 @@ msgstr "رفتن به داشبورد"
 msgid "Google Verification"
 msgstr "تأیید گوگل"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:36
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:37
 msgid "GraphQL"
 msgstr ""
 
@@ -5183,7 +5180,7 @@ msgstr ""
 msgid "How to create an Application Password"
 msgstr "چگونه گذرواژه برنامه بسازیم"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:37
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:38
 #: packages/admin/src/components/editor/HtmlBlockNode.tsx:114
 #: packages/admin/src/components/PortableTextEditor.tsx:1653
 msgid "HTML"
@@ -5659,11 +5656,11 @@ msgstr ""
 msgid "Jane Doe"
 msgstr "نام نمونه"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:38
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:39
 msgid "Java"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:39
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:40
 msgid "JavaScript"
 msgstr ""
 
@@ -5675,12 +5672,12 @@ msgstr ""
 msgid "job_title"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:40
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:41
 #: packages/admin/src/components/FieldEditor.tsx:254
 msgid "JSON"
 msgstr "JSON"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:41
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:42
 msgid "JSX"
 msgstr ""
 
@@ -5715,7 +5712,7 @@ msgstr ""
 msgid "Keywords"
 msgstr "کلمات کلیدی"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:42
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:43
 msgid "Kotlin"
 msgstr ""
 
@@ -5743,7 +5740,7 @@ msgstr ""
 msgid "Landscape"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:280
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:276
 #: packages/admin/src/components/LoginPage.tsx:347
 #: packages/admin/src/components/Settings.tsx:122
 #: packages/admin/src/components/Settings.tsx:132
@@ -6087,7 +6084,7 @@ msgstr "فقط حروف کوچک، اعداد و خط تیره"
 msgid "Lowercase letters, numbers, and underscores only, starting with a letter"
 msgstr "فقط حروف کوچک، اعداد و زیرخط، شروع با حرف"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:43
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:44
 msgid "Lua"
 msgstr ""
 
@@ -6169,7 +6166,7 @@ msgstr ""
 msgid "Mark as spam"
 msgstr "علامت‌گذاری به‌عنوان هرزنامه"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:44
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:45
 msgid "Markdown"
 msgstr ""
 
@@ -6206,7 +6203,7 @@ msgstr "حداکثر مقدار"
 msgid "Maximum tags"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:45
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:46
 msgid "MDX"
 msgstr ""
 
@@ -6915,8 +6912,12 @@ msgstr "بدون حد"
 msgid "No linked user"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:289
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:314
 msgid "No matches"
+msgstr ""
+
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:313
+msgid "No matches. Press Enter to use “{freeFormLanguage}”."
 msgstr ""
 
 #: packages/admin/src/components/BylineCreditsEditor.tsx:542
@@ -7488,7 +7489,7 @@ msgstr "حذف دائمی {title}"
 msgid "Permissions"
 msgstr "مجوزها"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:46
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:47
 msgid "PHP"
 msgstr ""
 
@@ -7501,7 +7502,7 @@ msgid "Placeholder text"
 msgstr ""
 
 #: packages/admin/src/components/editor/codeBlockLanguages.ts:26
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:121
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:122
 msgid "Plain text"
 msgstr ""
 
@@ -7864,7 +7865,7 @@ msgstr ""
 msgid "visualEditing.publishing"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:47
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:48
 msgid "Python"
 msgstr ""
 
@@ -8440,8 +8441,8 @@ msgstr "تلاش مجدد"
 msgid "Retry {0}"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:246
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:253
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:244
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:251
 msgid "Retry copy"
 msgstr ""
 
@@ -8594,11 +8595,11 @@ msgstr ""
 msgid "Rows"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:48
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:49
 msgid "Ruby"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:49
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:50
 msgid "Rust"
 msgstr ""
 
@@ -8801,7 +8802,7 @@ msgstr "نمایشگر تصویر"
 msgid "Screenshots"
 msgstr "تصاویر"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:50
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:51
 msgid "SCSS"
 msgstr ""
 
@@ -8877,6 +8878,10 @@ msgstr ""
 #: packages/admin/src/components/MediaDetailPanel.tsx:1482
 #: packages/admin/src/components/MediaDetailPanel.tsx:1483
 msgid "Search folders"
+msgstr ""
+
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:290
+msgid "Search for a language…"
 msgstr ""
 
 #: packages/admin/src/components/Widgets.tsx:152
@@ -9256,11 +9261,11 @@ msgstr "یک اندازه نمایش سفارشی برای این نمونه ت�
 msgid "Set a custom width and height for this image in the document. Reset uses the original media dimensions. The original media file is unchanged."
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:239
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:237
 msgid "Set language"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:236
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:234
 msgid "Set language (current: {label})"
 msgstr ""
 
@@ -9610,7 +9615,7 @@ msgstr ""
 msgid "Spreadsheets"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:51
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:52
 msgid "SQL"
 msgstr ""
 
@@ -9692,11 +9697,11 @@ msgstr ""
 msgid "Superscript"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:52
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:53
 msgid "Svelte"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:53
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:54
 msgid "Swift"
 msgstr ""
 
@@ -10285,7 +10290,7 @@ msgstr "توکن ساخته شد: {0}"
 msgid "Token Name"
 msgstr "نام توکن"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:54
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:55
 msgid "TOML"
 msgstr ""
 
@@ -10420,7 +10425,7 @@ msgstr "آدرس دیگری را امتحان کنید"
 msgid "Try with my data"
 msgstr "با داده‌های من امتحان کنید"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:55
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:56
 msgid "TSX"
 msgstr ""
 
@@ -10460,7 +10465,7 @@ msgstr "عدم تطابق نوع ({0})"
 msgid "Type: Folder"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:56
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:57
 msgid "TypeScript"
 msgstr ""
 
@@ -10987,7 +10992,7 @@ msgstr ""
 msgid "Visitors will see these changes immediately."
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:57
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:58
 msgid "Vue"
 msgstr ""
 
@@ -11229,7 +11234,7 @@ msgstr ""
 msgid "WXR File"
 msgstr "فایل WXR"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:58
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:59
 msgid "XML"
 msgstr ""
 
@@ -11237,7 +11242,7 @@ msgstr ""
 msgid "xxxx xxxx xxxx xxxx xxxx xxxx"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:59
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:60
 msgid "YAML"
 msgstr ""
 
@@ -11452,6 +11457,6 @@ msgstr "شناسه یا نام کاربری کانال یوتیوب شما"
 msgid "YouTube"
 msgstr "یوتیوب"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:60
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:61
 msgid "Zig"
 msgstr ""

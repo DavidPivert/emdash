@@ -1338,11 +1338,6 @@ msgstr "एप्लिकेशन पासवर्ड"
 msgid "Apply"
 msgstr "आवेदन करना"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:299
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:300
-msgid "Apply language"
-msgstr "भाषा लागू करें"
-
 #: packages/admin/src/components/PortableTextEditor.tsx:3949
 #: packages/admin/src/components/PortableTextEditor.tsx:3950
 msgid "Apply link"
@@ -1782,8 +1777,6 @@ msgstr "सामग्री देख सकते हैं"
 #: packages/admin/src/components/ContentSettingsPanel.tsx:313
 #: packages/admin/src/components/ContentSettingsPanel.tsx:493
 #: packages/admin/src/components/ContentSettingsPanel.tsx:1291
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:311
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:312
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:539
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:735
 #: packages/admin/src/components/editor/ImageNode.tsx:299
@@ -2218,7 +2211,7 @@ msgstr "कोड"
 msgid "Code Block"
 msgstr "कोड ब्लॉक"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:229
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:227
 msgid "Code block actions"
 msgstr ""
 
@@ -2495,8 +2488,8 @@ msgstr ""
 msgid "Contributor"
 msgstr "योगदानकर्ता"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:246
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:270
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:244
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:268
 msgid "Copied"
 msgstr ""
 
@@ -2510,12 +2503,12 @@ msgstr "क्लिपबोर्ड पर कॉपी किया गय�
 msgid "Copy {0} to clipboard"
 msgstr "{0} को क्लिपबोर्ड पर कॉपी करें"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:246
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:253
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:244
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:251
 msgid "Copy code"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:270
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:268
 msgid "Copy failed"
 msgstr ""
 
@@ -4059,6 +4052,10 @@ msgstr "वर्डप्रेस से मैन्युअल रूप �
 msgid "Export your content from WordPress to import everything including drafts."
 msgstr "ड्राफ्ट सहित सब कुछ आयात करने के लिए वर्डप्रेस से अपनी सामग्री निर्यात करें।"
 
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:35
+msgid "F#"
+msgstr ""
+
 #: packages/admin/src/components/settings/SocialSettings.tsx:155
 msgid "Facebook"
 msgstr "फेसबुक"
@@ -5001,7 +4998,7 @@ msgstr "GitHub"
 msgid "Give this passkey a name to help you identify it later."
 msgstr "इस पासकी को बाद में पहचानने में मदद के लिए एक नाम दें।"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:35
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:36
 msgid "Go"
 msgstr "जाना"
 
@@ -5015,7 +5012,7 @@ msgstr "डैशबोर्ड पर जाएँ"
 msgid "Google Verification"
 msgstr "गूगल सत्यापन"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:36
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:37
 msgid "GraphQL"
 msgstr "ग्राफक्यूएल"
 
@@ -5184,7 +5181,7 @@ msgstr ""
 msgid "How to create an Application Password"
 msgstr "एप्लीकेशन पासवर्ड कैसे बनाएं"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:37
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:38
 #: packages/admin/src/components/editor/HtmlBlockNode.tsx:114
 #: packages/admin/src/components/PortableTextEditor.tsx:1653
 msgid "HTML"
@@ -5660,11 +5657,11 @@ msgstr ""
 msgid "Jane Doe"
 msgstr "जेन डो"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:38
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:39
 msgid "Java"
 msgstr "जावा"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:39
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:40
 msgid "JavaScript"
 msgstr "जावास्क्रिप्ट"
 
@@ -5676,12 +5673,12 @@ msgstr "नौकरी का शीर्षक"
 msgid "job_title"
 msgstr "नौकरी_शीर्षक"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:40
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:41
 #: packages/admin/src/components/FieldEditor.tsx:254
 msgid "JSON"
 msgstr "JSON"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:41
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:42
 msgid "JSX"
 msgstr "जेएसएक्स"
 
@@ -5716,7 +5713,7 @@ msgstr ""
 msgid "Keywords"
 msgstr "कीवर्ड"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:42
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:43
 msgid "Kotlin"
 msgstr "Kotlin"
 
@@ -5744,7 +5741,7 @@ msgstr "लेबल (एकवचन)"
 msgid "Landscape"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:280
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:276
 #: packages/admin/src/components/LoginPage.tsx:347
 #: packages/admin/src/components/Settings.tsx:122
 #: packages/admin/src/components/Settings.tsx:132
@@ -6088,7 +6085,7 @@ msgstr "केवल छोटे अक्षर, संख्याएँ औ�
 msgid "Lowercase letters, numbers, and underscores only, starting with a letter"
 msgstr "एक अक्षर से प्रारंभ करते हुए केवल छोटे अक्षर, संख्याएँ और अंडरस्कोर"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:43
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:44
 msgid "Lua"
 msgstr ""
 
@@ -6170,7 +6167,7 @@ msgstr "चला गया के रूप में चिह्नित क
 msgid "Mark as spam"
 msgstr "रद्दी ई - मेल के रूप में निशान करें"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:44
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:45
 msgid "Markdown"
 msgstr "markdown"
 
@@ -6207,7 +6204,7 @@ msgstr "अधिकतम मूल्य"
 msgid "Maximum tags"
 msgstr "अधिकतम टैग"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:45
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:46
 msgid "MDX"
 msgstr "एमडीएक्स"
 
@@ -6916,9 +6913,13 @@ msgstr "कोई सीमा नहीं"
 msgid "No linked user"
 msgstr "कोई लिंक किया हुआ उपयोगकर्ता नहीं"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:289
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:314
 msgid "No matches"
 msgstr "कोई मेल नहीं"
+
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:313
+msgid "No matches. Press Enter to use “{freeFormLanguage}”."
+msgstr ""
 
 #: packages/admin/src/components/BylineCreditsEditor.tsx:542
 msgid "No matching bylines."
@@ -7492,7 +7493,7 @@ msgstr "{title} को स्थायी रूप से हटाएं"
 msgid "Permissions"
 msgstr "अनुमतियां"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:46
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:47
 msgid "PHP"
 msgstr "पीएचपी"
 
@@ -7505,7 +7506,7 @@ msgid "Placeholder text"
 msgstr "प्लेसहोल्डर पाठ"
 
 #: packages/admin/src/components/editor/codeBlockLanguages.ts:26
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:121
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:122
 msgid "Plain text"
 msgstr "सादे पाठ"
 
@@ -7868,7 +7869,7 @@ msgstr ""
 msgid "visualEditing.publishing"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:47
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:48
 msgid "Python"
 msgstr "अजगर"
 
@@ -8444,8 +8445,8 @@ msgstr "पुन: प्रयास करें"
 msgid "Retry {0}"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:246
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:253
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:244
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:251
 msgid "Retry copy"
 msgstr ""
 
@@ -8598,11 +8599,11 @@ msgstr ""
 msgid "Rows"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:48
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:49
 msgid "Ruby"
 msgstr "रूबी"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:49
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:50
 msgid "Rust"
 msgstr "जंग"
 
@@ -8805,7 +8806,7 @@ msgstr "स्क्रीनशॉट दर्शक"
 msgid "Screenshots"
 msgstr "स्क्रीनशॉट"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:50
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:51
 msgid "SCSS"
 msgstr "एससीएसएस"
 
@@ -8881,6 +8882,10 @@ msgstr ""
 #: packages/admin/src/components/MediaDetailPanel.tsx:1482
 #: packages/admin/src/components/MediaDetailPanel.tsx:1483
 msgid "Search folders"
+msgstr ""
+
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:290
+msgid "Search for a language…"
 msgstr ""
 
 #: packages/admin/src/components/Widgets.tsx:152
@@ -9260,11 +9265,11 @@ msgstr "इस छवि उदाहरण के लिए एक कस्ट
 msgid "Set a custom width and height for this image in the document. Reset uses the original media dimensions. The original media file is unchanged."
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:239
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:237
 msgid "Set language"
 msgstr "भाषा सेट करें"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:236
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:234
 msgid "Set language (current: {label})"
 msgstr "भाषा सेट करें (वर्तमान: {label})"
 
@@ -9614,7 +9619,7 @@ msgstr ""
 msgid "Spreadsheets"
 msgstr "स्प्रेडशीट्स"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:51
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:52
 msgid "SQL"
 msgstr "एसक्यूएल"
 
@@ -9696,11 +9701,11 @@ msgstr "सबस्क्रिप्ट"
 msgid "Superscript"
 msgstr "ऊपर की ओर लिखा हुआ"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:52
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:53
 msgid "Svelte"
 msgstr "दुर्बल"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:53
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:54
 msgid "Swift"
 msgstr "तीव्र"
 
@@ -10289,7 +10294,7 @@ msgstr "टोकन बनाया गया: {0}"
 msgid "Token Name"
 msgstr "टोकन नाम"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:54
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:55
 msgid "TOML"
 msgstr "TOML"
 
@@ -10424,7 +10429,7 @@ msgstr "कोई अन्य URL आज़माएँ"
 msgid "Try with my data"
 msgstr "मेरे डेटा के साथ प्रयास करें"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:55
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:56
 msgid "TSX"
 msgstr "टीएसएक्स"
 
@@ -10464,7 +10469,7 @@ msgstr "प्रकार बेमेल ({0})"
 msgid "Type: Folder"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:56
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:57
 msgid "TypeScript"
 msgstr "टाइपप्रति"
 
@@ -10991,7 +10996,7 @@ msgstr ""
 msgid "Visitors will see these changes immediately."
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:57
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:58
 msgid "Vue"
 msgstr "वीयूई"
 
@@ -11233,7 +11238,7 @@ msgstr "विजेट सामग्री लिखें..."
 msgid "WXR File"
 msgstr "डब्ल्यूएक्सआर फ़ाइल"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:58
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:59
 msgid "XML"
 msgstr "एक्सएमएल"
 
@@ -11241,7 +11246,7 @@ msgstr "एक्सएमएल"
 msgid "xxxx xxxx xxxx xxxx xxxx xxxx"
 msgstr "xxxx xxxx xxxx xxxx xxxx"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:59
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:60
 msgid "YAML"
 msgstr "वाईएएमएल"
 
@@ -11456,6 +11461,6 @@ msgstr "आपके YouTube चैनल की आईडी या हैं�
 msgid "YouTube"
 msgstr "यूट्यूब"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:60
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:61
 msgid "Zig"
 msgstr ""

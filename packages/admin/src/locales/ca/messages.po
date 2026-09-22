@@ -1338,11 +1338,6 @@ msgstr "Contrasenya d'aplicació"
 msgid "Apply"
 msgstr "Aplica"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:299
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:300
-msgid "Apply language"
-msgstr "Aplica l'idioma"
-
 #: packages/admin/src/components/PortableTextEditor.tsx:3949
 #: packages/admin/src/components/PortableTextEditor.tsx:3950
 msgid "Apply link"
@@ -1782,8 +1777,6 @@ msgstr "Pot veure el contingut"
 #: packages/admin/src/components/ContentSettingsPanel.tsx:313
 #: packages/admin/src/components/ContentSettingsPanel.tsx:493
 #: packages/admin/src/components/ContentSettingsPanel.tsx:1291
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:311
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:312
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:539
 #: packages/admin/src/components/editor/ImageDetailPanel.tsx:735
 #: packages/admin/src/components/editor/ImageNode.tsx:299
@@ -2218,7 +2211,7 @@ msgstr "Codi"
 msgid "Code Block"
 msgstr "Bloc de codi"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:229
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:227
 msgid "Code block actions"
 msgstr ""
 
@@ -2495,8 +2488,8 @@ msgstr ""
 msgid "Contributor"
 msgstr "Col·laborador"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:246
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:270
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:244
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:268
 msgid "Copied"
 msgstr ""
 
@@ -2510,12 +2503,12 @@ msgstr "Copiat al porta-retalls"
 msgid "Copy {0} to clipboard"
 msgstr "Copia {0} al porta-retalls"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:246
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:253
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:244
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:251
 msgid "Copy code"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:270
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:268
 msgid "Copy failed"
 msgstr ""
 
@@ -4059,6 +4052,10 @@ msgstr "Exporta des de WordPress manualment"
 msgid "Export your content from WordPress to import everything including drafts."
 msgstr "Exporta el teu contingut des de WordPress per importar-ho tot, inclosos els esborranys."
 
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:35
+msgid "F#"
+msgstr ""
+
 #: packages/admin/src/components/settings/SocialSettings.tsx:155
 msgid "Facebook"
 msgstr "Facebook"
@@ -5001,7 +4998,7 @@ msgstr ""
 msgid "Give this passkey a name to help you identify it later."
 msgstr "Posa un nom a aquesta clau d'accés per identificar-la més fàcilment després."
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:35
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:36
 msgid "Go"
 msgstr "Ves"
 
@@ -5015,7 +5012,7 @@ msgstr "Ves al tauler"
 msgid "Google Verification"
 msgstr "Verificació de Google"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:36
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:37
 msgid "GraphQL"
 msgstr ""
 
@@ -5184,7 +5181,7 @@ msgstr ""
 msgid "How to create an Application Password"
 msgstr "Com crear una contrasenya d'aplicació"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:37
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:38
 #: packages/admin/src/components/editor/HtmlBlockNode.tsx:114
 #: packages/admin/src/components/PortableTextEditor.tsx:1653
 msgid "HTML"
@@ -5660,11 +5657,11 @@ msgstr ""
 msgid "Jane Doe"
 msgstr "Jana Puig"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:38
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:39
 msgid "Java"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:39
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:40
 msgid "JavaScript"
 msgstr ""
 
@@ -5676,12 +5673,12 @@ msgstr "Càrrec"
 msgid "job_title"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:40
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:41
 #: packages/admin/src/components/FieldEditor.tsx:254
 msgid "JSON"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:41
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:42
 msgid "JSX"
 msgstr ""
 
@@ -5716,7 +5713,7 @@ msgstr ""
 msgid "Keywords"
 msgstr "Paraules clau"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:42
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:43
 msgid "Kotlin"
 msgstr ""
 
@@ -5744,7 +5741,7 @@ msgstr "Etiqueta (singular)"
 msgid "Landscape"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:280
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:276
 #: packages/admin/src/components/LoginPage.tsx:347
 #: packages/admin/src/components/Settings.tsx:122
 #: packages/admin/src/components/Settings.tsx:132
@@ -6088,7 +6085,7 @@ msgstr "Només lletres minúscules, números i guions"
 msgid "Lowercase letters, numbers, and underscores only, starting with a letter"
 msgstr "Només lletres minúscules, números i guions baixos, començant per una lletra"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:43
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:44
 msgid "Lua"
 msgstr ""
 
@@ -6170,7 +6167,7 @@ msgstr "Marca com a Gone (410): indica als motors de cerca que s'ha eliminat per
 msgid "Mark as spam"
 msgstr "Marca com a brossa"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:44
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:45
 msgid "Markdown"
 msgstr "Markdown"
 
@@ -6207,7 +6204,7 @@ msgstr "Valor màxim"
 msgid "Maximum tags"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:45
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:46
 msgid "MDX"
 msgstr ""
 
@@ -6916,9 +6913,13 @@ msgstr "Sense límit"
 msgid "No linked user"
 msgstr "Cap usuari enllaçat"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:289
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:314
 msgid "No matches"
 msgstr "Cap coincidència"
+
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:313
+msgid "No matches. Press Enter to use “{freeFormLanguage}”."
+msgstr ""
 
 #: packages/admin/src/components/BylineCreditsEditor.tsx:542
 msgid "No matching bylines."
@@ -7492,7 +7493,7 @@ msgstr "Elimina permanentment {title}"
 msgid "Permissions"
 msgstr "Permisos"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:46
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:47
 msgid "PHP"
 msgstr ""
 
@@ -7505,7 +7506,7 @@ msgid "Placeholder text"
 msgstr ""
 
 #: packages/admin/src/components/editor/codeBlockLanguages.ts:26
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:121
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:122
 msgid "Plain text"
 msgstr "Text sense format"
 
@@ -7868,7 +7869,7 @@ msgstr ""
 msgid "visualEditing.publishing"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:47
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:48
 msgid "Python"
 msgstr ""
 
@@ -8444,8 +8445,8 @@ msgstr "Reintenta"
 msgid "Retry {0}"
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:246
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:253
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:244
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:251
 msgid "Retry copy"
 msgstr ""
 
@@ -8598,11 +8599,11 @@ msgstr ""
 msgid "Rows"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:48
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:49
 msgid "Ruby"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:49
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:50
 msgid "Rust"
 msgstr ""
 
@@ -8805,7 +8806,7 @@ msgstr "Visualitzador de captures de pantalla"
 msgid "Screenshots"
 msgstr "Captures de pantalla"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:50
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:51
 msgid "SCSS"
 msgstr ""
 
@@ -8881,6 +8882,10 @@ msgstr ""
 #: packages/admin/src/components/MediaDetailPanel.tsx:1482
 #: packages/admin/src/components/MediaDetailPanel.tsx:1483
 msgid "Search folders"
+msgstr ""
+
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:290
+msgid "Search for a language…"
 msgstr ""
 
 #: packages/admin/src/components/Widgets.tsx:152
@@ -9260,11 +9265,11 @@ msgstr "Defineix una mida de visualització personalitzada per a aquesta instàn
 msgid "Set a custom width and height for this image in the document. Reset uses the original media dimensions. The original media file is unchanged."
 msgstr ""
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:239
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:237
 msgid "Set language"
 msgstr "Defineix l'idioma"
 
-#: packages/admin/src/components/editor/CodeBlockNode.tsx:236
+#: packages/admin/src/components/editor/CodeBlockNode.tsx:234
 msgid "Set language (current: {label})"
 msgstr "Defineix l'idioma (actual: {label})"
 
@@ -9614,7 +9619,7 @@ msgstr ""
 msgid "Spreadsheets"
 msgstr "Fulls de càlcul"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:51
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:52
 msgid "SQL"
 msgstr ""
 
@@ -9696,11 +9701,11 @@ msgstr ""
 msgid "Superscript"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:52
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:53
 msgid "Svelte"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:53
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:54
 msgid "Swift"
 msgstr ""
 
@@ -10289,7 +10294,7 @@ msgstr "S'ha creat el testimoni: {0}"
 msgid "Token Name"
 msgstr "Nom del testimoni"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:54
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:55
 msgid "TOML"
 msgstr ""
 
@@ -10424,7 +10429,7 @@ msgstr "Prova un altre URL"
 msgid "Try with my data"
 msgstr "Prova amb les meves dades"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:55
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:56
 msgid "TSX"
 msgstr ""
 
@@ -10464,7 +10469,7 @@ msgstr "Discrepància de tipus ({0})"
 msgid "Type: Folder"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:56
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:57
 msgid "TypeScript"
 msgstr ""
 
@@ -10991,7 +10996,7 @@ msgstr ""
 msgid "Visitors will see these changes immediately."
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:57
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:58
 msgid "Vue"
 msgstr ""
 
@@ -11233,7 +11238,7 @@ msgstr "Escriu el contingut del giny..."
 msgid "WXR File"
 msgstr "Fitxer WXR"
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:58
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:59
 msgid "XML"
 msgstr ""
 
@@ -11241,7 +11246,7 @@ msgstr ""
 msgid "xxxx xxxx xxxx xxxx xxxx xxxx"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:59
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:60
 msgid "YAML"
 msgstr ""
 
@@ -11456,6 +11461,6 @@ msgstr "L'ID o l'identificador del teu canal de YouTube"
 msgid "YouTube"
 msgstr ""
 
-#: packages/admin/src/components/editor/codeBlockLanguages.ts:60
+#: packages/admin/src/components/editor/codeBlockLanguages.ts:61
 msgid "Zig"
 msgstr ""
