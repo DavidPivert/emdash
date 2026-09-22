@@ -2898,7 +2898,9 @@ export function createMcpServer(
 				"parent must exist, belong to the same taxonomy, and not introduce a cycle " +
 				"(a term cannot be its own ancestor). The new parent's ancestor chain must " +
 				"not exceed 100 levels — reparenting under a chain of 100+ ancestors is " +
-				"rejected.",
+				"rejected. Translations of a term can share a slug: pass `locale` to " +
+				"update a specific translation; otherwise the lowest matching locale is " +
+				"updated.",
 			inputSchema: z.object({
 				taxonomy: z.string().describe("Taxonomy name (e.g. 'categories', 'tags')"),
 				termSlug: z.string().describe("Current slug of the term to update"),
@@ -2906,6 +2908,7 @@ export function createMcpServer(
 				label: z.string().optional().describe("New display name"),
 				parentId: z.string().nullable().optional().describe("New parent term ID; null to detach"),
 				description: z.string().optional().describe("New description"),
+				locale: z.string().optional().describe("Locale of the term to update (e.g. 'fr')"),
 			}),
 		},
 		async (args, extra) => {
@@ -2916,12 +2919,18 @@ export function createMcpServer(
 				const { handleTermUpdate } = await import("../api/handlers/taxonomies.js");
 				return unwrapAndInvalidate(
 					extra,
-					await handleTermUpdate(ec.db, args.taxonomy, args.termSlug, {
-						slug: args.slug,
-						label: args.label,
-						parentId: args.parentId,
-						description: args.description,
-					}),
+					await handleTermUpdate(
+						ec.db,
+						args.taxonomy,
+						args.termSlug,
+						{
+							slug: args.slug,
+							label: args.label,
+							parentId: args.parentId,
+							description: args.description,
+						},
+						{ locale: args.locale },
+					),
 					[taxonomyTag(args.taxonomy)],
 				);
 			} catch (error) {
@@ -2937,10 +2946,13 @@ export function createMcpServer(
 			description:
 				"Permanently delete a term from a taxonomy. Any content tagged with this " +
 				"term loses the association. Cannot delete a term that has children — " +
-				"delete children first.",
+				"delete children first. Translations of a term can share a slug: pass " +
+				"`locale` to delete a specific translation; otherwise the lowest matching " +
+				"locale is deleted.",
 			inputSchema: z.object({
 				taxonomy: z.string().describe("Taxonomy name"),
 				termSlug: z.string().describe("Slug of the term to delete"),
+				locale: z.string().optional().describe("Locale of the term to delete (e.g. 'fr')"),
 			}),
 			annotations: { destructiveHint: true },
 		},
@@ -2952,7 +2964,7 @@ export function createMcpServer(
 				const { handleTermDelete } = await import("../api/handlers/taxonomies.js");
 				return unwrapAndInvalidate(
 					extra,
-					await handleTermDelete(ec.db, args.taxonomy, args.termSlug),
+					await handleTermDelete(ec.db, args.taxonomy, args.termSlug, { locale: args.locale }),
 					[taxonomyTag(args.taxonomy)],
 				);
 			} catch (error) {
