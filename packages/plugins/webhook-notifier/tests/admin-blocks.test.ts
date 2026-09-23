@@ -9,7 +9,9 @@ import plugin from "../src/plugin.js";
 // Sandboxed admin responses are validated by the runtime before they reach the
 // admin, which answers 502 INVALID_BLOCK_RESPONSE when validation fails. Build
 // the same policy the runtime derives from this plugin's manifest.
-const manifest = parse(readFileSync(new URL("../emdash-plugin.jsonc", import.meta.url), "utf8")) as {
+const manifest = parse(
+	readFileSync(new URL("../emdash-plugin.jsonc", import.meta.url), "utf8"),
+) as {
 	admin: { pages: { path: string }[]; widgets: { id: string }[] };
 };
 const policy = {
@@ -68,7 +70,11 @@ describe("webhook-notifier admin responses", () => {
 		const ctx = createCtx();
 		ctx.kv.set.mockRejectedValueOnce(new Error("KV unavailable"));
 		const response = await admin(
-			{ type: "form_submit", action_id: "save_settings", values: { webhookUrl: "https://x.example" } },
+			{
+				type: "form_submit",
+				action_id: "save_settings",
+				values: { webhookUrl: "https://x.example" },
+			},
 			ctx,
 		);
 		expect(response.blocks[0]).toMatchObject({ type: "banner", variant: "error" });
