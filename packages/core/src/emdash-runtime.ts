@@ -1381,7 +1381,9 @@ export class EmDashRuntime {
 					continue;
 				}
 
-				const bundle = await loadBundleFromR2(this.storage, pluginId, version, source);
+				const bundle = await loadBundleFromR2(this.storage, pluginId, version, source, {
+					includeAdmin: false,
+				});
 				if (!bundle) {
 					console.warn(`EmDash: ${source} plugin ${pluginId}@${version} not found in R2`);
 					continue;
@@ -1513,7 +1515,9 @@ export class EmDashRuntime {
 			const { adaptSandboxEntry } = await import("./plugins/adapt-sandbox-entry.js");
 			const newPlugins: ResolvedPlugin[] = [];
 			for (const [pluginId, version] of desired) {
-				const bundle = await loadBundleFromR2(this.storage, pluginId, version);
+				const bundle = await loadBundleFromR2(this.storage, pluginId, version, "marketplace", {
+					includeAdmin: false,
+				});
 				if (!bundle) {
 					console.warn(`EmDash: Marketplace plugin ${pluginId}@${version} not found in R2`);
 					continue;
@@ -2826,27 +2830,48 @@ export class EmDashRuntime {
 		}
 
 		const keySet = source === "marketplace" ? marketplacePluginKeys : registryPluginKeys;
+		const runner = sandboxRunner;
 
-		for (const plugin of states.filter((state) => state.source === source)) {
-			if (plugin.status !== "active") continue;
-
-			// Marketplace plugins record the live version in
-			// `marketplaceVersion`; registry plugins use `version` directly.
-			const version =
-				source === "marketplace" ? (plugin.marketplaceVersion ?? plugin.version) : plugin.version;
-			const pluginKey = `${plugin.pluginId}:${version}`;
-
+		const pending = states
+			.filter((state) => state.source === source && state.status === "active")
+			.map((plugin) => {
+				// Marketplace plugins record the live version in
+				// `marketplaceVersion`; registry plugins use `version` directly.
+				const version =
+					source === "marketplace" ? (plugin.marketplaceVersion ?? plugin.version) : plugin.version;
+				return { plugin, version, pluginKey: `${plugin.pluginId}:${version}` };
+			})
 			// Skip if already loaded (shouldn't happen, but guard)
-			if (cache.has(pluginKey)) continue;
+			.filter(({ pluginKey }) => !cache.has(pluginKey));
+
+		// Each plugin's R2 reads and sandbox load are independent of the
+		// others, so run them concurrently: a cold start then waits for one
+		// round of reads instead of one per plugin. Registration below keeps
+		// the state order, so the hook pipeline order does not change.
+		const fetched = await Promise.all(
+			pending.map(async ({ plugin, version, pluginKey }) => {
+				try {
+					const bundle = await loadBundleFromR2(storage, plugin.pluginId, version, source, {
+						includeAdmin: false,
+					});
+					if (!bundle) {
+						console.warn(`EmDash: ${source} plugin ${plugin.pluginId}@${version} not found in R2`);
+						return null;
+					}
+					const loaded = await runner.load(bundle.manifest, bundle.backendCode);
+					return { plugin, pluginKey, bundle, loaded };
+				} catch (error) {
+					console.error(`EmDash: Failed to load ${source} plugin ${plugin.pluginId}:`, error);
+					return null;
+				}
+			}),
+		);
+
+		for (const result of fetched) {
+			if (!result) continue;
+			const { plugin, pluginKey, bundle, loaded } = result;
 
 			try {
-				const bundle = await loadBundleFromR2(storage, plugin.pluginId, version, source);
-				if (!bundle) {
-					console.warn(`EmDash: ${source} plugin ${plugin.pluginId}@${version} not found in R2`);
-					continue;
-				}
-
-				const loaded = await sandboxRunner.load(bundle.manifest, bundle.backendCode);
 				cache.set(pluginKey, loaded);
 				sandboxedManifestCache.set(pluginKey, bundle.manifest);
 				keySet.add(pluginKey);
@@ -2913,7 +2938,9 @@ export class EmDashRuntime {
 			if (plugin.status !== "active") continue;
 			const version = plugin.marketplaceVersion ?? plugin.version;
 			try {
-				const bundle = await loadBundleFromR2(storage, plugin.pluginId, version);
+				const bundle = await loadBundleFromR2(storage, plugin.pluginId, version, "marketplace", {
+					includeAdmin: false,
+				});
 				if (!bundle) {
 					console.warn(`EmDash: Marketplace plugin ${plugin.pluginId}@${version} not found in R2`);
 					continue;
