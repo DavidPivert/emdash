@@ -2844,10 +2844,9 @@ export class EmDashRuntime {
 			// Skip if already loaded (shouldn't happen, but guard)
 			.filter(({ pluginKey }) => !cache.has(pluginKey));
 
-		// Each plugin's R2 reads and sandbox load are independent of the
-		// others, so run them concurrently: a cold start then waits for one
-		// round of reads instead of one per plugin. Registration below keeps
-		// the state order, so the hook pipeline order does not change.
+		// Each plugin's R2 reads are independent of the others, so fetch the
+		// bundles concurrently: a cold start then waits for one round of reads
+		// instead of one per plugin.
 		const fetched = await Promise.all(
 			pending.map(async ({ plugin, version, pluginKey }) => {
 				try {
@@ -2858,8 +2857,7 @@ export class EmDashRuntime {
 						console.warn(`EmDash: ${source} plugin ${plugin.pluginId}@${version} not found in R2`);
 						return null;
 					}
-					const loaded = await runner.load(bundle.manifest, bundle.backendCode);
-					return { plugin, pluginKey, bundle, loaded };
+					return { plugin, pluginKey, bundle };
 				} catch (error) {
 					console.error(`EmDash: Failed to load ${source} plugin ${plugin.pluginId}:`, error);
 					return null;
@@ -2867,11 +2865,16 @@ export class EmDashRuntime {
 			}),
 		);
 
+		// Load into the sandbox one plugin at a time, in plugin-state order.
+		// The SandboxRunner contract does not make concurrent `load()` calls
+		// safe (the Miniflare dev runner rebuilds its instance on every load),
+		// and the order keeps cache insertion and the hook pipeline unchanged.
 		for (const result of fetched) {
 			if (!result) continue;
-			const { plugin, pluginKey, bundle, loaded } = result;
+			const { plugin, pluginKey, bundle } = result;
 
 			try {
+				const loaded = await runner.load(bundle.manifest, bundle.backendCode);
 				cache.set(pluginKey, loaded);
 				sandboxedManifestCache.set(pluginKey, bundle.manifest);
 				keySet.add(pluginKey);

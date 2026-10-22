@@ -2,9 +2,11 @@
  * Cold-start load of marketplace- and registry-installed plugins.
  *
  * Each plugin's bundle reads are independent, so the runtime issues them
- * concurrently instead of one plugin after another. Registration must still
- * follow the plugin-state order, which is the order the sandboxed plugins
- * join the hook pipeline, and the runtime never needs `admin.js`.
+ * concurrently instead of one plugin after another. Sandbox loads must still
+ * run one at a time, in plugin-state order: runner `load()` calls are not
+ * safe to overlap (the Miniflare dev runner rebuilds its instance on each
+ * load), and that order is the order the plugins join the hook pipeline. The
+ * runtime never needs `admin.js`.
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -49,17 +51,33 @@ function registryState(pluginId: string): PluginState {
 
 function createRunner() {
 	const loaded: string[] = [];
+	let loadsInFlight = 0;
+	let maxLoadsInFlight = 0;
 	const runner = {
 		isAvailable: () => true,
 		isHealthy: () => true,
 		async load(pluginManifest: PluginManifest) {
-			loaded.push(pluginManifest.id);
-			return { id: `${pluginManifest.id}:${pluginManifest.version}` } as SandboxedPluginInstance;
+			loadsInFlight++;
+			maxLoadsInFlight = Math.max(maxLoadsInFlight, loadsInFlight);
+			try {
+				// Like the Miniflare dev runner, yield before the load completes.
+				await new Promise((resolve) => setTimeout(resolve, 5));
+				loaded.push(pluginManifest.id);
+				return { id: `${pluginManifest.id}:${pluginManifest.version}` } as SandboxedPluginInstance;
+			} finally {
+				loadsInFlight--;
+			}
 		},
 		setEmailSend() {},
 		async terminateAll() {},
 	} as unknown as SandboxRunner;
-	return { runner, loaded };
+	return {
+		runner,
+		loaded,
+		get maxLoadsInFlight() {
+			return maxLoadsInFlight;
+		},
+	};
 }
 
 describe("installed plugin cold-start load", () => {
@@ -88,7 +106,7 @@ describe("installed plugin cold-start load", () => {
 		return cache;
 	}
 
-	it("reads every plugin's bundle concurrently and registers them in state order", async () => {
+	it("reads every plugin's bundle concurrently, then loads them one at a time in state order", async () => {
 		const storage = createMemoryStorage();
 		for (const id of ["slow-plugin", "fast-plugin"]) {
 			await storeBundleInR2(
@@ -121,17 +139,50 @@ describe("installed plugin cold-start load", () => {
 			}
 		};
 
-		const { runner, loaded } = createRunner();
+		const sandbox = createRunner();
 		const cache = await loadInstalled(
 			storage,
 			[registryState("slow-plugin"), registryState("fast-plugin")],
-			runner,
+			sandbox.runner,
 		);
 
 		expect(maxInFlight).toBe(4);
 		expect(requested.some((key) => key.endsWith("/admin.js"))).toBe(false);
-		expect(loaded).toEqual(["fast-plugin", "slow-plugin"]);
+		expect(sandbox.maxLoadsInFlight).toBe(1);
+		expect(sandbox.loaded).toEqual(["slow-plugin", "fast-plugin"]);
 		expect([...cache.keys()]).toEqual(["slow-plugin:1.0.0", "fast-plugin:1.0.0"]);
+	});
+
+	it("never overlaps sandbox loads when the bundles arrive together", async () => {
+		const storage = createMemoryStorage();
+		for (const id of ["first-plugin", "second-plugin", "third-plugin"]) {
+			await storeBundleInR2(
+				storage,
+				id,
+				"1.0.0",
+				{ manifest: manifest(id), backendCode: "export default {};" },
+				"registry",
+			);
+		}
+
+		const sandbox = createRunner();
+		const cache = await loadInstalled(
+			storage,
+			[
+				registryState("first-plugin"),
+				registryState("second-plugin"),
+				registryState("third-plugin"),
+			],
+			sandbox.runner,
+		);
+
+		expect(sandbox.maxLoadsInFlight).toBe(1);
+		expect(sandbox.loaded).toEqual(["first-plugin", "second-plugin", "third-plugin"]);
+		expect([...cache.keys()]).toEqual([
+			"first-plugin:1.0.0",
+			"second-plugin:1.0.0",
+			"third-plugin:1.0.0",
+		]);
 	});
 
 	it("keeps loading the other plugins when one bundle is missing", async () => {
